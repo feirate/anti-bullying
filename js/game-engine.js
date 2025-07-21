@@ -35,13 +35,14 @@ class GameEngine {
       return;
     }
 
-    this.showMainMenu();
+    // 显示游戏主界面
+    window.userSystem.showGameInterface();
   }
 
   // 显示主菜单
   showMainMenu() {
     const user = window.userSystem.user;
-    const filteredScenarios = window.userSystem.filterScenariosByGrade(
+    const availableScenarios = window.userSystem.getAvailableScenarios(
       this.gameData.scenarios, 
       user.grade
     );
@@ -70,10 +71,33 @@ class GameEngine {
           </div>
         </div>
 
+        <!-- 进度信息 -->
+        <div class="progress-section">
+          <div class="progress-info">
+            <span>场景进度: ${user.completed_scenarios.length}/${user.max_scenarios}</span>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${(user.completed_scenarios.length / user.max_scenarios) * 100}%"></div>
+            </div>
+          </div>
+          
+          ${user.completed_scenarios.length > 0 ? 
+            `<div class="replay-section">
+              <button class="replay-all-btn" onclick="resetProgress()">重新挑战所有场景</button>
+              <button class="homepage-btn" onclick="goToHomepage()">回到首页</button>
+            </div>` : ''
+          }
+          
+          ${user.completed_scenarios.length >= user.max_scenarios ? 
+            `<div class="completion-notice">
+              <p>🎉 恭喜！你已完成所有场景！</p>
+            </div>` : ''
+          }
+        </div>
+
         <!-- 场景列表 -->
         <div class="scenarios-list">
-          <h3>选择你的挑战</h3>
-          ${filteredScenarios.map(scenario => this.renderScenarioCard(scenario)).join('')}
+          <h3>${user.completed_scenarios.length >= user.max_scenarios ? '已完成的冒险' : '选择你的挑战'}</h3>
+          ${availableScenarios.map(scenario => this.renderScenarioCard(scenario)).join('')}
         </div>
 
         <!-- 底部信息 -->
@@ -91,37 +115,82 @@ class GameEngine {
   // 渲染场景卡片
   renderScenarioCard(scenario) {
     const isCompleted = window.userSystem.user.completed_scenarios.includes(scenario.id);
-    const statusIcon = isCompleted ? '完成' : '新';
-    const statusClass = isCompleted ? 'completed' : 'new';
+    
+    let statusIcon, statusClass, actionButton;
+    
+    if (isCompleted) {
+      statusIcon = '✅';
+      statusClass = 'completed';
+      // 已完成的场景只显示"已完成"状态
+      actionButton = `<div class="completed-status">已完成</div>`;
+    } else {
+      statusIcon = '🆕';
+      statusClass = 'new';
+      actionButton = `<button class="start-btn" data-scenario-id="${scenario.id}">开始挑战</button>`;
+    }
+    
+    // 使用图片管理器获取场景图片
+    const imageHtml = window.imageManager ? 
+      window.imageManager.generateImagePreview(scenario.id, 'medium') : 
+      (scenario.image ? 
+        `<div class="scenario-image">
+          <img src="${scenario.image}" alt="${scenario.title}" loading="lazy">
+        </div>` : '');
     
     return `
       <div class="scenario-card ${statusClass}" data-scenario-id="${scenario.id}">
-        <div class="scenario-title">
-          ${statusIcon} ${scenario.title}
+        <div class="scenario-header">
+          <div class="scenario-title">
+            ${statusIcon} ${scenario.title}
+          </div>
+          <div class="scenario-meta">
+            <span class="difficulty ${scenario.difficulty.toLowerCase()}">${scenario.difficulty}</span>
+            <span class="category">${scenario.category}</span>
+          </div>
         </div>
+        
+        ${imageHtml}
+        
         <div class="scenario-description">
           ${scenario.description}
         </div>
-        <div class="scenario-meta">
-          <span class="difficulty">难度：${scenario.difficulty}</span>
-          <span class="category">类型：${scenario.category}</span>
+        
+        <div class="scenario-actions">
+          ${actionButton}
         </div>
-        <button class="doodle-btn start-scenario-btn" data-scenario-id="${scenario.id}">
-          ${isCompleted ? '重新挑战' : '开始挑战'}
-        </button>
       </div>
     `;
   }
 
   // 绑定场景事件
   bindScenarioEvents() {
-    const scenarioButtons = document.querySelectorAll('.start-scenario-btn');
-    scenarioButtons.forEach(btn => {
+    // 开始挑战按钮
+    document.querySelectorAll('.start-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const scenarioId = e.target.dataset.scenarioId;
         this.startScenario(scenarioId);
       });
     });
+    
+    // 重新挑战按钮
+    document.querySelectorAll('.replay-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const scenarioId = e.target.dataset.scenarioId;
+        this.replayScenario(scenarioId);
+      });
+    });
+  }
+
+  // 重新挑战场景
+  replayScenario(scenarioId) {
+    const confirmReset = confirm('重新挑战将重置所有进度和成就，确定要继续吗？');
+    if (confirmReset) {
+      // 重置用户进度
+      window.userSystem.resetUserProgress();
+      
+      // 开始场景
+      this.startScenario(scenarioId);
+    }
   }
 
   // 开始场景
@@ -140,10 +209,19 @@ class GameEngine {
   showScenario() {
     const scenario = this.currentScenario;
     
+    // 使用图片管理器获取场景图片
+    const imageHtml = window.imageManager ? 
+      window.imageManager.generateImagePreview(scenario.id, 'large') : 
+      (scenario.image ? 
+        `<div class="scenario-image-large">
+          <img src="${scenario.image}" alt="${scenario.title}" loading="lazy">
+        </div>` : '');
+    
     const scenarioView = `
       <div class="doodle-container">
         <div class="doodle-title">${scenario.title}</div>
         <div class="scenario-content">
+          ${imageHtml}
           <div class="scenario-description">
             ${scenario.description}
           </div>
@@ -256,7 +334,7 @@ class GameEngine {
     
     if (menuBtn) {
       menuBtn.addEventListener('click', () => {
-        this.showMainMenu();
+        window.userSystem.clearUserData();
       });
     }
   }

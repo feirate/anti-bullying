@@ -97,8 +97,8 @@ body {
   background: var(--bg-white);
   border: var(--doodle-border) var(--primary-orange);
   border-radius: var(--doodle-radius);
-  padding: 24px;
-  margin: 20px;
+  padding: 16px;
+  margin: 12px;
   box-shadow: var(--doodle-shadow);
   position: relative;
 }
@@ -119,19 +119,19 @@ body {
 /* 标题样式 */
 .doodle-title {
   font-family: 'Indie Flower', cursive;
-  font-size: 2.5em;
+  font-size: 2.2em;
   color: var(--primary-orange);
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .doodle-subtitle {
   font-family: 'Comic Neue', cursive;
-  font-size: 1.2em;
+  font-size: 1.1em;
   color: var(--text-medium);
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 /* 场景卡片样式 */
@@ -139,8 +139,8 @@ body {
   background: var(--bg-white);
   border: var(--doodle-border) var(--accent-green);
   border-radius: var(--doodle-radius);
-  padding: 20px;
-  margin: 15px 0;
+  padding: 16px;
+  margin: 12px 0;
   box-shadow: var(--doodle-shadow);
   transition: all 0.3s ease;
 }
@@ -295,29 +295,552 @@ body {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .doodle-container {
-    margin: 10px;
-    padding: 16px;
+    margin: 8px;
+    padding: 12px;
   }
   
   .doodle-title {
-    font-size: 2em;
+    font-size: 1.8em;
   }
   
   .grade-btn {
-    min-width: 100px;
-    padding: 12px 16px;
-    font-size: 16px;
+    min-width: 90px;
+    padding: 10px 14px;
+    font-size: 14px;
   }
 }
 
 /* 手绘装饰元素 */
 .doodle-decoration {
   position: absolute;
-  font-size: 2em;
-  opacity: 0.1;
-  pointer-events: none;
+  font-size: 24px;
+  opacity: 0.6;
+  z-index: -1;
 }
 
 .decoration-1 { top: 10px; right: 10px; color: var(--accent-yellow); }
 .decoration-2 { bottom: 10px; left: 10px; color: var(--accent-green); }
-.decoration-3 { top: 50%; right: 20px; color: var(--accent-purple); } 
+.decoration-3 { top: 50%; right: 20px; color: var(--accent-purple); }
+
+/* 游戏主界面样式 */
+.game-interface-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.game-interface {
+  background: var(--bg-white);
+  border: var(--doodle-border) var(--primary-orange);
+  border-radius: var(--doodle-radius);
+  padding: 20px;
+  box-shadow: var(--doodle-shadow);
+}
+
+.user-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.user-info h2 {
+  color: var(--primary-orange);
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.scenarios-section {
+  margin-top: 24px;
+}
+
+.scenarios-section h3 {
+  color: var(--text-dark);
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+/* 首页样式 */
+.homepage-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.hero-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--primary-orange);
+  margin: 0 0 6px 0;
+  font-family: 'Indie Flower', cursive;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: var(--text-medium);
+  margin: 0;
+}
+
+.game-intro {
+  background: var(--bg-white);
+  border: var(--doodle-border) var(--accent-purple);
+  border-radius: var(--doodle-radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--doodle-shadow);
+}
+
+.game-intro h2 {
+  color: var(--accent-purple);
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.core-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.skill-card {
+  text-align: center;
+  padding: 16px;
+  border: 2px solid var(--accent-green);
+  border-radius: var(--doodle-radius);
+  background: var(--bg-white);
+}
+
+.skill-card .skill-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.skill-card h3 {
+  margin: 8px 0;
+  color: var(--text-dark);
+  font-size: 18px;
+}
+
+.skill-card p {
+  margin: 0;
+  color: var(--text-medium);
+  font-size: 14px;
+}
+
+.grade-selection {
+  background: var(--bg-white);
+  border: var(--doodle-border) var(--secondary-blue);
+  border-radius: var(--doodle-radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--doodle-shadow);
+  text-align: center;
+}
+
+.grade-selection h3 {
+  color: var(--secondary-blue);
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.grade-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.game-tip {
+  background: var(--bg-white);
+  border: var(--doodle-border) var(--accent-yellow);
+  border-radius: var(--doodle-radius);
+  padding: 16px;
+  text-align: center;
+  box-shadow: var(--doodle-shadow);
+}
+
+.tip-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* 欢迎页面样式 */
+.welcome-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.welcome-header h1 {
+  color: var(--primary-orange);
+  margin-bottom: 16px;
+  font-size: 32px;
+}
+
+.user-id-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-light);
+  border: 1px solid var(--text-light);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+.user-id-display:hover {
+  background: var(--accent-yellow);
+  border-color: var(--accent-yellow);
+}
+
+.user-id-text {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.copy-hint {
+  font-size: 12px;
+  color: var(--text-light);
+  opacity: 0.7;
+}
+
+.progress-info {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.progress-info p {
+  margin-bottom: 8px;
+  color: var(--text-medium);
+  font-weight: 600;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--bg-light);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--text-light);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-green), var(--secondary-blue));
+  transition: width 0.3s ease;
+}
+
+.start-game-btn {
+  background: linear-gradient(135deg, var(--accent-purple), var(--secondary-blue));
+  color: white;
+  border: none;
+  border-radius: var(--doodle-radius);
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--doodle-shadow);
+  display: block;
+  margin: 30px auto 0;
+}
+
+.start-game-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+}
+
+.welcome-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.restart-btn {
+  background: var(--accent-red);
+  color: white;
+  border: none;
+  border-radius: var(--doodle-radius);
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--doodle-shadow);
+}
+
+.restart-btn:hover {
+  background: #e74c3c;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+}
+
+/* 场景卡片新样式 */
+.scenario-card {
+  background: var(--bg-white);
+  border: var(--doodle-border) var(--primary-orange);
+  border-radius: var(--doodle-radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--doodle-shadow);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.scenario-card.completed {
+  border-color: var(--accent-green);
+  background: linear-gradient(135deg, var(--bg-white), #f0f8f0);
+}
+
+.scenario-card.new {
+  border-color: var(--secondary-blue);
+}
+
+.scenario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.scenario-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+  flex: 1;
+}
+
+.scenario-meta {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.difficulty {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.difficulty.简单 {
+  background: var(--accent-green);
+  color: white;
+}
+
+.difficulty.中等 {
+  background: var(--accent-yellow);
+  color: var(--text-dark);
+}
+
+.difficulty.困难 {
+  background: var(--accent-red);
+  color: white;
+}
+
+.category {
+  padding: 4px 8px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-medium);
+}
+
+.scenario-description {
+  color: var(--text-medium);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* 场景图片样式 */
+.scenario-image {
+  margin: 12px 0;
+  text-align: center;
+}
+
+.scenario-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--doodle-radius);
+  border: 2px solid var(--primary-orange);
+  box-shadow: var(--doodle-shadow);
+  max-height: 200px;
+  object-fit: cover;
+}
+
+/* 场景详情页大图样式 */
+.scenario-image-large {
+  margin: 16px 0;
+  text-align: center;
+}
+
+.scenario-image-large img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--doodle-radius);
+  border: 3px solid var(--primary-orange);
+  box-shadow: var(--doodle-shadow);
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.scenario-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.start-btn, .replay-btn {
+  background: var(--secondary-blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-btn:hover, .replay-btn:hover {
+  background: var(--primary-orange);
+  transform: translateY(-1px);
+}
+
+.completed-status {
+  padding: 8px 16px;
+  background: var(--accent-green);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* 进度区域样式 */
+.progress-section {
+  background: var(--bg-white);
+  border: var(--doodle-border) var(--accent-purple);
+  border-radius: var(--doodle-radius);
+  padding: 14px;
+  margin: 16px 0;
+  box-shadow: var(--doodle-shadow);
+}
+
+.completion-notice {
+  text-align: center;
+  margin-top: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--accent-yellow), var(--accent-green));
+  border-radius: var(--doodle-radius);
+}
+
+.completion-notice p {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.reset-btn {
+  background: var(--accent-red);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+  background: #e74c3c;
+  transform: translateY(-1px);
+}
+
+.replay-section {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.replay-all-btn {
+  background: var(--accent-purple);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--doodle-shadow);
+}
+
+.replay-all-btn:hover {
+  background: #8b5cf6;
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+}
+
+.homepage-btn {
+  background: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--doodle-shadow);
+  margin-left: 12px;
+}
+
+.homepage-btn:hover {
+  background: #10b981;
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 36px;
+  }
+  
+  .core-skills {
+    grid-template-columns: 1fr;
+  }
+  
+  .grade-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .scenario-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .scenario-meta {
+    align-self: flex-start;
+  }
+} 

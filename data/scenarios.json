@@ -8,6 +8,7 @@
       "grade_range": [1, 6],
       "description": "你在食堂里看到小明独自坐在一张桌子旁。附近的一群学生正在笑着指着小明，大声评论他的衣服和午餐。",
       "situation": "你注意到小明看起来很伤心和尴尬。你会怎么做？",
+      "image": "data/pic/社交排斥-午餐-1.png",
       "choices": [
         {
           "id": "ignore",
@@ -60,6 +61,7 @@
       "grade_range": [1, 6],
       "description": "你目睹有人在走廊里被叫名字和推搡。一个较大的学生正在欺负一个较小的学生。",
       "situation": "你看到这种情况，你会怎么做？",
+      "image": "data/pic/言语欺凌-走廊骚扰.png",
       "choices": [
         {
           "id": "walk_away",
@@ -112,6 +114,7 @@
       "grade_range": [3, 6],
       "description": "你在社交媒体上看到关于一个同学的恶意评论在传播。有人在群里发了一些不友善的话。",
       "situation": "你看到这些评论，你会怎么做？",
+      "image": "data/pic/网络欺凌-网络纷争.png",
       "choices": [
         {
           "id": "ignore_online",
@@ -164,6 +167,7 @@
       "grade_range": [1, 6],
       "description": "一个较大的学生威胁要在放学后伤害某人。你听到他们在走廊里说这些话。",
       "situation": "你听到这种威胁，你会怎么做？",
+      "image": "data/pic/身体欺凌-对抗.png",
       "choices": [
         {
           "id": "ignore_threat",
@@ -207,6 +211,890 @@
         }
       ],
       "learning_moment": "身体威胁是严重的安全问题，必须立即向成年人报告。"
+    },
+    {
+      "id": "bathroom_bullying",
+      "title": "厕所霸凌",
+      "category": "身体欺凌",
+      "difficulty": "中等",
+      "grade_range": [1, 6],
+      "description": "你在厕所里听到隔壁传来推搡声和哭泣声。一个学生被几个大孩子围在角落里。",
+      "situation": "你听到这种情况，你会怎么做？",
+      "feedback": "虽然选择离开，但帮助他人是英雄的责任。",
+      "choices": [
+        {
+          "id": "leave_quickly",
+          "text": "快速离开，假装没听见",
+          "points": {
+            "empathy": -2,
+            "courage": -2,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "get_help_immediately",
+          "text": "立即去找老师或保安",
+          "feedback": "明智的选择！在身体冲突中寻求成年人帮助是最安全的做法。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "call_out",
+          "text": "大声喊'老师来了'来吓跑他们",
+          "feedback": "聪明的策略！这可以暂时阻止欺凌行为，但还是要寻求帮助。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "intervene_safely",
+          "text": "尝试安全地介入，要求他们停止",
+          "feedback": "勇敢的选择！但要确保自己的安全，如果情况危险要立即寻求帮助。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "在身体冲突中，安全第一，寻求成年人帮助是最明智的选择。"
+    },
+    {
+      "id": "after_school_threat",
+      "title": "放学路上",
+      "category": "身体欺凌",
+      "difficulty": "困难",
+      "grade_range": [1, 6],
+      "description": "你看到几个大孩子在放学路上堵住一个较小的学生，要求他交出零花钱。",
+      "situation": "你目睹这种勒索行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "walk_away",
+          "text": "走开，假装没看见",
+          "feedback": "虽然选择走开，但勒索行为是违法的，需要报告。",
+          "points": {
+            "empathy": -2,
+            "courage": -2,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "call_police",
+          "text": "立即报警或告诉家长",
+          "feedback": "正确的选择！勒索是违法行为，必须报告给警方或家长。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "get_help",
+          "text": "去找附近的成年人寻求帮助",
+          "feedback": "很好的选择！寻求成年人帮助是处理这种情况的安全方法。",
+          "points": {
+            "empathy": 2,
+            "courage": 2,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "distract_them",
+          "text": "试图分散他们的注意力",
+          "feedback": "勇敢的尝试！但要确保自己的安全，如果情况危险要立即寻求帮助。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "勒索是违法行为，必须报告给警方或家长，不要独自处理。"
+    },
+    {
+      "id": "pe_class_conflict",
+      "title": "体育课冲突",
+      "category": "身体欺凌",
+      "difficulty": "中等",
+      "grade_range": [1, 6],
+      "description": "在体育课上，你看到几个学生故意在篮球比赛中推倒一个较弱的同学。",
+      "situation": "你看到这种故意的身体攻击，你会怎么做？",
+      "choices": [
+        {
+          "id": "ignore_pe",
+          "text": "继续比赛，假装没看见",
+          "feedback": "虽然选择继续，但故意伤害他人是不对的，需要制止。",
+          "points": {
+            "empathy": -1,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "tell_teacher",
+          "text": "立即告诉体育老师",
+          "feedback": "正确的选择！体育老师可以立即制止这种行为。",
+          "points": {
+            "empathy": 2,
+            "courage": 2,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "help_victim",
+          "text": "去帮助被推倒的同学",
+          "feedback": "很好的选择！帮助受害者是英雄的行为。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_bullies",
+          "text": "要求那些学生停止这种行为",
+          "feedback": "勇敢的选择！但要确保自己的安全。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "在体育活动中，公平竞争和互相尊重是最重要的。"
+    },
+    {
+      "id": "classroom_mockery",
+      "title": "课堂嘲笑",
+      "category": "言语欺凌",
+      "difficulty": "简单",
+      "grade_range": [1, 6],
+      "description": "在课堂上，一个学生回答问题时发音不标准，其他同学开始嘲笑他。",
+      "situation": "你看到这种嘲笑行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "laugh_along",
+          "text": "跟着一起笑",
+          "feedback": "虽然跟着笑可能让你融入群体，但嘲笑他人是不友善的行为。",
+          "points": {
+            "empathy": -2,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "ignore_mockery",
+          "text": "保持沉默",
+          "feedback": "虽然选择沉默，但站出来反对不友善的行为是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "support_speaker",
+          "text": "鼓励那个同学继续发言",
+          "feedback": "太棒了！你的鼓励可以给那个同学很大的信心。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "tell_teacher",
+          "text": "告诉老师发生了什么事",
+          "feedback": "很好的选择！老师可以制止这种不友善的行为。",
+          "points": {
+            "empathy": 2,
+            "courage": 1,
+            "wisdom": 3
+          }
+        }
+      ],
+      "learning_moment": "每个人都有不同的特点，我们应该互相尊重和鼓励。"
+    },
+    {
+      "id": "nickname_attack",
+      "title": "绰号攻击",
+      "category": "言语欺凌",
+      "difficulty": "简单",
+      "grade_range": [1, 6],
+      "description": "你听到几个学生给一个同学起侮辱性的绰号，那个同学看起来很伤心。",
+      "situation": "你听到这种侮辱性的绰号，你会怎么做？",
+      "choices": [
+        {
+          "id": "join_in",
+          "text": "也跟着叫那个绰号",
+          "feedback": "虽然跟着叫可能让你融入群体，但侮辱他人是不对的。",
+          "points": {
+            "empathy": -2,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "ignore_nickname",
+          "text": "假装没听见",
+          "feedback": "虽然选择忽略，但站出来反对不友善的行为是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "comfort_victim",
+          "text": "去安慰被起绰号的同学",
+          "feedback": "太棒了！你的安慰可以给那个同学很大的支持。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "speak_up",
+          "text": "要求那些学生停止起绰号",
+          "feedback": "勇敢的选择！站出来反对不友善的行为需要勇气。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 2
+          }
+        }
+      ],
+      "learning_moment": "每个人都有尊严，侮辱性的绰号会伤害他人的感情。"
+    },
+    {
+      "id": "verbal_threat",
+      "title": "威胁恐吓",
+      "category": "言语欺凌",
+      "difficulty": "中等",
+      "grade_range": [1, 6],
+      "description": "你听到一个学生威胁另一个学生，说如果他不做某事就会告诉老师他作弊。",
+      "situation": "你听到这种威胁，你会怎么做？",
+      "choices": [
+        {
+          "id": "ignore_threat",
+          "text": "假装没听见",
+          "feedback": "虽然选择忽略，但威胁他人是严重的问题，需要处理。",
+          "points": {
+            "empathy": -1,
+            "courage": -2,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "report_threat",
+          "text": "告诉老师这种威胁行为",
+          "feedback": "正确的选择！威胁他人是严重的问题，必须报告。",
+          "points": {
+            "empathy": 2,
+            "courage": 2,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "support_victim",
+          "text": "去安慰被威胁的同学",
+          "feedback": "很好的选择！你的支持可以给被威胁的同学很大的安慰。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_threatener",
+          "text": "要求威胁者停止这种行为",
+          "feedback": "勇敢的选择！但要确保自己的安全。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "威胁他人是严重的问题，必须向成年人报告。"
+    },
+    {
+      "id": "rumor_spreading",
+      "title": "谣言传播",
+      "category": "言语欺凌",
+      "difficulty": "中等",
+      "grade_range": [1, 6],
+      "description": "你听到几个学生在传播关于一个同学的谣言，说一些不真实的事情。",
+      "situation": "你听到这些谣言，你会怎么做？",
+      "choices": [
+        {
+          "id": "spread_rumor",
+          "text": "也跟着传播谣言",
+          "feedback": "虽然跟着传播可能让你融入群体，但传播谣言是不对的。",
+          "points": {
+            "empathy": -2,
+            "courage": -1,
+            "wisdom": -2
+          }
+        },
+        {
+          "id": "ignore_rumor",
+          "text": "假装没听见",
+          "feedback": "虽然选择忽略，但站出来反对谣言传播是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "defend_victim",
+          "text": "为被谣言攻击的同学辩护",
+          "feedback": "太棒了！你的辩护可以阻止谣言的传播。",
+          "points": {
+            "empathy": 3,
+            "courage": 3,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "tell_teacher",
+          "text": "告诉老师关于谣言传播的事",
+          "feedback": "很好的选择！老师可以帮助制止谣言的传播。",
+          "points": {
+            "empathy": 2,
+            "courage": 1,
+            "wisdom": 3
+          }
+        }
+      ],
+      "learning_moment": "谣言会伤害他人，我们应该传播真相而不是谣言。"
+    },
+    {
+      "id": "game_exclusion",
+      "title": "游戏排挤",
+      "category": "社交排斥",
+      "difficulty": "简单",
+      "grade_range": [1, 6],
+      "description": "在课间游戏中，你看到几个学生故意不让一个同学参与游戏，说他'太笨了'。",
+      "situation": "你看到这种排挤行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "join_exclusion",
+          "text": "也跟着排挤那个同学",
+          "feedback": "虽然跟着排挤可能让你融入群体，但排挤他人是不友善的行为。",
+          "points": {
+            "empathy": -2,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "ignore_exclusion",
+          "text": "假装没看见",
+          "feedback": "虽然选择忽略，但帮助被排挤的同学是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "invite_victim",
+          "text": "主动邀请那个同学一起游戏",
+          "feedback": "太棒了！你的邀请可以给那个同学很大的温暖。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_excluders",
+          "text": "要求那些学生停止排挤行为",
+          "feedback": "勇敢的选择！站出来反对排挤行为需要勇气。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 2
+          }
+        }
+      ],
+      "learning_moment": "每个人都有参与游戏的权利，我们应该包容所有人。"
+    },
+    {
+      "id": "seat_isolation",
+      "title": "座位孤立",
+      "category": "社交排斥",
+      "difficulty": "简单",
+      "grade_range": [1, 6],
+      "description": "你注意到一个同学总是被安排坐在教室的角落里，其他同学都不愿意和他同桌。",
+      "situation": "你看到这种孤立行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "avoid_victim",
+          "text": "也避免和那个同学坐在一起",
+          "feedback": "虽然选择避免，但帮助被孤立的同学是友善的行为。",
+          "points": {
+            "empathy": -1,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "ignore_isolation",
+          "text": "假装没注意到",
+          "feedback": "虽然选择忽略，但主动帮助他人是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "sit_with_victim",
+          "text": "主动要求和那个同学同桌",
+          "feedback": "太棒了！你的主动可以给那个同学很大的温暖。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "tell_teacher",
+          "text": "告诉老师关于孤立行为的事",
+          "feedback": "很好的选择！老师可以帮助改善这种情况。",
+          "points": {
+            "empathy": 2,
+            "courage": 1,
+            "wisdom": 3
+          }
+        }
+      ],
+      "learning_moment": "每个人都有被接纳的权利，我们应该主动帮助被孤立的同学。"
+    },
+    {
+      "id": "activity_exclusion",
+      "title": "活动排斥",
+      "category": "社交排斥",
+      "difficulty": "中等",
+      "grade_range": [1, 6],
+      "description": "在班级活动中，你看到几个学生故意不让一个同学参与小组活动，说他'不适合'。",
+      "situation": "你看到这种排斥行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "join_exclusion",
+          "text": "也跟着排斥那个同学",
+          "feedback": "虽然跟着排斥可能让你融入群体，但排斥他人是不对的。",
+          "points": {
+            "empathy": -2,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "ignore_exclusion",
+          "text": "假装没看见",
+          "feedback": "虽然选择忽略，但帮助被排斥的同学是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "include_victim",
+          "text": "主动邀请那个同学加入你的小组",
+          "feedback": "太棒了！你的邀请可以给那个同学很大的温暖。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_excluders",
+          "text": "要求那些学生停止排斥行为",
+          "feedback": "勇敢的选择！站出来反对排斥行为需要勇气。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 2
+          }
+        }
+      ],
+      "learning_moment": "每个人都有参与活动的权利，我们应该包容所有人。"
+    },
+    {
+      "id": "malicious_comments",
+      "title": "恶意评论",
+      "category": "网络欺凌",
+      "difficulty": "困难",
+      "grade_range": [3, 6],
+      "description": "你在班级群里看到有人对一个同学的照片发表了恶意评论，说一些不友善的话。",
+      "situation": "你看到这些恶意评论，你会怎么做？",
+      "choices": [
+        {
+          "id": "ignore_comments",
+          "text": "忽略这些评论",
+          "feedback": "虽然选择忽略，但网络欺凌和现实欺凌一样有害。",
+          "points": {
+            "empathy": -1,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "report_comments",
+          "text": "举报这些恶意评论",
+          "feedback": "很好的选择！举报不当内容是阻止网络欺凌的重要方式。",
+          "points": {
+            "empathy": 2,
+            "courage": 1,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "support_victim",
+          "text": "发帖支持被评论攻击的同学",
+          "feedback": "太棒了！你的支持信息可以给被攻击的同学带来很大的安慰。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_commenter",
+          "text": "直接回复要求停止恶意评论",
+          "feedback": "勇敢的选择！但要记住，网络上的冲突可能会升级。",
+          "points": {
+            "empathy": 1,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "网络欺凌和现实欺凌一样有害，我们都需要站出来反对。"
+    },
+    {
+      "id": "photo_sharing",
+      "title": "照片传播",
+      "category": "网络欺凌",
+      "difficulty": "困难",
+      "grade_range": [3, 6],
+      "description": "你看到有人在群里恶意传播一个同学的尴尬照片，没有经过那个同学的同意。",
+      "situation": "你看到这种恶意传播行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "ignore_sharing",
+          "text": "忽略这种行为",
+          "feedback": "虽然选择忽略，但恶意传播他人照片是侵犯隐私的行为。",
+          "points": {
+            "empathy": -1,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "report_sharing",
+          "text": "举报这种恶意传播行为",
+          "feedback": "正确的选择！恶意传播他人照片是侵犯隐私的行为，必须举报。",
+          "points": {
+            "empathy": 2,
+            "courage": 1,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "support_victim",
+          "text": "私信安慰被传播照片的同学",
+          "feedback": "太棒了！你的安慰可以给那个同学很大的支持。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_sharer",
+          "text": "要求传播者删除照片",
+          "feedback": "勇敢的选择！但要记住，网络上的冲突可能会升级。",
+          "points": {
+            "empathy": 1,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "恶意传播他人照片是侵犯隐私的行为，必须举报。"
+    },
+    {
+      "id": "group_chat_attack",
+      "title": "群聊攻击",
+      "category": "网络欺凌",
+      "difficulty": "困难",
+      "grade_range": [3, 6],
+      "description": "你在班级群里看到几个人联合起来攻击一个同学，发了很多不友善的消息。",
+      "situation": "你看到这种群聊攻击，你会怎么做？",
+      "choices": [
+        {
+          "id": "ignore_attack",
+          "text": "忽略这些攻击",
+          "feedback": "虽然选择忽略，但群聊攻击会给受害者带来很大的伤害。",
+          "points": {
+            "empathy": -1,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "report_attack",
+          "text": "举报这种群聊攻击行为",
+          "feedback": "很好的选择！举报不当内容是阻止网络欺凌的重要方式。",
+          "points": {
+            "empathy": 2,
+            "courage": 1,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "support_victim",
+          "text": "私信安慰被攻击的同学",
+          "feedback": "太棒了！你的安慰可以给被攻击的同学带来很大的温暖。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "defend_victim",
+          "text": "在群里为被攻击的同学辩护",
+          "feedback": "勇敢的选择！但要记住，网络上的冲突可能会升级。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "群聊攻击会给受害者带来很大的伤害，我们都需要站出来反对。"
+    },
+    {
+      "id": "money_extortion",
+      "title": "勒索钱财",
+      "category": "财物欺凌",
+      "difficulty": "困难",
+      "grade_range": [1, 6],
+      "description": "你看到几个大孩子威胁一个较小的学生，要求他每天给他们零花钱，否则就要打他。",
+      "situation": "你看到这种勒索行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "ignore_extortion",
+          "text": "假装没看见",
+          "feedback": "虽然选择忽略，但勒索是违法行为，必须报告。",
+          "points": {
+            "empathy": -2,
+            "courage": -2,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "report_extortion",
+          "text": "立即告诉老师或家长",
+          "feedback": "正确的选择！勒索是违法行为，必须立即报告。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "support_victim",
+          "text": "去安慰被勒索的同学",
+          "feedback": "很好的选择！你的安慰可以给被勒索的同学很大的支持。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "get_help",
+          "text": "去找成年人寻求帮助",
+          "feedback": "明智的选择！寻求成年人帮助是处理勒索行为的安全方法。",
+          "points": {
+            "empathy": 2,
+            "courage": 2,
+            "wisdom": 3
+          }
+        }
+      ],
+      "learning_moment": "勒索是违法行为，必须立即向成年人报告，不要独自处理。"
+    },
+    {
+      "id": "item_theft",
+      "title": "抢夺物品",
+      "category": "财物欺凌",
+      "difficulty": "中等",
+      "grade_range": [1, 6],
+      "description": "你看到几个学生抢走了一个同学的文具盒和手机，那个同学在追着他们要。",
+      "situation": "你看到这种抢夺行为，你会怎么做？",
+      "choices": [
+        {
+          "id": "ignore_theft",
+          "text": "假装没看见",
+          "feedback": "虽然选择忽略，但抢夺他人财物是违法行为。",
+          "points": {
+            "empathy": -1,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "report_theft",
+          "text": "立即告诉老师",
+          "feedback": "正确的选择！抢夺他人财物是违法行为，必须报告。",
+          "points": {
+            "empathy": 2,
+            "courage": 2,
+            "wisdom": 3
+          }
+        },
+        {
+          "id": "help_victim",
+          "text": "去帮助被抢夺的同学",
+          "feedback": "很好的选择！帮助受害者是英雄的行为。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_thieves",
+          "text": "要求那些学生归还物品",
+          "feedback": "勇敢的选择！但要确保自己的安全。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 1
+          }
+        }
+      ],
+      "learning_moment": "抢夺他人财物是违法行为，必须向老师报告。"
+    },
+    {
+      "id": "study_bullying",
+      "title": "学习欺凌",
+      "category": "言语欺凌",
+      "difficulty": "简单",
+      "grade_range": [1, 6],
+      "description": "你听到几个学生嘲笑一个学习很好的同学，说他'书呆子'，'只会读书'。",
+      "situation": "你听到这种学习欺凌，你会怎么做？",
+      "choices": [
+        {
+          "id": "join_mockery",
+          "text": "也跟着嘲笑那个同学",
+          "feedback": "虽然跟着嘲笑可能让你融入群体，但嘲笑他人的学习能力是不对的。",
+          "points": {
+            "empathy": -2,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "ignore_mockery",
+          "text": "假装没听见",
+          "feedback": "虽然选择忽略，但站出来反对学习欺凌是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "defend_student",
+          "text": "为那个学习好的同学辩护",
+          "feedback": "太棒了！你的辩护可以阻止学习欺凌。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "tell_teacher",
+          "text": "告诉老师关于学习欺凌的事",
+          "feedback": "很好的选择！老师可以帮助制止学习欺凌。",
+          "points": {
+            "empathy": 2,
+            "courage": 1,
+            "wisdom": 3
+          }
+        }
+      ],
+      "learning_moment": "学习好是值得骄傲的事情，不应该被嘲笑。"
+    },
+    {
+      "id": "appearance_mockery",
+      "title": "外貌欺凌",
+      "category": "言语欺凌",
+      "difficulty": "简单",
+      "grade_range": [1, 6],
+      "description": "你听到几个学生嘲笑一个同学的外貌，说他'太胖了'，'太丑了'。",
+      "situation": "你听到这种外貌欺凌，你会怎么做？",
+      "choices": [
+        {
+          "id": "join_mockery",
+          "text": "也跟着嘲笑那个同学",
+          "feedback": "虽然跟着嘲笑可能让你融入群体，但嘲笑他人的外貌是不对的。",
+          "points": {
+            "empathy": -2,
+            "courage": -1,
+            "wisdom": -1
+          }
+        },
+        {
+          "id": "ignore_mockery",
+          "text": "假装没听见",
+          "feedback": "虽然选择忽略，但站出来反对外貌欺凌是英雄的表现。",
+          "points": {
+            "empathy": 0,
+            "courage": -1,
+            "wisdom": 0
+          }
+        },
+        {
+          "id": "comfort_victim",
+          "text": "去安慰被嘲笑外貌的同学",
+          "feedback": "太棒了！你的安慰可以给那个同学很大的温暖。",
+          "points": {
+            "empathy": 3,
+            "courage": 2,
+            "wisdom": 2
+          }
+        },
+        {
+          "id": "confront_mockers",
+          "text": "要求那些学生停止外貌欺凌",
+          "feedback": "勇敢的选择！站出来反对外貌欺凌需要勇气。",
+          "points": {
+            "empathy": 2,
+            "courage": 3,
+            "wisdom": 2
+          }
+        }
+      ],
+      "learning_moment": "每个人都有独特的美，外貌不应该成为被嘲笑的理由。"
     }
   ],
   "achievements": [
@@ -244,7 +1132,31 @@
       "id": "scenario_master",
       "title": "场景大师",
       "description": "完成了所有场景",
-      "condition": "completed_scenarios >= 4"
+      "condition": "completed_scenarios >= 20"
+    },
+    {
+      "id": "bully_stopper",
+      "title": "霸凌终结者",
+      "description": "成功处理了多种类型的霸凌情况",
+      "condition": "completed_scenarios >= 10"
+    },
+    {
+      "id": "cyber_protector",
+      "title": "网络守护者",
+      "description": "有效处理了网络欺凌问题",
+      "condition": "completed_scenarios >= 5 && empathy >= 8"
+    },
+    {
+      "id": "physical_defender",
+      "title": "身体保护者",
+      "description": "勇敢面对身体欺凌情况",
+      "condition": "courage >= 10 && wisdom >= 8"
+    },
+    {
+      "id": "social_includer",
+      "title": "社交包容者",
+      "description": "积极帮助被孤立的同学",
+      "condition": "empathy >= 12 && completed_scenarios >= 8"
     }
   ]
-} 
+}

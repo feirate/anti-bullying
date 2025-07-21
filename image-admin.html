@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片管理工具 - Anti-Bullying</title>
+    <link rel="stylesheet" href="css/doodle-style.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .admin-section {
+            background: var(--bg-white);
+            border: var(--doodle-border) var(--primary-orange);
+            border-radius: var(--doodle-radius);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--doodle-shadow);
+        }
+        
+        .admin-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-orange);
+            margin-bottom: 16px;
+        }
+        
+        .image-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 8px 12px;
+            border: 2px solid var(--secondary-blue);
+            border-radius: 4px;
+            font-family: 'Comic Neue', cursive;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .add-btn {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-btn:hover {
+            background: #5cb85c;
+            transform: translateY(-1px);
+        }
+        
+        .image-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .image-item {
+            border: 2px solid var(--secondary-blue);
+            border-radius: 8px;
+            padding: 16px;
+            background: var(--bg-white);
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .image-info h4 {
+            margin: 8px 0;
+            color: var(--text-dark);
+        }
+        
+        .image-info p {
+            margin: 4px 0;
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+        
+        .delete-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-white);
+            border: 2px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-purple);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-medium);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-section">
+            <div class="admin-title">图片管理工具</div>
+            <p>在这里管理场景图片的关联关系</p>
+        </div>
+        
+        <!-- 统计信息 -->
+        <div class="admin-section">
+            <h3>统计信息</h3>
+            <div class="stats-grid" id="statsGrid">
+                <!-- 统计信息将通过JavaScript动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 添加新图片 -->
+        <div class="admin-section">
+            <h3>添加新图片</h3>
+            <form id="imageForm" class="image-form">
+                <div class="form-group">
+                    <label for="scenarioId">场景ID:</label>
+                    <select id="scenarioId" required>
+                        <option value="">选择场景</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imagePath">图片路径:</label>
+                    <input type="text" id="imagePath" placeholder="data/pic/图片名称.png" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">图片描述:</label>
+                    <textarea id="description" placeholder="描述图片内容和风格"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="style">图片风格:</label>
+                    <select id="style">
+                        <option value="Studio Ghibli">Studio Ghibli</option>
+                        <option value="Cartoon">卡通风格</option>
+                        <option value="Realistic">写实风格</option>
+                        <option value="Anime">动漫风格</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="add-btn">添加图片</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- 图片列表 -->
+        <div class="admin-section">
+            <h3>已关联的图片</h3>
+            <div class="image-list" id="imageList">
+                <!-- 图片列表将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本文件 -->
+    <script src="js/user-system.js"></script>
+    <script src="js/image-manager.js"></script>
+    <script src="js/game-engine.js"></script>
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            // 等待图片管理器初始化
+            await new Promise(resolve => {
+                const checkImageManager = () => {
+                    if (window.imageManager && window.imageManager.imageMappings) {
+                        resolve();
+                    } else {
+                        setTimeout(checkImageManager, 100);
+                    }
+                };
+                checkImageManager();
+            });
+            
+            // 初始化页面
+            initializeAdminPage();
+        });
+        
+        function initializeAdminPage() {
+            loadScenarioOptions();
+            loadImageStats();
+            loadImageList();
+            bindFormEvents();
+        }
+        
+        function loadScenarioOptions() {
+            const scenarioSelect = document.getElementById('scenarioId');
+            const scenarios = window.gameData?.scenarios || [];
+            
+            scenarios.forEach(scenario => {
+                const option = document.createElement('option');
+                option.value = scenario.id;
+                option.textContent = `${scenario.title} (${scenario.category})`;
+                scenarioSelect.appendChild(option);
+            });
+        }
+        
+        function loadImageStats() {
+            const stats = window.imageManager.getImageStats();
+            const statsGrid = document.getElementById('statsGrid');
+            
+            if (!stats) return;
+            
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total_images}</div>
+                    <div class="stat-label">总图片数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.categories}</div>
+                    <div class="stat-label">分类数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.styles.length}</div>
+                    <div class="stat-label">风格类型</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.recent_additions.length}</div>
+                    <div class="stat-label">最近添加</div>
+                </div>
+            `;
+        }
+        
+        function loadImageList() {
+            const imageList = document.getElementById('imageList');
+            const mappings = window.imageManager.imageMappings.image_mappings;
+            
+            imageList.innerHTML = mappings.map(mapping => `
+                <div class="image-item">
+                    <img src="${mapping.image_path}" alt="${mapping.scenario_title}" 
+                         onerror="this.style.display='none'">
+                    <div class="image-info">
+                        <h4>${mapping.scenario_title}</h4>
+                        <p><strong>场景ID:</strong> ${mapping.scenario_id}</p>
+                        <p><strong>风格:</strong> ${mapping.style}</p>
+                        <p><strong>描述:</strong> ${mapping.description || '无描述'}</p>
+                        <p><strong>添加时间:</strong> ${mapping.added_date}</p>
+                        <button class="delete-btn" onclick="deleteImage('${mapping.scenario_id}')">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function bindFormEvents() {
+            const form = document.getElementById('imageForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const scenarioId = document.getElementById('scenarioId').value;
+                const imagePath = document.getElementById('imagePath').value;
+                const description = document.getElementById('description').value;
+                const style = document.getElementById('style').value;
+                
+                if (!scenarioId || !imagePath) {
+                    alert('请填写必填字段');
+                    return;
+                }
+                
+                // 添加图片映射
+                const success = window.imageManager.addImageMapping(
+                    scenarioId, imagePath, description, style
+                );
+                
+                if (success) {
+                    alert('图片添加成功！');
+                    form.reset();
+                    loadImageStats();
+                    loadImageList();
+                } else {
+                    alert('图片添加失败，请检查数据');
+                }
+            });
+        }
+        
+        function deleteImage(scenarioId) {
+            if (confirm('确定要删除这个图片映射吗？')) {
+                const mappings = window.imageManager.imageMappings.image_mappings;
+                const index = mappings.findIndex(m => m.scenario_id === scenarioId);
+                
+                if (index >= 0) {
+                    mappings.splice(index, 1);
+                    loadImageStats();
+                    loadImageList();
+                    alert('图片映射已删除');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

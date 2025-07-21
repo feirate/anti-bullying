@@ -28,10 +28,51 @@ function copyUserID() {
   const user = window.userSystem?.user;
   if (user && user.uuid) {
     navigator.clipboard.writeText(user.uuid).then(() => {
-      alert('用户ID已复制到剪贴板！');
+      // 显示复制成功提示
+      const copyHint = document.querySelector('.copy-hint');
+      if (copyHint) {
+        const originalText = copyHint.textContent;
+        copyHint.textContent = '已复制！';
+        copyHint.style.color = '#4CAF50';
+        setTimeout(() => {
+          copyHint.textContent = originalText;
+          copyHint.style.color = '';
+        }, 2000);
+      }
     }).catch(() => {
       alert('复制失败，请手动复制：' + user.uuid);
     });
+  }
+}
+
+// 全局函数：重置进度
+function resetProgress() {
+  const confirmReset = confirm('确定要重置所有进度和成就吗？这将清空所有已完成的场景和技能点。');
+  if (confirmReset) {
+    if (window.userSystem) {
+      window.userSystem.resetUserProgress();
+      // 刷新页面显示
+      if (window.gameEngine) {
+        window.gameEngine.showMainMenu();
+      }
+    }
+  }
+}
+
+// 全局函数：重新开始游戏
+function restartGame() {
+  const confirmRestart = confirm('确定要重新开始游戏吗？这将清除所有数据并返回首页。');
+  if (confirmRestart) {
+    if (window.userSystem) {
+      window.userSystem.clearUserData();
+    }
+  }
+}
+
+// 全局函数：回到首页
+function goToHomepage() {
+  if (window.userSystem) {
+    window.userSystem.clearUserData();
   }
 }
 
@@ -42,6 +83,14 @@ function queryAchievements() {
     // TODO: 实现成就查询功能
     console.log('查询用户ID:', userID);
     alert('成就查询功能开发中...');
+  }
+}
+
+// 全局函数：清除用户数据（调试用）
+function clearUserData() {
+  if (confirm('确定要清除所有用户数据吗？')) {
+    localStorage.removeItem('bgh_user');
+    location.reload();
   }
 }
 

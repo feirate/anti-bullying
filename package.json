@@ -1,0 +1,19 @@
+{
+  "name": "anti-bullying-game",
+  "version": "1.0.0",
+  "description": "小学生反霸凌对话式成长游戏",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "dev:alt": "npx serve -s . -p 8000",
+    "start": "python3 -m http.server 8000",
+    "build": "echo '静态网站，无需构建'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["anti-bullying", "game", "education"],
+  "author": "feirate",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+} 

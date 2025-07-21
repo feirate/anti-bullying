@@ -12,6 +12,7 @@ class GameEngine {
       // 加载游戏数据
       const response = await fetch('data/scenarios.json');
       this.gameData = await response.json();
+      window.gameData = this.gameData; // 设置全局gameData
       
       // 加载联系方式
       const contactResponse = await fetch('data/contact-info.json');

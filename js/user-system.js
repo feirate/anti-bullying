@@ -151,6 +151,11 @@ class UserSystem {
 
   // 检查成就
   checkAchievements() {
+    if (!window.gameData || !window.gameData.achievements) {
+      console.warn('游戏数据未加载，跳过成就检查');
+      return;
+    }
+    
     const achievements = window.gameData.achievements;
     const newAchievements = [];
     

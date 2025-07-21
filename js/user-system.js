@@ -30,8 +30,13 @@ class UserSystem {
       </div>
     `;
     
-    document.body.innerHTML = gradeSelection;
-    this.bindGradeSelectionEvents();
+    const appElement = document.getElementById('app');
+    if (appElement) {
+      appElement.innerHTML = gradeSelection;
+      this.bindGradeSelectionEvents();
+    } else {
+      console.error('找不到app元素');
+    }
   }
 
   // 绑定年级选择事件
@@ -93,7 +98,12 @@ class UserSystem {
       </div>
     `;
     
-    document.body.innerHTML = userIDDisplay;
+    const appElement = document.getElementById('app');
+    if (appElement) {
+      appElement.innerHTML = userIDDisplay;
+    } else {
+      console.error('找不到app元素');
+    }
   }
 
   // 保存用户数据

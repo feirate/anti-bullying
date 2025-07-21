@@ -47,23 +47,23 @@ class GameEngine {
 
     const mainMenu = `
       <div class="doodle-container">
-        <div class="doodle-title">🛡️ 英雄之旅</div>
+        <div class="doodle-title">英雄之旅</div>
         <div class="doodle-subtitle">欢迎回来，${user.grade}年级的小英雄！</div>
         
         <!-- 技能点显示 -->
         <div class="skill-points">
           <div class="skill-item">
-            <div class="skill-icon">💙</div>
+            <div class="skill-icon">E</div>
             <div class="skill-value">${user.empathy}</div>
             <div>同理心</div>
           </div>
           <div class="skill-item">
-            <div class="skill-icon">💪</div>
+            <div class="skill-icon">C</div>
             <div class="skill-value">${user.courage}</div>
             <div>勇气</div>
           </div>
           <div class="skill-item">
-            <div class="skill-icon">🧠</div>
+            <div class="skill-icon">W</div>
             <div class="skill-value">${user.wisdom}</div>
             <div>智慧</div>
           </div>
@@ -77,8 +77,8 @@ class GameEngine {
 
         <!-- 底部信息 -->
         <div class="footer-info">
-          <p>💡 提示：每个场景都会帮助你提升不同的技能！</p>
-          <p>📞 有问题？关注微信公众号《摸鱼读书》</p>
+          <p>提示：每个场景都会帮助你提升不同的技能！</p>
+          <p>有问题？关注微信公众号《摸鱼读书》</p>
         </div>
       </div>
     `;
@@ -90,7 +90,7 @@ class GameEngine {
   // 渲染场景卡片
   renderScenarioCard(scenario) {
     const isCompleted = window.userSystem.user.completed_scenarios.includes(scenario.id);
-    const statusIcon = isCompleted ? '✅' : '🆕';
+    const statusIcon = isCompleted ? '完成' : '新';
     const statusClass = isCompleted ? 'completed' : 'new';
     
     return `
@@ -219,14 +219,14 @@ class GameEngine {
           <div class="points-earned">
             <h3>获得的技能点：</h3>
             <div class="points-list">
-              ${choice.points.empathy !== 0 ? `<div>💙 同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
-              ${choice.points.courage !== 0 ? `<div>💪 勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
-              ${choice.points.wisdom !== 0 ? `<div>🧠 智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
+              ${choice.points.empathy !== 0 ? `<div>同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
+              ${choice.points.courage !== 0 ? `<div>勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
+              ${choice.points.wisdom !== 0 ? `<div>智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
             </div>
           </div>
           
           <div class="learning-moment">
-            <h3>💡 学习要点</h3>
+            <h3>学习要点</h3>
             <p>${this.currentScenario.learning_moment}</p>
           </div>
         </div>
@@ -264,7 +264,7 @@ class GameEngine {
   showError(message) {
     const errorView = `
       <div class="doodle-container">
-        <div class="doodle-title">❌ 出错了</div>
+        <div class="doodle-title">出错了</div>
         <div class="error-message">
           ${message}
         </div>

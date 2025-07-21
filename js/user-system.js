@@ -85,7 +85,7 @@ class UserSystem {
           </button>
         </div>
         <p class="user-id-tip">
-          💡 请保存这个ID，这样你以后可以查看自己的成就！
+          请保存这个ID，这样你以后可以查看自己的成就！
         </p>
         <button class="start-game-btn" onclick="startGame()">
           开始我的英雄之旅
@@ -181,7 +181,7 @@ class UserSystem {
     achievements.forEach(achievement => {
       const notification = `
         <div class="achievement-notification">
-          <h3>🎉 解锁成就：${achievement.title}</h3>
+          <h3>解锁成就：${achievement.title}</h3>
           <p>${achievement.description}</p>
         </div>
       `;

@@ -52,7 +52,7 @@ window.addEventListener('error', function(e) {
   if (errorContainer) {
     errorContainer.innerHTML = `
       <div class="doodle-container">
-        <div class="doodle-title">❌ 游戏出错了</div>
+        <div class="doodle-title">游戏出错了</div>
         <div class="error-message">
           抱歉，游戏遇到了问题。请刷新页面重试。
         </div>

@@ -86,13 +86,13 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 ## 6. 安全注意事项
 
-### ✅ 正确的做法：
+### 正确的做法：
 - 使用环境变量存储密钥
 - 将 .env 文件加入 .gitignore
 - 在 Vercel 中设置环境变量
 - 使用匿名密钥（anon key）
 
-### ❌ 错误的做法：
+### 错误的做法：
 - 在代码中硬编码密钥
 - 将密钥提交到 Git 仓库
 - 使用服务端密钥（service_role key）在前端

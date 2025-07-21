@@ -40,4 +40,12 @@ config/supabase.json
 
 # 其他敏感文件
 secrets.json
-api-keys.json 
+api-keys.json
+
+# 配置文档（不提交到Git）
+supabase-setup.md
+vercel-deployment.md
+data/achievement-algorithm.md 
+supabase-setup.md
+vercel-deployment.md
+achievement-algorithm.md

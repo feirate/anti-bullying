@@ -19,57 +19,63 @@ class UserSystem {
     const homePage = `
       <div class="homepage-container">
         <div class="hero-section">
-          <div class="hero-icon">🛡️</div>
           <h1 class="hero-title">反霸凌小英雄</h1>
           <p class="hero-subtitle">学习站出来并说出来</p>
         </div>
         
-        <div class="game-intro">
-          <h2>欢迎来到反霸凌小英雄！</h2>
-          <p>你即将踏上一段重要的旅程，成为一个对抗欺凌的英雄。通过互动场景，你将学习如何识别、预防和应对欺凌情况。</p>
-          
-          <div class="core-skills">
-            <div class="skill-card">
-              <div class="skill-icon">❤️</div>
-              <h3>培养同理心</h3>
-              <p>学习理解和关心他人的感受</p>
-            </div>
-            <div class="skill-card">
-              <div class="skill-icon">🛡️</div>
-              <h3>展现勇气</h3>
-              <p>找到力量为正确的事情站出来</p>
-            </div>
-            <div class="skill-card">
-              <div class="skill-icon">🤝</div>
-              <h3>结交朋友</h3>
-              <p>创建一个支持性和包容性的环境</p>
-            </div>
-          </div>
-        </div>
+        <div id="homepage-card"></div>
         
-        <div class="grade-selection">
-          <h3>选择你的年级</h3>
-          <p>这样我们可以为你推荐最适合的场景</p>
-          <div class="grade-buttons">
-            <button class="grade-btn" data-grade="1">一年级</button>
-            <button class="grade-btn" data-grade="2">二年级</button>
-            <button class="grade-btn" data-grade="3">三年级</button>
-            <button class="grade-btn" data-grade="4">四年级</button>
-            <button class="grade-btn" data-grade="5">五年级</button>
-            <button class="grade-btn" data-grade="6">六年级</button>
-          </div>
-        </div>
+        <div id="grade-selection"></div>
         
-        <div class="game-tip">
-          <div class="tip-icon">✨</div>
-          <p>记住：每个英雄都始于一个勇敢的行动。你拥有改变的力量！</p>
-        </div>
+        <div id="tip-card"></div>
       </div>
     `;
     
     const appElement = document.getElementById('app');
     if (appElement) {
       appElement.innerHTML = homePage;
+      
+      // 渲染首页综合卡片（包含欢迎信息和三个特性）
+      document.getElementById('homepage-card').innerHTML = UIComponents.renderHomepageCard(
+        '欢迎来到反霸凌小英雄！',
+        '<p>你即将踏上一段重要的旅程，成为一个对抗欺凌的英雄。通过互动场景，你将学习如何识别、预防和应对欺凌情况。</p>',
+        [
+          {
+            title: '培养同理心',
+            description: '学习理解和关心他人的感受',
+            iconName: 'empathy'
+          },
+          {
+            title: '展现勇气',
+            description: '我们为勇于正直的事情站出来',
+            iconName: 'courage'
+          },
+          {
+            title: '结交朋友',
+            description: '创建一个支持性和包容性的环境',
+            iconName: 'social'
+          }
+        ],
+        'primary'
+      );
+      
+      // 渲染年级选择卡片
+      document.getElementById('grade-selection').innerHTML = UIComponents.renderGradeSelectionCard(
+        '选择你的年级',
+        '这样我们可以为你提供最适合的场景',
+        ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级'],
+        null,
+        'selectGrade',
+        'secondary'
+      );
+      
+      // 渲染提示卡片
+      document.getElementById('tip-card').innerHTML = UIComponents.renderTipCard(
+        '记住：每个英雄都始于一个勇敢的行动。你拥有改变力量！',
+        'star',
+        'warning'
+      );
+      
       this.bindGradeSelectionEvents();
     } else {
       console.error('找不到app元素');
@@ -91,17 +97,17 @@ class UserSystem {
           
           <div class="skill-points">
             <div class="skill-item">
-              <div class="skill-icon">E</div>
+              ${UIComponents.renderIcon('empathy', 'medium')}
               <div class="skill-value">${this.user.empathy}</div>
               <div>同理心</div>
             </div>
             <div class="skill-item">
-              <div class="skill-icon">C</div>
+              ${UIComponents.renderIcon('courage', 'medium')}
               <div class="skill-value">${this.user.courage}</div>
               <div>勇气</div>
             </div>
             <div class="skill-item">
-              <div class="skill-icon">W</div>
+              ${UIComponents.renderIcon('wisdom', 'medium')}
               <div class="skill-value">${this.user.wisdom}</div>
               <div>智慧</div>
             </div>
@@ -117,8 +123,8 @@ class UserSystem {
             
             ${this.user.completed_scenarios.length > 0 ? 
               `<div class="replay-section">
-                <button class="replay-all-btn" onclick="resetProgress()">重新挑战所有场景</button>
-                <button class="homepage-btn" onclick="goToHomepage()">回到首页</button>
+                <button class="game-btn primary" onclick="resetProgress()">重新挑战所有场景</button>
+                <button class="game-btn secondary" onclick="goToHomepage()">回到首页</button>
               </div>` : ''
             }
           </div>
@@ -166,13 +172,37 @@ class UserSystem {
 
   // 绑定年级选择事件
   bindGradeSelectionEvents() {
-    const gradeButtons = document.querySelectorAll('.grade-btn');
-    gradeButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const grade = parseInt(e.target.dataset.grade);
-        this.createUser(grade);
-      });
-    });
+    // 使用新的年级选择按钮
+    window.selectGrade = (grade) => {
+      if (!grade || typeof grade !== 'string') {
+        console.error('无效的年级值:', grade);
+        return;
+      }
+      
+      // 处理中文年级名称
+      const gradeMap = {
+        '一年级': 1,
+        '二年级': 2,
+        '三年级': 3,
+        '四年级': 4,
+        '五年级': 5,
+        '六年级': 6
+      };
+      
+      if (gradeMap[grade]) {
+        this.createUser(gradeMap[grade]);
+      } else {
+        // 尝试从字符串中提取数字作为备选方案
+        const match = grade.match(/\d+/);
+        if (!match) {
+          console.error('无法从年级中提取数字:', grade);
+          return;
+        }
+        
+        const gradeNumber = parseInt(match[0]);
+        this.createUser(gradeNumber);
+      }
+    };
   }
 
   // 创建新用户
@@ -211,17 +241,17 @@ class UserSystem {
         
         <div class="skill-points">
           <div class="skill-item">
-            <div class="skill-icon">E</div>
+            ${UIComponents.renderIcon('empathy', 'medium')}
             <div class="skill-value">${this.user.empathy}</div>
             <div>同理心</div>
           </div>
           <div class="skill-item">
-            <div class="skill-icon">C</div>
+            ${UIComponents.renderIcon('courage', 'medium')}
             <div class="skill-value">${this.user.courage}</div>
             <div>勇气</div>
           </div>
           <div class="skill-item">
-            <div class="skill-icon">W</div>
+            ${UIComponents.renderIcon('wisdom', 'medium')}
             <div class="skill-value">${this.user.wisdom}</div>
             <div>智慧</div>
           </div>
@@ -235,10 +265,10 @@ class UserSystem {
         </div>
         
         <div class="welcome-actions">
-          <button class="start-game-btn" onclick="startGame()">
+          <button class="game-btn primary" onclick="startGame()">
             开始我的英雄之旅
           </button>
-          <button class="restart-btn" onclick="restartGame()">
+          <button class="game-btn secondary" onclick="restartGame()">
             重新开始
           </button>
         </div>
@@ -296,7 +326,7 @@ class UserSystem {
 
   // 清除用户数据，返回首页
   clearUserData() {
-    localStorage.removeItem('userData');
+    localStorage.removeItem('bgh_user');
     this.user = null;
     this.showHomePage();
   }
@@ -308,14 +338,14 @@ class UserSystem {
         <h2>你的英雄ID</h2>
         <div class="user-id-box">
           <code>${this.user.uuid}</code>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText('${this.user.uuid}')">
+          <button class="game-btn primary" onclick="navigator.clipboard.writeText('${this.user.uuid}')">
             复制ID
           </button>
         </div>
         <p class="user-id-tip">
           请保存这个ID，这样你以后可以查看自己的成就！
         </p>
-        <button class="start-game-btn" onclick="startGame()">
+        <button class="game-btn primary" onclick="startGame()">
           开始我的英雄之旅
         </button>
       </div>
@@ -420,22 +450,7 @@ class UserSystem {
   // 显示成就通知
   showAchievementNotification(achievements) {
     achievements.forEach(achievement => {
-      const notification = `
-        <div class="achievement-notification">
-          <h3>解锁成就：${achievement.title}</h3>
-          <p>${achievement.description}</p>
-        </div>
-      `;
-      
-      // 显示通知
-      const notificationContainer = document.createElement('div');
-      notificationContainer.innerHTML = notification;
-      document.body.appendChild(notificationContainer);
-      
-      // 3秒后自动移除
-      setTimeout(() => {
-        notificationContainer.remove();
-      }, 3000);
+      UIComponents.renderNotification(`解锁成就：${achievement.title}`, 'success', 3000);
     });
   }
 }

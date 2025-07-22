@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI组件测试</title>
+  <link rel="stylesheet" href="css/doodle-style.css">
+  <link rel="stylesheet" href="css/ui-components.css?v=20250722">
+  <style>
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .header h1 {
+      font-family: var(--font-heading);
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    
+    .section {
+      background-color: var(--bg-white);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-small);
+    }
+    
+    .section h2 {
+      color: var(--primary-color);
+      border-bottom: 1px solid var(--bg-light);
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    
+    .component-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .component-item {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .component-preview {
+      margin-bottom: 10px;
+    }
+    
+    .component-code {
+      background-color: var(--bg-light);
+      padding: 10px;
+      border-radius: var(--border-radius);
+      font-family: monospace;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+    
+    .skill-points {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+    
+    .scenario-preview {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>反霸凌小英雄 - UI组件库</h1>
+      <p>这个页面展示了游戏中使用的UI组件</p>
+    </div>
+    
+    <div class="section">
+      <h2>图标组件</h2>
+      <div class="component-row" id="icons-preview">
+        <!-- 图标预览将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>按钮组件</h2>
+      <div class="component-row" id="buttons-preview">
+        <!-- 按钮预览将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>卡片组件</h2>
+      <div class="component-row" id="cards-preview">
+        <!-- 卡片预览将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>进度条组件</h2>
+      <div class="component-row" id="progress-preview">
+        <!-- 进度条预览将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>徽章组件</h2>
+      <div class="component-row" id="badges-preview">
+        <!-- 徽章预览将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>技能点组件</h2>
+      <div class="skill-points" id="skills-preview">
+        <!-- 技能点预览将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>场景卡片组件</h2>
+      <div class="scenario-preview" id="scenario-preview">
+        <!-- 场景卡片预览将通过JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>对话框组件</h2>
+      <div class="component-row">
+        <div class="component-item">
+          <div class="component-preview">
+            <button class="game-btn primary" onclick="showDialog()">显示对话框</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>通知组件</h2>
+      <div class="component-row">
+        <div class="component-item">
+          <div class="component-preview">
+            <button class="game-btn primary" onclick="showNotification('info')">信息通知</button>
+          </div>
+        </div>
+        <div class="component-item">
+          <div class="component-preview">
+            <button class="game-btn success" onclick="showNotification('success')">成功通知</button>
+          </div>
+        </div>
+        <div class="component-item">
+          <div class="component-preview">
+            <button class="game-btn warning" onclick="showNotification('warning')">警告通知</button>
+          </div>
+        </div>
+        <div class="component-item">
+          <div class="component-preview">
+            <button class="game-btn danger" onclick="showNotification('error')">错误通知</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/icon-system.js"></script>
+  <script src="js/ui-components.js"></script>
+  <script>
+    // 页面加载完成后初始化组件预览
+    document.addEventListener('DOMContentLoaded', function() {
+      // 图标预览
+      const iconNames = [
+        'happy', 'sad', 'close', 'play', 'pause', 'stop', 'settings',
+        'achievement', 'star', 'empathy', 'courage', 'wisdom',
+        'home', 'back', 'next'
+      ];
+      
+      const iconsPreview = document.getElementById('icons-preview');
+      iconNames.forEach(iconName => {
+        const iconItem = document.createElement('div');
+        iconItem.className = 'component-item';
+        iconItem.innerHTML = `
+          <div class="component-preview">
+            ${UIComponents.renderIcon(iconName, 'medium')}
+          </div>
+          <div class="component-code">${iconName}</div>
+        `;
+        iconsPreview.appendChild(iconItem);
+      });
+      
+      // 按钮预览
+      const buttonTypes = ['primary', 'secondary', 'success', 'warning', 'danger'];
+      const buttonsPreview = document.getElementById('buttons-preview');
+      
+      buttonTypes.forEach(type => {
+        const buttonItem = document.createElement('div');
+        buttonItem.className = 'component-item';
+        buttonItem.innerHTML = `
+          <div class="component-preview">
+            ${UIComponents.renderButton(`${type.charAt(0).toUpperCase() + type.slice(1)}按钮`, `alert('${type}按钮点击')`, type)}
+          </div>
+          <div class="component-code">type: ${type}</div>
+        `;
+        buttonsPreview.appendChild(buttonItem);
+      });
+      
+      // 卡片预览
+      const cardsPreview = document.getElementById('cards-preview');
+      const cardItem = document.createElement('div');
+      cardItem.className = 'component-item';
+      cardItem.innerHTML = `
+        <div class="component-preview">
+          ${UIComponents.renderCard(
+            '卡片标题',
+            '<p>这是卡片内容，可以包含任何HTML元素。</p>',
+            null,
+            UIComponents.renderButton('卡片按钮', 'alert("卡片按钮点击")', 'primary', 'small')
+          )}
+        </div>
+      `;
+      cardsPreview.appendChild(cardItem);
+      
+      const imageCardItem = document.createElement('div');
+      imageCardItem.className = 'component-item';
+      imageCardItem.innerHTML = `
+        <div class="component-preview">
+          ${UIComponents.renderCard(
+            '带图片的卡片',
+            '<p>这是带图片的卡片内容。</p>',
+            'https://via.placeholder.com/300x150?text=示例图片',
+            UIComponents.renderButton('查看详情', 'alert("查看详情")', 'secondary', 'small')
+          )}
+        </div>
+      `;
+      cardsPreview.appendChild(imageCardItem);
+      
+      // 进度条预览
+      const progressPreview = document.getElementById('progress-preview');
+      
+      const progressItem1 = document.createElement('div');
+      progressItem1.className = 'component-item';
+      progressItem1.innerHTML = `
+        <div class="component-preview">
+          ${UIComponents.renderProgressBar(3, 10, '基础进度条')}
+        </div>
+      `;
+      progressPreview.appendChild(progressItem1);
+      
+      const progressItem2 = document.createElement('div');
+      progressItem2.className = 'component-item';
+      progressItem2.innerHTML = `
+        <div class="component-preview">
+          ${UIComponents.renderProgressBar(7, 10, '完成度较高', '#6BCF7F')}
+        </div>
+      `;
+      progressPreview.appendChild(progressItem2);
+      
+      // 徽章预览
+      const badgeTypes = ['default', 'success', 'warning', 'danger', 'info'];
+      const badgesPreview = document.getElementById('badges-preview');
+      
+      badgeTypes.forEach(type => {
+        const badgeItem = document.createElement('div');
+        badgeItem.className = 'component-item';
+        badgeItem.innerHTML = `
+          <div class="component-preview">
+            ${UIComponents.renderBadge(type, type)}
+          </div>
+          <div class="component-code">type: ${type}</div>
+        `;
+        badgesPreview.appendChild(badgeItem);
+      });
+      
+      // 技能点预览
+      const skillsPreview = document.getElementById('skills-preview');
+      
+      skillsPreview.innerHTML = `
+        ${UIComponents.renderSkillPoint('empathy', 5)}
+        ${UIComponents.renderSkillPoint('courage', 7)}
+        ${UIComponents.renderSkillPoint('wisdom', 3)}
+      `;
+      
+      // 场景卡片预览
+      const scenarioPreview = document.getElementById('scenario-preview');
+      
+      const sampleScenario = {
+        id: 'sample_scenario',
+        title: '示例场景',
+        category: '社交排斥',
+        difficulty: '中等',
+        grade_range: [1, 6],
+        description: '这是一个示例场景描述，用于展示场景卡片组件的样式和功能。',
+        situation: '你会怎么做？',
+        image: 'https://via.placeholder.com/400x200?text=场景图片',
+        choices: []
+      };
+      
+      scenarioPreview.innerHTML = `
+        ${UIComponents.renderScenarioCard(sampleScenario, false)}
+        ${UIComponents.renderScenarioCard(sampleScenario, true)}
+      `;
+    });
+    
+    // 显示对话框
+    function showDialog() {
+      const dialogHTML = UIComponents.renderDialog(
+        '对话框标题',
+        '<p>这是对话框内容，可以包含任何HTML元素。</p>',
+        [
+          { text: '确定', onClick: 'closeDialog()', type: 'primary' },
+          { text: '取消', onClick: 'closeDialog()', type: 'danger' }
+        ]
+      );
+      
+      const dialogContainer = document.createElement('div');
+      dialogContainer.id = 'dialog-container';
+      dialogContainer.innerHTML = dialogHTML;
+      document.body.appendChild(dialogContainer);
+    }
+    
+    // 关闭对话框
+    function closeDialog() {
+      const dialogContainer = document.getElementById('dialog-container');
+      if (dialogContainer) {
+        dialogContainer.remove();
+      }
+    }
+    
+    // 显示通知
+    function showNotification(type) {
+      const messages = {
+        'info': '这是一条信息通知',
+        'success': '操作成功完成！',
+        'warning': '请注意，这是一个警告',
+        'error': '出错了，请重试'
+      };
+      
+      UIComponents.renderNotification(messages[type], type);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS测试</title>
+  <link rel="stylesheet" href="css/doodle-style.css">
+  <link rel="stylesheet" href="css/ui-components.css?v=20250722">
+  <style>
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--bg-white);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-medium);
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .test-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid var(--bg-light);
+      border-radius: var(--border-radius);
+    }
+    
+    h2 {
+      color: var(--text-dark);
+      border-bottom: 1px solid var(--bg-light);
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <h1>CSS组件测试</h1>
+    
+    <div class="test-section">
+      <h2>按钮测试</h2>
+      <div class="button-container">
+        <button class="start-btn">开始挑战</button>
+        <button class="start-btn difficulty-easy">简单挑战</button>
+        <button class="start-btn difficulty-medium">中等挑战</button>
+        <button class="start-btn difficulty-hard">困难挑战</button>
+        <button class="completed-btn">
+          <span class="game-icon icon-small">
+            <svg viewBox="0 0 24 24" width="100%" height="100%">
+              <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          已完成
+        </button>
+      </div>
+    </div>
+    
+    <div class="test-section">
+      <h2>卡片测试</h2>
+      <div class="scenario-card no-image easy">
+        <div class="scenario-header">
+          <div class="scenario-title">简单场景卡片</div>
+          <div class="scenario-meta">
+            <span class="game-badge info">简单</span>
+            <span class="game-badge">社交排斥</span>
+          </div>
+        </div>
+        <div class="scenario-description">
+          这是一个简单难度的场景卡片测试，用于验证CSS样式是否正确加载。
+        </div>
+        <div class="scenario-actions">
+          <button class="start-btn difficulty-easy">开始挑战</button>
+        </div>
+      </div>
+      
+      <div class="scenario-card no-image medium" style="margin-top: 20px;">
+        <div class="scenario-header">
+          <div class="scenario-title">中等场景卡片</div>
+          <div class="scenario-meta">
+            <span class="game-badge warning">中等</span>
+            <span class="game-badge">言语欺凌</span>
+          </div>
+        </div>
+        <div class="scenario-description">
+          这是一个中等难度的场景卡片测试，用于验证CSS样式是否正确加载。
+        </div>
+        <div class="scenario-actions">
+          <button class="start-btn difficulty-medium">开始挑战</button>
+        </div>
+      </div>
+      
+      <div class="scenario-card no-image hard" style="margin-top: 20px;">
+        <div class="scenario-header">
+          <div class="scenario-title">困难场景卡片</div>
+          <div class="scenario-meta">
+            <span class="game-badge danger">困难</span>
+            <span class="game-badge">网络欺凌</span>
+          </div>
+        </div>
+        <div class="scenario-description">
+          这是一个困难难度的场景卡片测试，用于验证CSS样式是否正确加载。
+        </div>
+        <div class="scenario-actions">
+          <button class="start-btn difficulty-hard">开始挑战</button>
+        </div>
+      </div>
+      
+      <div class="scenario-card no-image easy completed" style="margin-top: 20px;">
+        <div class="scenario-header">
+          <div class="scenario-title">已完成场景卡片</div>
+          <div class="scenario-meta">
+            <span class="game-badge info">简单</span>
+            <span class="game-badge">社交排斥</span>
+          </div>
+        </div>
+        <div class="scenario-description">
+          这是一个已完成的场景卡片测试，用于验证CSS样式是否正确加载。
+        </div>
+        <div class="scenario-actions">
+          <button class="completed-btn">
+            <span class="game-icon icon-small">
+              <svg viewBox="0 0 24 24" width="100%" height="100%">
+                <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" fill="none"/>
+              </svg>
+            </span>
+            已完成
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

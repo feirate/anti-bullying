@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>游戏集成测试</title>
+  <link rel="stylesheet" href="css/doodle-style.css">
+  <link rel="stylesheet" href="css/ui-components.css?v=20250722">
+  <link rel="stylesheet" href="css/scenario-detail.css?v=20250722">
+  <style>
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      font-family: var(--font-primary);
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>游戏集成测试</h1>
+      <p>测试场景详情页与游戏引擎的集成</p>
+    </div>
+    
+    <div class="scenarios-grid" id="scenariosGrid">
+      <!-- 场景卡片将通过JavaScript动态生成 -->
+    </div>
+  </div>
+  
+  <script src="js/icon-system.js"></script>
+  <script src="js/ui-components.js"></script>
+  <script src="js/ui-components-updated.js"></script>
+  <script src="js/user-system.js"></script>
+  <script src="js/image-manager.js"></script>
+  <script src="js/scenario-detail.js"></script>
+  <script>
+    // 模拟用户系统
+    window.userSystem = {
+      user: {
+        grade: '三年级',
+        completed_scenarios: ['lunch_table'],
+        empathy: 5,
+        courage: 3,
+        wisdom: 4,
+        max_scenarios: 10
+      },
+      updateProgress: function(scenarioId, points) {
+        console.log('更新进度:', scenarioId, points);
+        // 模拟更新技能点
+        this.user.empathy += points.empathy || 0;
+        this.user.courage += points.courage || 0;
+        this.user.wisdom += points.wisdom || 0;
+        
+        // 添加到已完成场景
+        if (!this.user.completed_scenarios.includes(scenarioId)) {
+          this.user.completed_scenarios.push(scenarioId);
+        }
+        
+        console.log('当前技能点:', {
+          empathy: this.user.empathy,
+          courage: this.user.courage,
+          wisdom: this.user.wisdom
+        });
+      },
+      checkAchievements: function() {
+        console.log('检查成就...');
+      }
+    };
+    
+    // 加载场景数据并渲染
+    fetch('data/scenarios.json')
+      .then(response => response.json())
+      .then(data => {
+        window.gameData = data;
+        renderScenarios(data.scenarios.slice(0, 6)); // 只显示前6个场景
+      })
+      .catch(error => {
+        console.error('加载场景数据失败:', error);
+      });
+    
+    function renderScenarios(scenarios) {
+      const scenariosGrid = document.getElementById('scenariosGrid');
+      
+      scenariosGrid.innerHTML = scenarios.map(scenario => {
+        const isCompleted = window.userSystem.user.completed_scenarios.includes(scenario.id);
+        
+        let statusIcon, statusClass, actionButton;
+        
+        if (isCompleted) {
+          statusIcon = '✅';
+          statusClass = 'completed';
+          actionButton = `<div class="completed-status">已完成</div>`;
+        } else {
+          statusIcon = '🆕';
+          statusClass = 'new';
+          actionButton = `<button class="start-btn" data-scenario-id="${scenario.id}">开始挑战</button>`;
+        }
+        
+        return `
+          <div class="scenario-card ${statusClass}" data-scenario-id="${scenario.id}" style="cursor: pointer;">
+            <div class="scenario-header">
+              <div class="scenario-title">
+                ${statusIcon} ${scenario.title}
+              </div>
+              <div class="scenario-meta">
+                <span class="difficulty ${scenario.difficulty.toLowerCase()}">${scenario.difficulty}</span>
+                <span class="category">${scenario.category}</span>
+              </div>
+            </div>
+            
+            <div class="scenario-image" style="height: 150px; background-color: var(--bg-light); display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); margin: 10px 0;">
+              <span style="color: var(--text-medium);">场景图片</span>
+            </div>
+            
+            <div class="scenario-description">
+              ${scenario.description}
+            </div>
+            
+            <div class="scenario-actions">
+              ${actionButton}
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      // 绑定事件
+      bindScenarioEvents();
+    }
+    
+    function bindScenarioEvents() {
+      // 场景卡片点击事件
+      document.querySelectorAll('.scenario-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          // 如果点击的是按钮，不处理卡片点击事件
+          if (e.target.closest('.start-btn, .completed-status')) {
+            return;
+          }
+          
+          const scenarioId = card.dataset.scenarioId;
+          if (scenarioId && window.showScenarioDetail) {
+            window.showScenarioDetail(scenarioId);
+          }
+        });
+      });
+      
+      // 开始挑战按钮
+      document.querySelectorAll('.start-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation(); // 阻止事件冒泡
+          const scenarioId = e.target.dataset.scenarioId;
+          if (scenarioId && window.showScenarioDetail) {
+            window.showScenarioDetail(scenarioId);
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

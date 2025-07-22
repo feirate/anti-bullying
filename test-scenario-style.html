@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>场景详情页样式测试</title>
+  <link rel="stylesheet" href="css/doodle-style.css">
+  <link rel="stylesheet" href="css/ui-components.css?v=20250722">
+  <link rel="stylesheet" href="css/scenario-detail.css?v=20250722">
+  <style>
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      font-family: var(--font-primary);
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .test-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>场景详情页样式测试</h1>
+      <p>测试调整后的场景详情页样式和黑体字体</p>
+    </div>
+    
+    <div class="test-buttons">
+      <button id="testEasyBtn" class="game-btn primary">测试简单场景(天蓝色)</button>
+      <button id="testMediumBtn" class="game-btn warning">测试中等场景(橙色)</button>
+      <button id="testHardBtn" class="game-btn danger">测试困难场景(红色)</button>
+    </div>
+    
+    <div id="testContent"></div>
+  </div>
+  
+  <script src="js/icon-system.js"></script>
+  <script src="js/scenario-detail.js"></script>
+  <script>
+    // 测试数据 - 不同难度的场景
+    const testScenarios = {
+      easy: {
+        id: "lunch_table",
+        title: "午餐时间",
+        category: "社交排斥",
+        difficulty: "简单",
+        grade_range: [1, 6],
+        description: "你在食堂里看到小明独自坐在一张桌子旁。附近的一群学生正在笑着指着小明，大声评论他的衣服和午餐。",
+        situation: "你注意到小明看起来很伤心和尴尬。你会怎么做？",
+        image: "data/pic/社交排斥-午餐-1.png",
+        choices: [
+          {
+            id: "ignore",
+            text: "忽略它 - 这不是你的问题",
+            feedback: "虽然选择忽略可以避免冲突，但帮助他人是成为英雄的第一步。",
+            points: { empathy: -1, courage: -1, wisdom: 0 }
+          },
+          {
+            id: "sit_with",
+            text: "去和小明坐在一起，开始友好的对话",
+            feedback: "太棒了！小明抬起头，惊讶而感激地看着你。'谢谢你和我坐在一起。我刚才感觉很孤独。'你的善意真的产生了影响。",
+            points: { empathy: 3, courage: 2, wisdom: 2 }
+          },
+          {
+            id: "tell_teacher",
+            text: "告诉老师发生了什么",
+            feedback: "很好的选择！寻求成年人的帮助是处理欺凌情况的重要策略。",
+            points: { empathy: 2, courage: 1, wisdom: 3 }
+          },
+          {
+            id: "confront_group",
+            text: "走过去要求那群学生停止",
+            feedback: "勇敢的选择！但要注意安全。如果情况变得危险，记得寻求帮助。",
+            points: { empathy: 1, courage: 3, wisdom: 1 }
+          }
+        ],
+        learning_moment: "有时候，你能做的最有力的事情就是简单地陪伴某人。"
+      },
+      medium: {
+        id: "hallway_harassment",
+        title: "走廊骚扰",
+        category: "言语欺凌",
+        difficulty: "中等",
+        grade_range: [1, 6],
+        description: "你目睹有人在走廊里被叫名字和推搡。一个较大的学生正在欺负一个较小的学生。",
+        situation: "你看到这种情况，你会怎么做？",
+        image: "data/pic/言语欺凌-走廊骚扰.png",
+        choices: [
+          {
+            id: "walk_away",
+            text: "走开，假装没看见",
+            feedback: "虽然走开可以避免卷入冲突，但作为英雄，我们有责任帮助他人。",
+            points: { empathy: -1, courage: -2, wisdom: 0 }
+          },
+          {
+            id: "get_help",
+            text: "立即去找老师或管理员",
+            feedback: "明智的选择！在危险情况下寻求成年人的帮助是最安全的方法。",
+            points: { empathy: 2, courage: 2, wisdom: 3 }
+          },
+          {
+            id: "speak_up",
+            text: "大声说'住手'，然后寻求帮助",
+            feedback: "勇敢而明智！你既表现出了勇气，又知道何时寻求帮助。",
+            points: { empathy: 3, courage: 3, wisdom: 2 }
+          },
+          {
+            id: "distract",
+            text: "试图分散欺凌者的注意力",
+            feedback: "聪明的策略！有时分散注意力可以给受害者逃跑的机会。",
+            points: { empathy: 2, courage: 2, wisdom: 2 }
+          }
+        ],
+        learning_moment: "在危险情况下，寻求帮助比独自面对更勇敢。"
+      },
+      hard: {
+        id: "confrontation",
+        title: "对抗",
+        category: "身体欺凌",
+        difficulty: "困难",
+        grade_range: [1, 6],
+        description: "一个较大的学生威胁要在放学后伤害某人。你听到他们在走廊里说这些话。",
+        situation: "你听到这种威胁，你会怎么做？",
+        image: "data/pic/身体欺凌-对抗.png",
+        choices: [
+          {
+            id: "ignore_threat",
+            text: "假装没听见",
+            feedback: "虽然选择忽略，但身体威胁是严重的问题，需要立即处理。",
+            points: { empathy: -2, courage: -2, wisdom: -1 }
+          },
+          {
+            id: "report_threat",
+            text: "立即向老师或校长报告",
+            feedback: "正确的选择！身体威胁是严重的安全问题，必须立即报告。",
+            points: { empathy: 3, courage: 2, wisdom: 3 }
+          },
+          {
+            id: "warn_target",
+            text: "警告被威胁的同学",
+            feedback: "好的想法，但也要确保寻求成年人的帮助。",
+            points: { empathy: 2, courage: 2, wisdom: 2 }
+          },
+          {
+            id: "mediate",
+            text: "尝试调解冲突",
+            feedback: "调解需要很大的勇气，但要确保自己的安全。",
+            points: { empathy: 2, courage: 3, wisdom: 1 }
+          }
+        ],
+        learning_moment: "身体威胁是严重的安全问题，必须立即向成年人报告。"
+      }
+    };
+    
+    // 设置全局游戏数据
+    window.gameData = {
+      scenarios: [testScenarios.easy, testScenarios.medium, testScenarios.hard]
+    };
+    
+    // 模拟用户系统
+    window.userSystem = {
+      updateProgress: function(scenarioId, points) {
+        console.log('更新进度:', scenarioId, points);
+      },
+      checkAchievements: function() {
+        console.log('检查成就...');
+      }
+    };
+    
+    // 测试简单场景（天蓝色按钮）
+    document.getElementById('testEasyBtn').addEventListener('click', function() {
+      showScenarioDetail('lunch_table');
+    });
+    
+    // 测试中等场景（橙色按钮）
+    document.getElementById('testMediumBtn').addEventListener('click', function() {
+      showScenarioDetail('hallway_harassment');
+    });
+    
+    // 测试困难场景（红色按钮）
+    document.getElementById('testHardBtn').addEventListener('click', function() {
+      showScenarioDetail('confrontation');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>整合卡片测试</title>
+  <link rel="stylesheet" href="css/doodle-style.css">
+  <link rel="stylesheet" href="css/ui-components-updated.css?v=20250722">
+  <style>
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--bg-white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-medium);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      font-family: var(--font-primary);
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    .section h2 {
+      color: var(--text-dark);
+      border-bottom: 1px solid var(--bg-light);
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    
+    .code-block {
+      background-color: var(--bg-light);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+    
+    code {
+      font-family: monospace;
+      font-size: 14px;
+    }
+    
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    
+    .comparison-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+    
+    @media (min-width: 768px) {
+      .comparison {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>整合卡片测试</h1>
+      <p>将欢迎卡片和三个特性卡片整合为一个卡片</p>
+    </div>
+    
+    <div class="section">
+      <h2>整合卡片</h2>
+      <div id="integrated-card"></div>
+      
+      <div class="code-block">
+        <code>
+// 整合卡片<br>
+UIComponents.renderHomepageCard(<br>
+  '欢迎来到反霸凌小英雄！',<br>
+  '&lt;p&gt;你即将踏上一段重要的旅程，成为一个对抗欺凌的英雄。通过互动场景，你将学习如何识别、预防和应对欺凌情况。&lt;/p&gt;',<br>
+  [<br>
+    {<br>
+      title: '培养同理心',<br>
+      description: '学习理解和关心他人的感受',<br>
+      iconName: 'empathy'<br>
+    },<br>
+    {<br>
+      title: '展现勇气',<br>
+      description: '我们为勇于正直的事情站出来',<br>
+      iconName: 'courage'<br>
+    },<br>
+    {<br>
+      title: '结交朋友',<br>
+      description: '创建一个支持性和包容性的环境',<br>
+      iconName: 'social'<br>
+    }<br>
+  ],<br>
+  'primary'<br>
+);
+        </code>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>对比</h2>
+      <div class="comparison">
+        <div>
+          <div class="comparison-title">原始分离卡片</div>
+          <div id="original-cards"></div>
+        </div>
+        <div>
+          <div class="comparison-title">整合后的卡片</div>
+          <div id="new-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/icon-system.js"></script>
+  <script src="js/ui-components-updated.js"></script>
+  <script>
+    // 页面加载完成后初始化组件
+    document.addEventListener('DOMContentLoaded', function() {
+      // 渲染整合卡片
+      document.getElementById('integrated-card').innerHTML = UIComponents.renderHomepageCard(
+        '欢迎来到反霸凌小英雄！',
+        '<p>你即将踏上一段重要的旅程，成为一个对抗欺凌的英雄。通过互动场景，你将学习如何识别、预防和应对欺凌情况。</p>',
+        [
+          {
+            title: '培养同理心',
+            description: '学习理解和关心他人的感受',
+            iconName: 'empathy'
+          },
+          {
+            title: '展现勇气',
+            description: '我们为勇于正直的事情站出来',
+            iconName: 'courage'
+          },
+          {
+            title: '结交朋友',
+            description: '创建一个支持性和包容性的环境',
+            iconName: 'social'
+          }
+        ],
+        'primary'
+      );
+      
+      // 渲染原始分离卡片
+      document.getElementById('original-cards').innerHTML = `
+        ${UIComponents.renderWelcomeCard(
+          '欢迎来到反霸凌小英雄！',
+          '<p>你即将踏上一段重要的旅程，成为一个对抗欺凌的英雄。通过互动场景，你将学习如何识别、预防和应对欺凌情况。</p>',
+          'primary'
+        )}
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px;">
+          ${UIComponents.renderFeatureCard(
+            '培养同理心',
+            '学习理解和关心他人的感受',
+            'empathy',
+            'primary'
+          )}
+          
+          ${UIComponents.renderFeatureCard(
+            '展现勇气',
+            '我们为勇于正直的事情站出来',
+            'courage',
+            'secondary'
+          )}
+          
+          ${UIComponents.renderFeatureCard(
+            '结交朋友',
+            '创建一个支持性和包容性的环境',
+            'social',
+            'success'
+          )}
+        </div>
+      `;
+      
+      // 渲染新卡片（与整合卡片相同）
+      document.getElementById('new-card').innerHTML = UIComponents.renderHomepageCard(
+        '欢迎来到反霸凌小英雄！',
+        '<p>你即将踏上一段重要的旅程，成为一个对抗欺凌的英雄。通过互动场景，你将学习如何识别、预防和应对欺凌情况。</p>',
+        [
+          {
+            title: '培养同理心',
+            description: '学习理解和关心他人的感受',
+            iconName: 'empathy'
+          },
+          {
+            title: '展现勇气',
+            description: '我们为勇于正直的事情站出来',
+            iconName: 'courage'
+          },
+          {
+            title: '结交朋友',
+            description: '创建一个支持性和包容性的环境',
+            iconName: 'social'
+          }
+        ],
+        'primary'
+      );
+    });
+  </script>
+</body>
+</html>

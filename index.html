@@ -5,26 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>反霸凌小英雄 - 小学生反霸凌对话式成长游戏</title>
     <link rel="stylesheet" href="css/doodle-style.css">
+    <link rel="stylesheet" href="css/ui-components.css?v=20250722">
+    <link rel="stylesheet" href="css/scenario-detail.css?v=20250722">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
+    <style>
+        /* 首页特定样式 */
+        .homepage-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .hero-title {
+            font-family: var(--font-primary);
+            color: var(--primary-color);
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .hero-subtitle {
+            color: var(--text-medium);
+            font-size: 18px;
+            margin: 0;
+        }
+        
+        /* 加载样式 */
+        #loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--bg-light);
+        }
+        
+        #loading .loading-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+        
+        #loading .loading-text {
+            font-size: 16px;
+            color: var(--text-medium);
+        }
+    </style>
 </head>
 <body>
     <!-- 主容器 -->
     <div id="app">
         <!-- 加载中 -->
-        <div id="loading" class="doodle-container">
-            <div class="doodle-title">反霸凌小英雄</div>
-            <div class="doodle-subtitle">正在加载你的英雄之旅...</div>
+        <div id="loading">
+            <div class="loading-title">反霸凌小英雄</div>
+            <div class="loading-text">正在加载你的英雄之旅...</div>
         </div>
     </div>
 
     <!-- 脚本文件 -->
+    <script src="js/icon-system.js"></script>
+    <script src="js/ui-components.js"></script>
+    <script src="js/ui-components-updated.js"></script>
     <script src="js/user-system.js"></script>
     <script src="js/image-manager.js"></script>
     <script src="js/game-engine.js"></script>
+    <script src="js/scenario-detail.js"></script>
     <script src="js/supabase-client.js"></script>
     <script src="js/main.js"></script>
     
     <!-- 调试工具 (开发环境) -->
     <script src="debug.js"></script>
 </body>
-</html> 
+</html>

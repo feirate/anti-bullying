@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>场景详情页测试</title>
+  <link rel="stylesheet" href="css/doodle-style.css">
+  <link rel="stylesheet" href="css/ui-components.css?v=20250722">
+  <link rel="stylesheet" href="css/scenario-detail.css?v=20250722">
+  <style>
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      font-family: var(--font-primary);
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .test-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>场景详情页测试</h1>
+      <p>测试场景详情页和带图标的返回主页按钮</p>
+    </div>
+    
+    <div class="test-buttons">
+      <button id="testScenarioBtn" class="game-btn primary">测试场景详情页</button>
+      <button id="testResultBtn" class="game-btn secondary">测试选择结果页</button>
+    </div>
+    
+    <div id="testContent"></div>
+  </div>
+  
+  <script src="js/icon-system.js"></script>
+  <script>
+    // 测试数据
+    const testScenario = {
+      id: "lunch_table",
+      title: "午餐时间",
+      category: "社交排斥",
+      difficulty: "简单",
+      grade_range: [1, 6],
+      description: "你在食堂里看到小明独自坐在一张桌子旁。附近的一群学生正在笑着指着小明，大声评论他的衣服和午餐。",
+      situation: "你注意到小明看起来很伤心和尴尬。你会怎么做？",
+      image: "data/pic/社交排斥-午餐-1.png",
+      choices: [
+        {
+          id: "ignore",
+          text: "忽略它 - 这不是你的问题",
+          feedback: "虽然选择忽略可以避免冲突，但帮助他人是成为英雄的第一步。",
+          points: {
+            empathy: -1,
+            courage: -1,
+            wisdom: 0
+          }
+        },
+        {
+          id: "sit_with",
+          text: "去和小明坐在一起，开始友好的对话",
+          feedback: "太棒了！小明抬起头，惊讶而感激地看着你。'谢谢你和我坐在一起。我刚才感觉很孤独。'你的善意真的产生了影响。",
+          points: {
+            empathy: 3,
+            courage: 2,
+            wisdom: 2
+          }
+        },
+        {
+          id: "tell_teacher",
+          text: "告诉老师发生了什么",
+          feedback: "很好的选择！寻求成年人的帮助是处理欺凌情况的重要策略。",
+          points: {
+            empathy: 2,
+            courage: 1,
+            wisdom: 3
+          }
+        },
+        {
+          id: "confront_group",
+          text: "走过去要求那群学生停止",
+          feedback: "勇敢的选择！但要注意安全。如果情况变得危险，记得寻求帮助。",
+          points: {
+            empathy: 1,
+            courage: 3,
+            wisdom: 1
+          }
+        }
+      ],
+      learning_moment: "有时候，你能做的最有力的事情就是简单地陪伴某人。"
+    };
+    
+    // 测试选择
+    const testChoice = testScenario.choices[1]; // 选择第二个选项
+    
+    // 自定义UI组件
+    class CustomUIComponents {
+      static renderIcon(iconName, size = 'medium', color = null) {
+        // 使用IconSystem获取图标
+        if (window.IconSystem) {
+          return IconSystem.renderIcon(iconName, size, color);
+        }
+        
+        // 如果IconSystem不可用，使用简单的占位符
+        const sizeClass = `icon-${size}`;
+        const colorStyle = color ? `style="color: ${color};"` : '';
+        
+        return `<span class="game-icon ${sizeClass}" aria-label="${iconName}" ${colorStyle}>
+          <svg viewBox="0 0 24 24" width="100%" height="100%">
+            <rect x="2" y="2" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"/>
+            <text x="12" y="16" font-size="12" text-anchor="middle" fill="currentColor">${iconName.charAt(0).toUpperCase()}</text>
+          </svg>
+        </span>`;
+      }
+      
+      static renderButton(text, onClick, type = 'primary', size = 'medium', icon = null, disabled = false, ariaLabel = null) {
+        // 生成唯一ID
+        const buttonId = `btn-${Math.random().toString(36).substring(2, 9)}`;
+        
+        // 处理按钮类型
+        const typeClasses = type.split(' ').map(t => t.trim()).join(' ');
+        
+        // 图标HTML
+        const iconHtml = icon ? this.renderIcon(icon, 'small') : '';
+        
+        // 禁用属性
+        const disabledAttr = disabled ? 'disabled' : '';
+        
+        // ARIA标签
+        const ariaLabelAttr = ariaLabel ? `aria-label="${ariaLabel}"` : '';
+        
+        return `
+          <button 
+            id="${buttonId}" 
+            class="game-btn ${typeClasses} ${size}" 
+            onclick="${onClick}" 
+            ${disabledAttr}
+            ${ariaLabelAttr}
+          >
+            ${iconHtml}
+            <span class="btn-text">${text}</span>
+          </button>
+        `;
+      }
+      
+      static renderScenarioDetail(scenario) {
+        // 设置背景颜色
+        let headerColor;
+        switch(scenario.difficulty) {
+          case "简单":
+            headerColor = 'var(--secondary-color)';
+            break;
+          case "中等":
+            headerColor = 'var(--warning-color)';
+            break;
+          case "困难":
+            headerColor = 'var(--danger-color)';
+            break;
+          default:
+            headerColor = 'var(--secondary-color)';
+        }
+        
+        // 选项按钮
+        const choicesHtml = scenario.choices ? scenario.choices.map((choice, index) => `
+          <div class="scenario-choice">
+            <button class="game-btn ${index === 0 ? 'primary' : 'outline primary'} full-width" style="margin-bottom: 10px;" onclick="selectChoice('${choice.id}')">
+              ${choice.text}
+            </button>
+          </div>
+        `).join('') : '';
+        
+        return `
+          <div class="scenario-detail">
+            <div class="scenario-detail-header" style="background-color: ${headerColor};">
+              <div class="scenario-detail-title">${scenario.title}</div>
+              <div class="scenario-detail-meta">
+                <span class="game-badge">${scenario.difficulty}</span>
+                <span class="game-badge">${scenario.category}</span>
+              </div>
+              <button class="scenario-detail-back" onclick="hideScenarioDetail()">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="scenario-detail-image">
+              <img src="${scenario.image}" alt="${scenario.title}" onerror="this.src='https://via.placeholder.com/800x400?text=场景图片'">
+            </div>
+            <div class="scenario-detail-content">
+              <div class="scenario-detail-description">${scenario.description}</div>
+              <div class="scenario-detail-situation">
+                <h3>${scenario.situation}</h3>
+                <div class="scenario-choices">
+                  ${choicesHtml}
+                </div>
+              </div>
+            </div>
+            <div class="scenario-detail-actions">
+              ${this.renderButton('返回主页', "window.location.href='index.html'", 'success', 'medium', 'home')}
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    // 测试场景详情页
+    document.getElementById('testScenarioBtn').addEventListener('click', function() {
+      const testContent = document.getElementById('testContent');
+      testContent.innerHTML = CustomUIComponents.renderScenarioDetail(testScenario);
+      
+      // 绑定选择事件
+      document.querySelectorAll('.scenario-choice button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const onclickAttr = this.getAttribute('onclick');
+          const match = onclickAttr.match(/selectChoice\('(.+?)'\)/);
+          if (match && match[1]) {
+            const choiceId = match[1];
+            const choice = testScenario.choices.find(c => c.id === choiceId);
+            if (choice) {
+              showChoiceResult(choice);
+            }
+          }
+        });
+      });
+      
+      // 绑定关闭按钮事件
+      document.querySelector('.scenario-detail-back').addEventListener('click', function() {
+        testContent.innerHTML = '<p>已返回主菜单</p>';
+      });
+    });
+    
+    // 测试选择结果页
+    document.getElementById('testResultBtn').addEventListener('click', function() {
+      showChoiceResult(testChoice);
+    });
+    
+    // 显示选择结果
+    function showChoiceResult(choice) {
+      const testContent = document.getElementById('testContent');
+      
+      // 设置背景颜色
+      let headerColor;
+      switch(testScenario.difficulty) {
+        case "简单":
+          headerColor = 'var(--secondary-color)';
+          break;
+        case "中等":
+          headerColor = 'var(--warning-color)';
+          break;
+        case "困难":
+          headerColor = 'var(--danger-color)';
+          break;
+        default:
+          headerColor = 'var(--secondary-color)';
+      }
+      
+      testContent.innerHTML = `
+        <div class="scenario-detail">
+          <div class="scenario-detail-header" style="background-color: ${headerColor};">
+            <div class="scenario-detail-title">${testScenario.title}</div>
+            <div class="scenario-detail-meta">
+              <span class="game-badge">${testScenario.difficulty}</span>
+              <span class="game-badge">${testScenario.category}</span>
+            </div>
+            <button class="scenario-detail-back">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="scenario-detail-image">
+            <img src="${testScenario.image}" alt="${testScenario.title}" onerror="this.src='https://via.placeholder.com/800x400?text=场景图片'">
+          </div>
+          <div class="scenario-detail-content">
+            <div class="scenario-detail-description">
+              <h3>你选择了: ${choice.text}</h3>
+              <p>${choice.feedback}</p>
+              
+              <div class="points-earned" style="margin-top: 20px;">
+                <h4>获得的技能点：</h4>
+                <div class="points-list">
+                  ${choice.points.empathy !== 0 ? `<div>同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
+                  ${choice.points.courage !== 0 ? `<div>勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
+                  ${choice.points.wisdom !== 0 ? `<div>智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
+                </div>
+              </div>
+              
+              <div style="margin-top: 20px;">
+                <h4>学习要点:</h4>
+                <p>${testScenario.learning_moment}</p>
+              </div>
+            </div>
+          </div>
+          <div class="scenario-detail-actions">
+            ${CustomUIComponents.renderButton('继续下一个场景', "alert('继续下一个场景')", 'primary', 'medium')}
+            ${CustomUIComponents.renderButton('返回主页', "alert('返回主页')", 'success', 'medium', 'home')}
+          </div>
+        </div>
+      `;
+      
+      // 绑定关闭按钮事件
+      document.querySelector('.scenario-detail-back').addEventListener('click', function() {
+        testContent.innerHTML = '<p>已返回主菜单</p>';
+      });
+    }
+    
+    // 模拟selectChoice函数
+    window.selectChoice = function(choiceId) {
+      const choice = testScenario.choices.find(c => c.id === choiceId);
+      if (choice) {
+        showChoiceResult(choice);
+      }
+    };
+    
+    // 模拟hideScenarioDetail函数
+    window.hideScenarioDetail = function() {
+      document.getElementById('testContent').innerHTML = '<p>已返回主菜单</p>';
+    };
+  </script>
+</body>
+</html>

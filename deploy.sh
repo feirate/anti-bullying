@@ -132,46 +132,104 @@ deploy_to_vercel() {
     log_info "部署项目..."
     vercel --prod --yes
     
-    log_success "部署完成!"
+    log_success "Vercel 部署完成!"
+}
+
+# 部署到 GitHub Pages
+deploy_to_github_pages() {
+    log_info "开始部署到 GitHub Pages..."
+    
+    # 检查是否有 GitHub Actions 配置
+    if [ ! -f ".github/workflows/deploy.yml" ]; then
+        log_error "未找到 GitHub Actions 配置文件"
+        log_info "请确保 .github/workflows/deploy.yml 文件存在"
+        exit 1
+    fi
+    
+    # 检查 Git 远程仓库
+    if ! git remote get-url origin &> /dev/null; then
+        log_error "未找到 Git 远程仓库"
+        log_info "请先添加 GitHub 远程仓库: git remote add origin <repository-url>"
+        exit 1
+    fi
+    
+    # 推送到 GitHub 触发自动部署
+    log_info "推送代码到 GitHub..."
+    git push origin main
+    
+    # 获取仓库信息
+    local repo_url=$(git remote get-url origin)
+    local repo_name=$(basename "$repo_url" .git)
+    local username=$(echo "$repo_url" | sed -n 's/.*github.com[:/]\([^/]*\)\/.*/\1/p')
+    
+    log_success "GitHub Pages 部署已触发!"
+    log_info "GitHub Actions 正在构建和部署..."
+    log_info "部署完成后可访问: https://${username}.github.io/${repo_name}/"
+    log_info "查看部署状态: https://github.com/${username}/${repo_name}/actions"
 }
 
 # 显示部署信息
 show_deployment_info() {
-    log_info "获取部署信息..."
-    
-    # 获取最新的部署 URL
-    local deployment_url=$(vercel ls --json | jq -r '.[0].url' 2>/dev/null || echo "无法获取部署URL")
+    local platform=${1:-"vercel"}
     
     echo ""
     echo -e "${BLUE}================================${NC}"
     echo -e "${BLUE}  部署信息${NC}"
     echo -e "${BLUE}================================${NC}"
     echo -e "项目名称: ${GREEN}$PROJECT_NAME${NC}"
-    echo -e "部署URL: ${GREEN}$deployment_url${NC}"
+    echo -e "部署平台: ${GREEN}${platform}${NC}"
+    
+    if [ "$platform" = "vercel" ]; then
+        # 获取最新的部署 URL
+        local deployment_url=$(vercel ls --json | jq -r '.[0].url' 2>/dev/null || echo "无法获取部署URL")
+        echo -e "部署URL: ${GREEN}$deployment_url${NC}"
+    elif [ "$platform" = "github" ]; then
+        # 获取仓库信息
+        local repo_url=$(git remote get-url origin 2>/dev/null || echo "")
+        if [ -n "$repo_url" ]; then
+            local repo_name=$(basename "$repo_url" .git)
+            local username=$(echo "$repo_url" | sed -n 's/.*github.com[:/]\([^/]*\)\/.*/\1/p')
+            echo -e "部署URL: ${GREEN}https://${username}.github.io/${repo_name}/${NC}"
+            echo -e "Actions状态: ${GREEN}https://github.com/${username}/${repo_name}/actions${NC}"
+        fi
+    fi
+    
     echo -e "本地测试: ${GREEN}http://localhost:8000${NC}"
     echo ""
     echo -e "${YELLOW}下一步操作:${NC}"
     echo "1. 访问部署URL验证功能"
     echo "2. 检查控制台是否有错误"
     echo "3. 测试所有游戏功能"
-    echo "4. 配置自定义域名（可选）"
+    if [ "$platform" = "vercel" ]; then
+        echo "4. 配置自定义域名（可选）"
+    elif [ "$platform" = "github" ]; then
+        echo "4. 在 GitHub 仓库设置中启用 Pages（如果未启用）"
+    fi
     echo ""
 }
 
 # 显示帮助信息
 show_help() {
-    echo "使用方法: $0 [选项]"
+    echo "使用方法: $0 [选项] [平台]"
     echo ""
     echo "选项:"
-    echo "  deploy    部署到 Vercel (默认)"
+    echo "  deploy    部署项目 (默认)"
     echo "  build     仅构建项目"
     echo "  check     检查项目状态"
     echo "  help      显示此帮助信息"
     echo ""
+    echo "部署平台:"
+    echo "  vercel    部署到 Vercel (默认)"
+    echo "  github    部署到 GitHub Pages"
+    echo "  both      同时部署到两个平台"
+    echo ""
     echo "示例:"
-    echo "  $0              # 部署项目"
-    echo "  $0 build        # 仅构建"
-    echo "  $0 check        # 检查状态"
+    echo "  $0                    # 部署到 Vercel"
+    echo "  $0 deploy vercel      # 部署到 Vercel"
+    echo "  $0 deploy github      # 部署到 GitHub Pages"
+    echo "  $0 deploy both        # 同时部署到两个平台"
+    echo "  $0 build              # 仅构建"
+    echo "  $0 check              # 检查状态"
 }
 
 # 检查项目状态
@@ -188,6 +246,7 @@ check_project_status() {
 # 主函数
 main() {
     local action=${1:-deploy}
+    local platform=${2:-vercel}
     
     echo -e "${BLUE}================================${NC}"
     echo -e "${BLUE}  $PROJECT_NAME 部署工具${NC}"
@@ -200,8 +259,30 @@ main() {
             check_project_files
             check_git_status
             build_project
-            deploy_to_vercel
-            show_deployment_info
+            
+            case $platform in
+                "vercel")
+                    deploy_to_vercel
+                    show_deployment_info "vercel"
+                    ;;
+                "github")
+                    deploy_to_github_pages
+                    show_deployment_info "github"
+                    ;;
+                "both")
+                    log_info "部署到 GitHub Pages..."
+                    deploy_to_github_pages
+                    echo ""
+                    log_info "部署到 Vercel..."
+                    deploy_to_vercel
+                    show_deployment_info "both"
+                    ;;
+                *)
+                    log_error "未知部署平台: $platform"
+                    log_info "支持的平台: vercel, github, both"
+                    exit 1
+                    ;;
+            esac
             ;;
         "build")
             check_project_files

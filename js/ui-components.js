@@ -379,41 +379,43 @@ class UIComponents {
    * @returns {string} 场景卡片HTML
    */
   static renderScenarioCard(scenario, isCompleted = false) {
-    // 状态类和图标
+    // 确保isCompleted是布尔值
+    isCompleted = Boolean(isCompleted);
+    
+    // 状态类和难度类
     const statusClass = isCompleted ? 'completed' : 'new';
-    const statusIcon = isCompleted ? 'achievement' : 'star';
+    let difficultyClass = '';
+    if (scenario.difficulty === '简单') difficultyClass = 'easy';
+    else if (scenario.difficulty === '中等') difficultyClass = 'medium';
+    else if (scenario.difficulty === '困难') difficultyClass = 'hard';
     
     // 操作按钮
     const actionButton = isCompleted 
-      ? `<div class="completed-status">${this.renderBadge('已完成', 'success')}</div>`
-      : `<button class="start-btn" data-scenario-id="${scenario.id}">开始挑战</button>`;
-    
-    // 图片HTML
-    const imageHtml = scenario.image ? `
-      <div class="scenario-image">
-        <img src="${scenario.image}" alt="${scenario.title}" loading="lazy">
-      </div>
-    ` : '';
+      ? `<div class="completed-status">
+          <span class="game-icon icon-small">
+            <svg viewBox="0 0 24 24" width="100%" height="100%">
+              <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          已完成
+        </div>`
+      : `<button class="start-btn difficulty-${difficultyClass}" data-scenario-id="${scenario.id}">开始挑战</button>`;
     
     // 难度徽章
-    let difficultyType = 'default';
-    if (scenario.difficulty === '简单') difficultyType = 'success';
+    let difficultyType = 'info';
+    if (scenario.difficulty === '简单') difficultyType = 'info';
     else if (scenario.difficulty === '中等') difficultyType = 'warning';
     else if (scenario.difficulty === '困难') difficultyType = 'danger';
     
     return `
-      <div class="scenario-card ${statusClass}" data-scenario-id="${scenario.id}">
+      <div class="scenario-card no-image ${difficultyClass} ${statusClass}" data-scenario-id="${scenario.id}">
         <div class="scenario-header">
-          <div class="scenario-title">
-            ${this.renderIcon(statusIcon, 'small')} ${scenario.title}
-          </div>
+          <div class="scenario-title">${scenario.title}</div>
           <div class="scenario-meta">
-            <span class="difficulty">${this.renderBadge(scenario.difficulty, difficultyType)}</span>
-            <span class="category">${this.renderBadge(scenario.category, 'default')}</span>
+            <span class="game-badge ${difficultyType}">${scenario.difficulty}</span>
+            <span class="game-badge">${scenario.category}</span>
           </div>
         </div>
-        
-        ${imageHtml}
         
         <div class="scenario-description">
           ${scenario.description}
@@ -421,6 +423,71 @@ class UIComponents {
         
         <div class="scenario-actions">
           ${actionButton}
+        </div>
+      </div>
+    `;
+  }
+  
+  /**
+   * 渲染场景详情页
+   * @param {Object} scenario - 场景对象
+   * @returns {string} 场景详情页HTML
+   */
+  static renderScenarioDetail(scenario) {
+    // 设置背景颜色
+    let headerColor;
+    switch(scenario.difficulty) {
+      case "简单":
+        headerColor = 'var(--secondary-color)';
+        break;
+      case "中等":
+        headerColor = 'var(--warning-color)';
+        break;
+      case "困难":
+        headerColor = 'var(--danger-color)';
+        break;
+      default:
+        headerColor = 'var(--secondary-color)';
+    }
+    
+    // 选项按钮
+    const choicesHtml = scenario.choices ? scenario.choices.map((choice, index) => `
+      <div class="scenario-choice">
+        <button class="game-btn ${index === 0 ? 'primary' : 'outline primary'} full-width" style="margin-bottom: 10px;" onclick="selectChoice('${choice.id}')">
+          ${choice.text}
+        </button>
+      </div>
+    `).join('') : '';
+    
+    return `
+      <div class="scenario-detail">
+        <div class="scenario-detail-header" style="background-color: ${headerColor};">
+          <div class="scenario-detail-title">${scenario.title}</div>
+          <div class="scenario-detail-meta">
+            <span class="game-badge">${scenario.difficulty}</span>
+            <span class="game-badge">${scenario.category}</span>
+          </div>
+          <button class="scenario-detail-back" onclick="hideScenarioDetail()">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="scenario-detail-image">
+          <img src="${scenario.image}" alt="${scenario.title}">
+        </div>
+        <div class="scenario-detail-content">
+          <div class="scenario-detail-description">${scenario.description}</div>
+          <div class="scenario-detail-situation">
+            <h3>${scenario.situation}</h3>
+            <div class="scenario-choices">
+              ${choicesHtml}
+            </div>
+          </div>
+        </div>
+        <div class="scenario-detail-actions">
+          ${this.renderButton('返回主页', "window.location.href='index.html'", 'success', 'medium', 'home')}
         </div>
       </div>
     `;

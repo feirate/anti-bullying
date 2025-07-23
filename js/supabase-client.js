@@ -21,8 +21,9 @@ class SupabaseClient {
         return;
       }
 
-      // 动态导入Supabase客户端
-      const { createClient } = await import('https://esm.sh/@supabase/supabase-js');
+      // 动态导入Supabase客户端 - 建议本地化处理
+      // TODO: 建议将@supabase/supabase-js安装为本地依赖而非使用CDN
+      const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.39.0');
       this.client = createClient(supabaseUrl, supabaseKey);
       
       this.isInitialized = true;
@@ -45,17 +46,32 @@ class SupabaseClient {
     // 方法1：从meta标签获取
     const metaTag = document.querySelector(`meta[name="${key}"]`);
     if (metaTag) {
-      return metaTag.getAttribute('content');
+      const value = metaTag.getAttribute('content');
+      // 验证不是占位符值
+      if (value && !value.includes('your_') && !value.includes('_here')) {
+        return value;
+      }
     }
     
     // 方法2：从全局变量获取
     if (window.ENV && window.ENV[key]) {
-      return window.ENV[key];
+      const value = window.ENV[key];
+      // 验证不是占位符值
+      if (value && !value.includes('your_') && !value.includes('_here')) {
+        return value;
+      }
     }
     
-    // 方法3：从URL参数获取（仅用于开发测试）
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(key);
+    // 方法3：从URL参数获取（仅用于开发测试，生产环境应禁用）
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const value = urlParams.get(key);
+      if (value && !value.includes('your_') && !value.includes('_here')) {
+        return value;
+      }
+    }
+    
+    return null;
   }
 
   // 测试连接
@@ -66,7 +82,7 @@ class SupabaseClient {
     }
 
     try {
-      const { data, error } = await this.client
+      const { error } = await this.client
         .from('users')
         .select('count')
         .limit(1);
@@ -92,7 +108,7 @@ class SupabaseClient {
     }
 
     try {
-      const { data, error } = await this.client
+      const { error } = await this.client
         .from('users')
         .upsert(userData, { onConflict: 'uuid' });
       

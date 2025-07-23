@@ -12,6 +12,7 @@
   --accent-green: #6BCF7F;
   --accent-purple: #A78BFA;
   --accent-red: #FF6B6B;
+  --primary-pink: #FF7B8B; /* 粉红色 */
   
   /* 背景色 */
   --bg-light: #F7F7F7;
@@ -134,7 +135,8 @@ body {
   margin-bottom: 20px;
 }
 
-/* 场景卡片样式 */
+/* 场景卡片样式 - 已被 ui-components.css 中的样式替代 */
+/* 
 .scenario-card {
   background: var(--bg-white);
   border: var(--doodle-border) var(--accent-green);
@@ -164,6 +166,7 @@ body {
   color: var(--text-medium);
   margin-bottom: 15px;
 }
+*/
 
 /* 选择按钮样式 */
 .choice-btn {
@@ -331,7 +334,7 @@ body {
 
 .game-interface {
   background: var(--bg-white);
-  border: var(--doodle-border) var(--primary-orange);
+  /* border: var(--doodle-border) var(--primary-orange); */
   border-radius: var(--doodle-radius);
   padding: 20px;
   box-shadow: var(--doodle-shadow);
@@ -737,7 +740,7 @@ body {
 /* 进度区域样式 */
 .progress-section {
   background: var(--bg-white);
-  border: var(--doodle-border) var(--accent-purple);
+  border: var(--doodle-border) var(--primary-pink);
   border-radius: var(--doodle-radius);
   padding: 14px;
   margin: 16px 0;

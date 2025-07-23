@@ -31,8 +31,8 @@
   --shadow-large: 0 8px 24px rgba(0,0,0,0.12);
   
   /* 字体 */
-  --font-primary: 'SimHei', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'SimHei', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-primary: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  --font-heading: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
   
   /* 动画 */
   --transition-fast: 0.15s ease;
@@ -796,7 +796,7 @@
 }
 
 .game-badge.info {
-  background-color: var(--info-color);
+  background-color: var(--secondary-color);
   color: var(--text-white);
 }
 
@@ -825,7 +825,7 @@
   color: var(--text-medium);
 }
 
-/* 场景卡片组件 - 基于截图中的风格，优化布局 */
+/* 场景卡片组件 - 基于测试文件中确定的样式 */
 .scenario-card {
   background-color: var(--bg-white);
   border: none;
@@ -836,11 +836,20 @@
   transition: all var(--transition-normal);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .scenario-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-large);
+}
+
+/* 无图片场景卡片样式 */
+.scenario-card.no-image {
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .scenario-card.completed {
@@ -960,31 +969,27 @@
   flex: 1;
 }
 
-/* 场景卡片图片 - 改进布局 */
-.scenario-image {
+/* 场景卡片图片 - 仅用于详情页，不用于场景卡片列表 */
+.scenario-detail-image {
   position: relative;
   overflow: hidden;
   border-radius: var(--border-radius);
   margin: 0;
-  height: 0;
-  padding-bottom: 30%; /* 控制图片高宽比 */
+  height: 250px;
 }
 
-.scenario-image img {
-  position: absolute;
-  top: 0;
-  left: 0;
+.scenario-detail-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: var(--border-radius);
   border: none;
   box-shadow: none;
-  transition: transform var(--transition-normal);
 }
 
-.scenario-card:hover .scenario-image img {
-  transform: scale(1.03);
+/* 场景卡片不显示图片 */
+.scenario-card .scenario-image {
+  display: none;
 }
 
 /* 替代布局：图片在左侧，内容在右侧 */
@@ -1049,7 +1054,7 @@
   transition: all var(--transition-normal);
   box-shadow: 0 4px 12px rgba(255, 123, 139, 0.3);
   height: 44px;
-  width: 120px;
+  min-width: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1059,6 +1064,37 @@
   background-color: #ff8c99;
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(255, 123, 139, 0.4);
+}
+
+/* 不同难度的开始按钮颜色 */
+.start-btn.difficulty-easy {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(76, 212, 255, 0.3);
+}
+
+.start-btn.difficulty-easy:hover {
+  background-color: #5ddbff;
+  box-shadow: 0 6px 16px rgba(76, 212, 255, 0.4);
+}
+
+.start-btn.difficulty-medium {
+  background-color: var(--warning-color);
+  box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+}
+
+.start-btn.difficulty-medium:hover {
+  background-color: #ffaa33;
+  box-shadow: 0 6px 16px rgba(255, 159, 28, 0.4);
+}
+
+.start-btn.difficulty-hard {
+  background-color: var(--danger-color);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.start-btn.difficulty-hard:hover {
+  background-color: #ff7c7c;
+  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
 }
 
 .completed-status {
@@ -1072,17 +1108,53 @@
   font-size: 16px;
   height: 44px;
   width: 120px;
-  background-color: rgba(93, 226, 144, 0.1);
+  background-color: transparent;
+  border: 2px solid var(--success-color);
   border-radius: var(--border-radius-pill);
-  box-shadow: 0 4px 12px rgba(93, 226, 144, 0.2);
+}
+
+/* 场景容器样式 */
+.scenarios-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 分组样式 */
+.section {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-small);
+}
+
+.section h2 {
+  color: var(--text-dark);
+  margin-top: 0;
+  font-weight: 600;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section h2 .section-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
 /* 场景列表样式 - 基于截图中的风格 */
 .scenario-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-lg);
-  margin: var(--spacing-lg) 0;
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0;
 }
 
 /* 场景图标样式 */
@@ -1294,7 +1366,7 @@
   }
 }
 
-/* 已完成按钮样式 - 禁用悬停效果 */
+/* 已完成按钮样式 - 基于测试文件样式 */
 .completed-btn {
   background-color: var(--success-color);
   color: var(--text-white);
@@ -1306,7 +1378,7 @@
   cursor: default;
   box-shadow: 0 4px 12px rgba(93, 226, 144, 0.3);
   height: 44px;
-  width: 120px;
+  min-width: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1330,7 +1402,7 @@
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
-/* 场景卡片难度标记 */
+/* 场景卡片难度和状态标记 - 基于测试文件样式 */
 .scenario-card.easy::after {
   content: '';
   position: absolute;
@@ -1370,4 +1442,78 @@
   z-index: 2;
 }
 
-/* 强制刷新 - 时间戳: 2025-07-22-12:30 */
+/* 已完成状态覆盖难度标记 */
+.scenario-card.completed::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 40px 40px 0;
+  border-color: transparent var(--success-color) transparent transparent;
+  z-index: 3;
+}
+
+/* 强制刷新 - 时间戳: 2025-07-22-12:30 *//*
+ 全局字体设置 - 确保所有文本都使用黑体 */
+body, button, input, select, textarea {
+  font-family: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif !important;
+}
+
+/* 强制使用黑体字体 */
+.scenario-card *,
+.section *,
+.scenario-detail * {
+  font-family: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif !important;
+}/* 场景详
+情页按钮颜色 */
+.game-btn.difficulty-easy.primary {
+  background-color: var(--secondary-color);
+  color: var(--text-white);
+}
+
+.game-btn.difficulty-easy.outline.primary {
+  background-color: rgba(76, 212, 255, 0.1);
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+}
+
+.game-btn.difficulty-medium.primary {
+  background-color: var(--warning-color);
+  color: var(--text-white);
+}
+
+.game-btn.difficulty-medium.outline.primary {
+  background-color: rgba(255, 159, 28, 0.1);
+  color: var(--warning-color);
+  border: 2px solid var(--warning-color);
+}
+
+.game-btn.difficulty-hard.primary {
+  background-color: var(--danger-color);
+  color: var(--text-white);
+}
+
+.game-btn.difficulty-hard.outline.primary {
+  background-color: rgba(255, 107, 107, 0.1);
+  color: var(--danger-color);
+  border: 2px solid var(--danger-color);
+}
+
+/* 悬停效果 */
+.game-btn.difficulty-easy:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-white);
+}
+
+.game-btn.difficulty-medium:hover {
+  background-color: var(--warning-color);
+  color: var(--text-white);
+}
+
+.game-btn.difficulty-hard:hover {
+  background-color: var(--danger-color);
+  color: var(--text-white);
+}

@@ -95,9 +95,9 @@ class GameEngine {
         </div>
 
         <!-- 场景列表 -->
-        <div class="scenarios-list">
+        <div class="scenarios-container">
           <h3>${user.completed_scenarios.length >= user.max_scenarios ? '已完成的冒险' : '选择你的挑战'}</h3>
-          ${availableScenarios.map(scenario => this.renderScenarioCard(scenario)).join('')}
+          ${this.renderScenariosByCategory(availableScenarios)}
         </div>
 
         <!-- 底部信息 -->
@@ -112,51 +112,149 @@ class GameEngine {
     this.bindScenarioEvents();
   }
 
+  // 按类别渲染场景
+  renderScenariosByCategory(scenarios) {
+    // 按类别分组场景
+    const categories = {
+      '社交排斥': {
+        icon: 'users',
+        color: 'var(--primary-color)',
+        scenarios: []
+      },
+      '言语欺凌': {
+        icon: 'message',
+        color: 'var(--secondary-color)',
+        scenarios: []
+      },
+      '网络欺凌': {
+        icon: 'wifi',
+        color: 'var(--info-color)',
+        scenarios: []
+      },
+      '身体欺凌': {
+        icon: 'shield',
+        color: 'var(--danger-color)',
+        scenarios: []
+      },
+      '财物欺凌': {
+        icon: 'clock',
+        color: 'var(--warning-color)',
+        scenarios: []
+      }
+    };
+
+    // 将场景分配到对应类别
+    scenarios.forEach(scenario => {
+      if (categories[scenario.category]) {
+        categories[scenario.category].scenarios.push(scenario);
+      }
+    });
+
+    // 渲染每个类别
+    return Object.entries(categories)
+      .filter(([_, categoryData]) => categoryData.scenarios.length > 0)
+      .map(([categoryName, categoryData]) => {
+        const scenarioCards = categoryData.scenarios
+          .map(scenario => this.renderScenarioCard(scenario))
+          .join('');
+
+        return `
+          <div class="section">
+            <h2>
+              <div class="section-icon" style="background-color: ${categoryData.color};">
+                ${this.getCategoryIcon(categoryName)}
+              </div>
+              ${categoryName}
+            </h2>
+            <div class="scenario-list">
+              ${scenarioCards}
+            </div>
+          </div>
+        `;
+      }).join('');
+  }
+
+  // 获取类别图标
+  getCategoryIcon(category) {
+    const icons = {
+      '社交排斥': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+        <circle cx="8" cy="12" r="4" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+        <path d="M16 12a4 4 0 110-8 4 4 0 010 8z" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+        <path d="M16 12a4 4 0 110 8 4 4 0 010-8z" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      </svg>`,
+      '言语欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      </svg>`,
+      '网络欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      </svg>`,
+      '身体欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+        <path d="M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      </svg>`,
+      '财物欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+        <circle cx="12" cy="12" r="10" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+        <path d="M12 6v6l4 2" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+      </svg>`
+    };
+    
+    return icons[category] || `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+      <circle cx="12" cy="12" r="10" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+    </svg>`;
+  }
+
   // 渲染场景卡片
   renderScenarioCard(scenario) {
     // 使用新的UI组件库渲染场景卡片
     if (window.UIComponents && typeof window.UIComponents.renderScenarioCard === 'function') {
-      const isCompleted = window.userSystem.user.completed_scenarios.includes(scenario.id);
+      const isCompleted = window.userSystem && window.userSystem.user && 
+                         window.userSystem.user.completed_scenarios && 
+                         Array.isArray(window.userSystem.user.completed_scenarios) &&
+                         window.userSystem.user.completed_scenarios.includes(scenario.id);
+      
+
+      
       return window.UIComponents.renderScenarioCard(scenario, isCompleted);
     }
 
     // 如果新的UI组件库不可用，使用旧的渲染方式
-    const isCompleted = window.userSystem.user.completed_scenarios.includes(scenario.id);
+    const isCompleted = window.userSystem && window.userSystem.user && 
+                       window.userSystem.user.completed_scenarios && 
+                       window.userSystem.user.completed_scenarios.includes(scenario.id);
 
-    let statusIcon, statusClass, actionButton;
-
-    if (isCompleted) {
-      statusIcon = '✅';
-      statusClass = 'completed';
-      // 已完成的场景只显示"已完成"状态
-      actionButton = `<div class="completed-status">已完成</div>`;
-    } else {
-      statusIcon = '🆕';
-      statusClass = 'new';
-      actionButton = `<button class="start-btn" data-scenario-id="${scenario.id}">开始挑战</button>`;
-    }
-
-    // 使用图片管理器获取场景图片
-    const imageHtml = window.imageManager ?
-      window.imageManager.generateImagePreview(scenario.id, 'medium') :
-      (scenario.image ?
-        `<div class="scenario-image">
-          <img src="${scenario.image}" alt="${scenario.title}" loading="lazy">
-        </div>` : '');
+    // 状态类和难度类
+    const statusClass = isCompleted ? 'completed' : 'new';
+    let difficultyClass = '';
+    if (scenario.difficulty === '简单') difficultyClass = 'easy';
+    else if (scenario.difficulty === '中等') difficultyClass = 'medium';
+    else if (scenario.difficulty === '困难') difficultyClass = 'hard';
+    
+    // 操作按钮
+    const actionButton = isCompleted 
+      ? `<div class="completed-status">
+          <span class="game-icon icon-small">
+            <svg viewBox="0 0 24 24" width="100%" height="100%">
+              <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          已完成
+        </div>`
+      : `<button class="start-btn difficulty-${difficultyClass}" data-scenario-id="${scenario.id}">开始挑战</button>`;
+    
+    // 难度徽章
+    let difficultyType = 'info';
+    if (scenario.difficulty === '简单') difficultyType = 'info';
+    else if (scenario.difficulty === '中等') difficultyType = 'warning';
+    else if (scenario.difficulty === '困难') difficultyType = 'danger';
 
     return `
-      <div class="scenario-card ${statusClass}" data-scenario-id="${scenario.id}">
+      <div class="scenario-card no-image ${difficultyClass} ${statusClass}" data-scenario-id="${scenario.id}">
         <div class="scenario-header">
-          <div class="scenario-title">
-            ${statusIcon} ${scenario.title}
-          </div>
+          <div class="scenario-title">${scenario.title}</div>
           <div class="scenario-meta">
-            <span class="difficulty ${scenario.difficulty.toLowerCase()}">${scenario.difficulty}</span>
-            <span class="category">${scenario.category}</span>
+            <span class="game-badge ${difficultyType}">${scenario.difficulty}</span>
+            <span class="game-badge">${scenario.category}</span>
           </div>
         </div>
-        
-        ${imageHtml}
         
         <div class="scenario-description">
           ${scenario.description}
@@ -520,3 +618,49 @@ class GameEngine {
 
 // 全局游戏引擎实例
 window.gameEngine = new GameEngine(); 
+
+// 全局函数
+window.startGame = function() {
+  if (window.gameEngine) {
+    window.gameEngine.startGame();
+  }
+};
+
+window.restartGame = function() {
+  if (window.userSystem) {
+    window.userSystem.clearUserData();
+  }
+};
+
+window.resetProgress = function() {
+  if (window.userSystem) {
+    const confirmReset = confirm('重新挑战将重置所有进度和成就，确定要继续吗？');
+    if (confirmReset) {
+      window.userSystem.resetUserProgress();
+      window.userSystem.showGameInterface();
+    }
+  }
+};
+
+window.goToHomepage = function() {
+  if (window.userSystem) {
+    window.userSystem.clearUserData();
+  }
+};
+
+window.copyUserID = function() {
+  if (window.userSystem && window.userSystem.user) {
+    navigator.clipboard.writeText(window.userSystem.user.uuid).then(() => {
+      alert('用户ID已复制到剪贴板');
+    }).catch(() => {
+      // 备用方案
+      const textArea = document.createElement('textarea');
+      textArea.value = window.userSystem.user.uuid;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('用户ID已复制到剪贴板');
+    });
+  }
+};

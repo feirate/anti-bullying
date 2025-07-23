@@ -97,17 +97,17 @@ class UserSystem {
           
           <div class="skill-points">
             <div class="skill-item">
-              ${UIComponents.renderIcon('empathy', 'medium')}
+              <div class="skill-icon">${UIComponents.renderIcon('empathy', 'large')}</div>
               <div class="skill-value">${this.user.empathy}</div>
               <div>同理心</div>
             </div>
             <div class="skill-item">
-              ${UIComponents.renderIcon('courage', 'medium')}
+              <div class="skill-icon">${UIComponents.renderIcon('courage', 'large')}</div>
               <div class="skill-value">${this.user.courage}</div>
               <div>勇气</div>
             </div>
             <div class="skill-item">
-              ${UIComponents.renderIcon('wisdom', 'medium')}
+              <div class="skill-icon">${UIComponents.renderIcon('wisdom', 'large')}</div>
               <div class="skill-value">${this.user.wisdom}</div>
               <div>智慧</div>
             </div>
@@ -123,13 +123,13 @@ class UserSystem {
             
             ${this.user.completed_scenarios.length > 0 ? 
               `<div class="replay-section">
-                <button class="game-btn primary" onclick="resetProgress()">重新挑战所有场景</button>
-                <button class="game-btn secondary" onclick="goToHomepage()">回到首页</button>
+                ${UIComponents.renderButton('重新挑战所有场景', 'resetProgress()', 'primary', 'medium')}
+                ${UIComponents.renderButton('回到首页', 'goToHomepage()', 'secondary', 'medium')}
               </div>` : ''
             }
           </div>
           
-          <div class="scenarios-section">
+          <div class="scenarios-container">
             <h3>选择你的挑战</h3>
             <div id="scenarios-list">
               <!-- 场景列表将通过游戏引擎动态加载 -->
@@ -163,9 +163,12 @@ class UserSystem {
     
     const scenariosList = document.getElementById('scenarios-list');
     if (scenariosList) {
-      scenariosList.innerHTML = availableScenarios.map(scenario => 
-        window.gameEngine.renderScenarioCard(scenario)
-      ).join('');
+      // 调试信息
+      console.log('加载场景列表，用户完成的场景:', this.user.completed_scenarios);
+      console.log('可用场景数量:', availableScenarios.length);
+      
+      // 使用分组方式渲染场景卡片
+      scenariosList.innerHTML = window.gameEngine.renderScenariosByCategory(availableScenarios);
       window.gameEngine.bindScenarioEvents();
     }
   }
@@ -207,14 +210,20 @@ class UserSystem {
 
   // 创建新用户
   createUser(grade) {
+    // 输入验证
+    if (!grade || grade < 1 || grade > 6) {
+      console.error('无效的年级值:', grade);
+      return;
+    }
+    
     const uuid = this.generateUUID();
     this.user = {
       uuid: uuid,
-      grade: grade,
+      grade: parseInt(grade), // 确保为数字类型
       empathy: 0,
       courage: 0,
       wisdom: 0,
-      completed_scenarios: [],
+      completed_scenarios: [], // 确保初始化为空数组
       achievements: [],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -223,8 +232,16 @@ class UserSystem {
     };
     
     this.saveUser();
-    // 直接跳转到游戏主界面（截图2）
-    this.showGameInterface();
+    
+    // 等待游戏数据加载完成后再显示游戏界面
+    if (window.gameEngine && window.gameEngine.gameData) {
+      this.showGameInterface();
+    } else {
+      // 如果游戏数据还没加载，等待一下
+      setTimeout(() => {
+        this.showGameInterface();
+      }, 100);
+    }
   }
 
   // 显示欢迎页面（优化UUID显示）
@@ -361,6 +378,8 @@ class UserSystem {
   saveUser() {
     localStorage.setItem('bgh_user', JSON.stringify(this.user));
     // TODO: 同步到 Supabase
+    // 注意：实现时需要使用环境变量中的API配置
+    // 示例：await supabaseClient.from('users').upsert(this.user)
   }
 
   // 加载用户数据
@@ -369,8 +388,16 @@ class UserSystem {
     if (savedUser) {
       this.user = JSON.parse(savedUser);
       // 兼容性修复：确保用户数据包含必要的属性
-      if (this.user && !this.user.max_scenarios) {
-        this.user.max_scenarios = this.maxScenariosPerGrade;
+      if (this.user) {
+        if (!this.user.max_scenarios) {
+          this.user.max_scenarios = this.maxScenariosPerGrade;
+        }
+        if (!this.user.completed_scenarios) {
+          this.user.completed_scenarios = [];
+        }
+        if (!this.user.achievements) {
+          this.user.achievements = [];
+        }
         this.saveUser();
       }
     }

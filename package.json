@@ -8,7 +8,9 @@
     "dev:alt": "npx serve -s . -p 8000",
     "start": "python3 -m http.server 8000",
     "build": "echo '静态网站，无需构建'",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "security:audit": "node scripts/security-audit.js",
+    "precommit": "npm run security:audit"
   },
   "keywords": ["anti-bullying", "game", "education"],
   "author": "feirate",

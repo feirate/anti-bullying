@@ -16,19 +16,8 @@ class ImageManager {
      * @returns {string} - 图片HTML
      */
     generateImagePreview(scenarioId, size = 'medium') {
-        const imagePath = this.getImageForScenario(scenarioId);
-        if (!imagePath) return '';
-        
-        // 对图片路径进行编码，确保中文字符正确处理
-        const encodedPath = encodeURI(imagePath);
-        
-        const sizeClass = size === 'large' ? 'scenario-image-large' : 'scenario-image';
-        
-        return `
-            <div class="${sizeClass}">
-                <img src="${encodedPath}" alt="场景图片" loading="lazy" onerror="this.onerror=null; this.src='data/pic/default.png';">
-            </div>
-        `;
+        // 不再生成图片HTML，返回空字符串
+        return '';
     }
 
     /**

@@ -52,40 +52,26 @@ function showScenarioDetail(scenarioId) {
   let buttonColor, buttonColorLight;
   switch(scenario.difficulty) {
     case "简单":
-      buttonColor = '#4CD4FF'; // 天蓝色
+      buttonColor = 'var(--secondary-color)'; // 天蓝色
       buttonColorLight = 'rgba(76, 212, 255, 0.1)';
       break;
     case "中等":
-      buttonColor = '#FF9F1C'; // 橙色
+      buttonColor = 'var(--warning-color)'; // 橙色
       buttonColorLight = 'rgba(255, 159, 28, 0.1)';
       break;
     case "困难":
-      buttonColor = '#FF6B6B'; // 红色
+      buttonColor = 'var(--danger-color)'; // 红色
       buttonColorLight = 'rgba(255, 107, 107, 0.1)';
       break;
     default:
-      buttonColor = '#4CD4FF'; // 默认天蓝色
+      buttonColor = 'var(--secondary-color)'; // 默认天蓝色
       buttonColorLight = 'rgba(76, 212, 255, 0.1)';
   }
   
   // 选项按钮 - 根据难度使用不同颜色
   const choicesHtml = scenario.choices ? scenario.choices.map((choice, index) => `
     <div class="scenario-choice">
-      <button class="scenario-choice-btn" style="
-        width: 100%;
-        padding: 15px 20px;
-        margin-bottom: 10px;
-        background-color: ${index === 0 ? buttonColor : buttonColorLight};
-        color: ${index === 0 ? 'white' : buttonColor};
-        border: ${index === 0 ? 'none' : '2px solid ' + buttonColor};
-        border-radius: 12px;
-        font-family: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-        font-size: 16px;
-        font-weight: normal;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: left;
-      " onclick="selectChoice('${choice.id}')" onmouseover="this.style.backgroundColor='${buttonColor}'; this.style.color='white';" onmouseout="this.style.backgroundColor='${index === 0 ? buttonColor : buttonColorLight}'; this.style.color='${index === 0 ? 'white' : buttonColor}';">
+      <button class="game-btn ${index === 0 ? 'primary' : 'outline primary'} full-width difficulty-${scenario.difficulty === '简单' ? 'easy' : scenario.difficulty === '中等' ? 'medium' : 'hard'}" style="margin-bottom: 10px; text-align: left;" onclick="selectChoice('${choice.id}')">
         ${choice.text}
       </button>
     </div>
@@ -96,7 +82,7 @@ function showScenarioDetail(scenarioId) {
       <div class="scenario-detail-header" style="background-color: ${headerColor};">
         <div class="scenario-detail-title">${scenario.title}</div>
         <div class="scenario-detail-meta">
-          <span class="game-badge">${scenario.difficulty}</span>
+          <span class="game-badge ${scenario.difficulty === '简单' ? 'info' : scenario.difficulty === '中等' ? 'warning' : 'danger'}">${scenario.difficulty}</span>
           <span class="game-badge">${scenario.category}</span>
         </div>
         <button class="scenario-detail-back" onclick="hideScenarioDetail()">
@@ -219,7 +205,7 @@ function selectChoice(choiceId) {
         <div class="scenario-detail-header" style="background-color: ${headerColor};">
           <div class="scenario-detail-title">${scenario.title}</div>
           <div class="scenario-detail-meta">
-            <span class="game-badge">${scenario.difficulty}</span>
+            <span class="game-badge ${scenario.difficulty === '简单' ? 'info' : scenario.difficulty === '中等' ? 'warning' : 'danger'}">${scenario.difficulty}</span>
             <span class="game-badge">${scenario.category}</span>
           </div>
           <button class="scenario-detail-back" onclick="hideScenarioDetail()">
@@ -240,9 +226,9 @@ function selectChoice(choiceId) {
             <div class="points-earned" style="margin-top: 20px;">
               <h4>获得的技能点：</h4>
               <div class="points-list" style="display: flex; gap: 15px; margin: 10px 0;">
-                ${choice.points.empathy !== 0 ? `<div style="padding: 8px 12px; background-color: var(--primary-color); color: white; border-radius: 8px; font-size: 14px;">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
-                ${choice.points.courage !== 0 ? `<div style="padding: 8px 12px; background-color: var(--warning-color); color: white; border-radius: 8px; font-size: 14px;">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
-                ${choice.points.wisdom !== 0 ? `<div style="padding: 8px 12px; background-color: var(--info-color); color: white; border-radius: 8px; font-size: 14px;">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
+                ${choice.points.empathy !== 0 ? `<span class="game-badge ${choice.points.empathy > 0 ? 'primary' : 'danger'}">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</span>` : ''}
+                ${choice.points.courage !== 0 ? `<span class="game-badge ${choice.points.courage > 0 ? 'warning' : 'danger'}">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</span>` : ''}
+                ${choice.points.wisdom !== 0 ? `<span class="game-badge ${choice.points.wisdom > 0 ? 'info' : 'danger'}">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</span>` : ''}
               </div>
             </div>
             

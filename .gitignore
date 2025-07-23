@@ -41,9 +41,18 @@ config/supabase.json
 # 其他敏感文件
 secrets.json
 api-keys.json
+*.key
+*.pem
+*.p12
+*.pfx
 
 # 配置文档（不提交到Git）
 supabase-setup.md
 vercel-deployment.md
 data/achievement-algorithm.md
 .vercel
+
+# 安全相关
+.env.local
+.env.*.local
+config/production.json

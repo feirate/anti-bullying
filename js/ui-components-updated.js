@@ -379,41 +379,43 @@ class UIComponents {
    * @returns {string} 场景卡片HTML
    */
   static renderScenarioCard(scenario, isCompleted = false) {
-    // 状态类和图标
+    // 确保isCompleted是布尔值
+    isCompleted = Boolean(isCompleted);
+    
+    // 状态类和难度类
     const statusClass = isCompleted ? 'completed' : 'new';
-    const statusIcon = isCompleted ? 'achievement' : 'star';
+    let difficultyClass = '';
+    if (scenario.difficulty === '简单') difficultyClass = 'easy';
+    else if (scenario.difficulty === '中等') difficultyClass = 'medium';
+    else if (scenario.difficulty === '困难') difficultyClass = 'hard';
     
     // 操作按钮
     const actionButton = isCompleted 
-      ? `<div class="completed-status">${this.renderBadge('已完成', 'success')}</div>`
-      : `<button class="start-btn" data-scenario-id="${scenario.id}">开始挑战</button>`;
-    
-    // 图片HTML
-    const imageHtml = scenario.image ? `
-      <div class="scenario-image">
-        <img src="${scenario.image}" alt="${scenario.title}" loading="lazy">
-      </div>
-    ` : '';
+      ? `<div class="completed-status">
+          <span class="game-icon icon-small">
+            <svg viewBox="0 0 24 24" width="100%" height="100%">
+              <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+          </span>
+          已完成
+        </div>`
+      : `<button class="start-btn difficulty-${difficultyClass}" data-scenario-id="${scenario.id}">开始挑战</button>`;
     
     // 难度徽章
-    let difficultyType = 'default';
-    if (scenario.difficulty === '简单') difficultyType = 'success';
+    let difficultyType = 'info';
+    if (scenario.difficulty === '简单') difficultyType = 'info';
     else if (scenario.difficulty === '中等') difficultyType = 'warning';
     else if (scenario.difficulty === '困难') difficultyType = 'danger';
     
     return `
-      <div class="scenario-card ${statusClass}" data-scenario-id="${scenario.id}">
+      <div class="scenario-card no-image ${difficultyClass} ${statusClass}" data-scenario-id="${scenario.id}">
         <div class="scenario-header">
-          <div class="scenario-title">
-            ${this.renderIcon(statusIcon, 'small')} ${scenario.title}
-          </div>
+          <div class="scenario-title">${scenario.title}</div>
           <div class="scenario-meta">
-            <span class="difficulty">${this.renderBadge(scenario.difficulty, difficultyType)}</span>
-            <span class="category">${this.renderBadge(scenario.category, 'default')}</span>
+            <span class="game-badge ${difficultyType}">${scenario.difficulty}</span>
+            <span class="game-badge">${scenario.category}</span>
           </div>
         </div>
-        
-        ${imageHtml}
         
         <div class="scenario-description">
           ${scenario.description}

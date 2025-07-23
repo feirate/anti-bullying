@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        persist-credentials: false # 避免使用默认 token
     
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -19,16 +22,20 @@ jobs:
         node-version: '18'
         
     - name: Install dependencies
-      run: npm install
+      run: npm install || echo "No package.json found, skipping install"
       
     - name: Build project
       run: npm run build || echo "No build script found, using static files"
       
+    - name: Create deployment directory
+      run: |
+        mkdir -p ./deploy
+        cp -r css data js index.html ./deploy/
+        
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
-        exclude_assets: '.github,.git,node_modules,.kiro,.specstory,.vercel,.vercelignore,deploy.sh,package.json,package-lock.json'
-        force_orphan: true
+        folder: ./deploy # 部署目录
+        branch: gh-pages # 部署分支
+        token: ${{ secrets.GITHUB_TOKEN }}
+        clean: true # 清理旧文件

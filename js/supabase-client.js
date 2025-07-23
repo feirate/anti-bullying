@@ -21,8 +21,8 @@ class SupabaseClient {
         return;
       }
 
-      // 动态导入Supabase客户端 - 建议本地化处理
-      // TODO: 建议将@supabase/supabase-js安装为本地依赖而非使用CDN
+      // 安全警告: 使用外部CDN存在安全风险，建议本地化处理
+      // TODO: 执行 npm install @supabase/supabase-js 并改为本地导入
       const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.39.0');
       this.client = createClient(supabaseUrl, supabaseKey);
       

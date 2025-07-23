@@ -169,7 +169,10 @@ class SecurityAudit {
            trimmed.includes('sensitivePatterns') || // 安全脚本本身
            trimmed.includes('requiredPatterns') || // 配置模式
            trimmed.includes('--disable-features') || // 系统进程参数
-           trimmed.includes('--enable-features'); // 系统进程参数
+           trimmed.includes('--enable-features') || // 系统进程参数
+           trimmed.includes('partialSemantic') || // TypeScript编译器参数
+           trimmed.includes('cancellationPipe') || // 编译器内部参数
+           trimmed.includes('http://www.w3.org/2000/svg'); // SVG命名空间
   }
 
   /**

@@ -8,7 +8,7 @@
       "grade_range": [1, 6],
       "description": "你在食堂里看到小明独自坐在一张桌子旁。附近的一群学生正在笑着指着小明，大声评论他的衣服和午餐。",
       "situation": "你注意到小明看起来很伤心和尴尬。你会怎么做？",
-      "image": "data/pic/社交排斥-午餐-1.png",
+      "image": "data/pic/lunch_table.png",
       "choices": [
         {
           "id": "ignore",
@@ -61,7 +61,7 @@
       "grade_range": [1, 6],
       "description": "你目睹有人在走廊里被叫名字和推搡。一个较大的学生正在欺负一个较小的学生。",
       "situation": "你看到这种情况，你会怎么做？",
-      "image": "data/pic/言语欺凌-走廊骚扰.png",
+      "image": "data/pic/hallway_harassment.png",
       "choices": [
         {
           "id": "walk_away",
@@ -114,7 +114,7 @@
       "grade_range": [3, 6],
       "description": "你在社交媒体上看到关于一个同学的恶意评论在传播。有人在群里发了一些不友善的话。",
       "situation": "你看到这些评论，你会怎么做？",
-      "image": "data/pic/网络欺凌-网络纷争.png",
+      "image": "data/pic/online_drama.png",
       "choices": [
         {
           "id": "ignore_online",
@@ -167,7 +167,7 @@
       "grade_range": [1, 6],
       "description": "一个较大的学生威胁要在放学后伤害某人。你听到他们在走廊里说这些话。",
       "situation": "你听到这种威胁，你会怎么做？",
-      "image": "data/pic/身体欺凌-对抗.png",
+      "image": "data/pic/confrontation.png",
       "choices": [
         {
           "id": "ignore_threat",
@@ -220,6 +220,7 @@
       "grade_range": [1, 6],
       "description": "你在厕所里听到隔壁传来推搡声和哭泣声。一个学生被几个大孩子围在角落里。",
       "situation": "你听到这种情况，你会怎么做？",
+      "image": "data/pic/default.png",
       "feedback": "虽然选择离开，但帮助他人是英雄的责任。",
       "choices": [
         {
@@ -272,6 +273,7 @@
       "grade_range": [1, 6],
       "description": "你看到几个大孩子在放学路上堵住一个较小的学生，要求他交出零花钱。",
       "situation": "你目睹这种勒索行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "walk_away",
@@ -324,6 +326,7 @@
       "grade_range": [1, 6],
       "description": "在体育课上，你看到几个学生故意在篮球比赛中推倒一个较弱的同学。",
       "situation": "你看到这种故意的身体攻击，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "ignore_pe",
@@ -376,6 +379,7 @@
       "grade_range": [1, 6],
       "description": "在课堂上，一个学生回答问题时发音不标准，其他同学开始嘲笑他。",
       "situation": "你看到这种嘲笑行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "laugh_along",
@@ -428,6 +432,7 @@
       "grade_range": [1, 6],
       "description": "你听到几个学生给一个同学起侮辱性的绰号，那个同学看起来很伤心。",
       "situation": "你听到这种侮辱性的绰号，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "join_in",
@@ -480,6 +485,7 @@
       "grade_range": [1, 6],
       "description": "你听到一个学生威胁另一个学生，说如果他不做某事就会告诉老师他作弊。",
       "situation": "你听到这种威胁，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "ignore_threat",
@@ -532,6 +538,7 @@
       "grade_range": [1, 6],
       "description": "你听到几个学生在传播关于一个同学的谣言，说一些不真实的事情。",
       "situation": "你听到这些谣言，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "spread_rumor",
@@ -584,6 +591,7 @@
       "grade_range": [1, 6],
       "description": "在课间游戏中，你看到几个学生故意不让一个同学参与游戏，说他'太笨了'。",
       "situation": "你看到这种排挤行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "join_exclusion",
@@ -636,6 +644,7 @@
       "grade_range": [1, 6],
       "description": "你注意到一个同学总是被安排坐在教室的角落里，其他同学都不愿意和他同桌。",
       "situation": "你看到这种孤立行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "avoid_victim",
@@ -688,6 +697,7 @@
       "grade_range": [1, 6],
       "description": "在班级活动中，你看到几个学生故意不让一个同学参与小组活动，说他'不适合'。",
       "situation": "你看到这种排斥行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "join_exclusion",
@@ -740,6 +750,7 @@
       "grade_range": [3, 6],
       "description": "你在班级群里看到有人对一个同学的照片发表了恶意评论，说一些不友善的话。",
       "situation": "你看到这些恶意评论，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "ignore_comments",
@@ -792,6 +803,7 @@
       "grade_range": [3, 6],
       "description": "你看到有人在群里恶意传播一个同学的尴尬照片，没有经过那个同学的同意。",
       "situation": "你看到这种恶意传播行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "ignore_sharing",
@@ -844,6 +856,7 @@
       "grade_range": [3, 6],
       "description": "你在班级群里看到几个人联合起来攻击一个同学，发了很多不友善的消息。",
       "situation": "你看到这种群聊攻击，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "ignore_attack",
@@ -896,6 +909,7 @@
       "grade_range": [1, 6],
       "description": "你看到几个大孩子威胁一个较小的学生，要求他每天给他们零花钱，否则就要打他。",
       "situation": "你看到这种勒索行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "ignore_extortion",
@@ -948,6 +962,7 @@
       "grade_range": [1, 6],
       "description": "你看到几个学生抢走了一个同学的文具盒和手机，那个同学在追着他们要。",
       "situation": "你看到这种抢夺行为，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "ignore_theft",
@@ -1000,6 +1015,7 @@
       "grade_range": [1, 6],
       "description": "你听到几个学生嘲笑一个学习很好的同学，说他'书呆子'，'只会读书'。",
       "situation": "你听到这种学习欺凌，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "join_mockery",
@@ -1052,6 +1068,7 @@
       "grade_range": [1, 6],
       "description": "你听到几个学生嘲笑一个同学的外貌，说他'太胖了'，'太丑了'。",
       "situation": "你听到这种外貌欺凌，你会怎么做？",
+      "image": "data/pic/default.png",
       "choices": [
         {
           "id": "join_mockery",

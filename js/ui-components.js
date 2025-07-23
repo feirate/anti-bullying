@@ -29,6 +29,24 @@ class UIComponents {
   }
   
   /**
+   * 压缩图片URL
+   * @param {string} imageUrl - 原始图片URL
+   * @param {number} width - 目标宽度
+   * @param {number} quality - 图片质量 (0-100)
+   * @returns {string} 处理后的图片URL
+   */
+  static compressImageUrl(imageUrl, width = 400, quality = 80) {
+    if (!imageUrl) return null;
+    
+    // 如果是本地图片，添加宽度和质量参数
+    if (imageUrl.startsWith('data/pic/')) {
+      return `${imageUrl}?w=${width}&q=${quality}`;
+    }
+    
+    return imageUrl;
+  }
+  
+  /**
    * 渲染按钮
    * @param {string} text - 按钮文本
    * @param {string} onClick - 点击事件处理函数名称
@@ -136,10 +154,13 @@ class UIComponents {
    * @returns {string} 卡片HTML
    */
   static renderCard(title, content, imageUrl = null, footer = null) {
+    // 压缩图片URL
+    const compressedImageUrl = this.compressImageUrl(imageUrl, 400, 80);
+    
     // 图片HTML
-    const imageHtml = imageUrl ? `
+    const imageHtml = compressedImageUrl ? `
       <div class="card-image">
-        <img src="${imageUrl}" alt="${title}" loading="lazy">
+        <img src="${compressedImageUrl}" alt="${title}" loading="lazy">
       </div>
     ` : '';
     
@@ -459,6 +480,9 @@ class UIComponents {
       </div>
     `).join('') : '';
     
+    // 压缩图片URL，场景详情页使用更高质量的图片
+    const compressedImageUrl = this.compressImageUrl(scenario.image, 800, 90);
+    
     return `
       <div class="scenario-detail">
         <div class="scenario-detail-header" style="background-color: ${headerColor};">
@@ -474,8 +498,8 @@ class UIComponents {
             </svg>
           </button>
         </div>
-        <div class="scenario-detail-image">
-          <img src="${scenario.image}" alt="${scenario.title}">
+        <div class="">
+          <img src="${compressedImageUrl}" alt="${scenario.title}">
         </div>
         <div class="scenario-detail-content">
           <div class="scenario-detail-description">${scenario.description}</div>

@@ -800,6 +800,11 @@
   color: var(--text-white);
 }
 
+.game-badge.primary {
+  background-color: var(--primary-color);
+  color: var(--text-white);
+}
+
 /* 技能点组件 */
 .skill-item {
   display: flex;
@@ -982,7 +987,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--border-radius);
+  /* border-radius: var(--border-radius); */
+  border-radius: 0; /* 取消圆角 */
   border: none;
   box-shadow: none;
 }

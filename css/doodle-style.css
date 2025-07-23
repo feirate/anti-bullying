@@ -12,21 +12,22 @@
   --accent-green: #6BCF7F;
   --accent-purple: #A78BFA;
   --accent-red: #FF6B6B;
-  --primary-pink: #FF7B8B; /* 粉红色 */
-  
+  --primary-pink: #FF7B8B;
+  /* 粉红色 */
+
   /* 背景色 */
   --bg-light: #F7F7F7;
   --bg-white: #FFFFFF;
-  
+
   /* 文字色 */
   --text-dark: #2C3E50;
   --text-medium: #34495E;
   --text-light: #7F8C8D;
-  
+
   /* 手绘效果 */
   --doodle-border: 3px solid;
-  --doodle-radius: 8px;
-  --doodle-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+  --doodle-radius: 8px; /* 恢复原来的圆角值 */
+  --doodle-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 /* 全局样式 */
@@ -62,12 +63,12 @@ body {
 
 .doodle-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
 }
 
 .doodle-btn:active {
   transform: translateY(0);
-  box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
 }
 
 /* 年级选择按钮 */
@@ -124,7 +125,7 @@ body {
   color: var(--primary-orange);
   text-align: center;
   margin-bottom: 16px;
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 .doodle-subtitle {
@@ -249,6 +250,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -301,11 +303,11 @@ body {
     margin: 8px;
     padding: 12px;
   }
-  
+
   .doodle-title {
     font-size: 1.8em;
   }
-  
+
   .grade-btn {
     min-width: 90px;
     padding: 10px 14px;
@@ -321,9 +323,23 @@ body {
   z-index: -1;
 }
 
-.decoration-1 { top: 10px; right: 10px; color: var(--accent-yellow); }
-.decoration-2 { bottom: 10px; left: 10px; color: var(--accent-green); }
-.decoration-3 { top: 50%; right: 20px; color: var(--accent-purple); }
+.decoration-1 {
+  top: 10px;
+  right: 10px;
+  color: var(--accent-yellow);
+}
+
+.decoration-2 {
+  bottom: 10px;
+  left: 10px;
+  color: var(--accent-green);
+}
+
+.decoration-3 {
+  top: 50%;
+  right: 20px;
+  color: var(--accent-purple);
+}
 
 /* 游戏主界面样式 */
 .game-interface-container {
@@ -568,7 +584,7 @@ body {
 
 .start-game-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
 }
 
 .welcome-actions {
@@ -594,7 +610,7 @@ body {
 .restart-btn:hover {
   background: #e74c3c;
   transform: translateY(-2px);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
 }
 
 /* 场景卡片新样式 */
@@ -683,7 +699,7 @@ body {
 .scenario-image img {
   max-width: 100%;
   height: auto;
-  border-radius: var(--doodle-radius);
+  border-radius: 0; /* 取消圆角 */
   border: 2px solid var(--primary-orange);
   box-shadow: var(--doodle-shadow);
   max-height: 200px;
@@ -699,7 +715,7 @@ body {
 .scenario-image-large img {
   max-width: 100%;
   height: auto;
-  border-radius: var(--doodle-radius);
+  border-radius: 0; /* 取消圆角 */
   border: 3px solid var(--primary-orange);
   box-shadow: var(--doodle-shadow);
   max-height: 300px;
@@ -711,7 +727,8 @@ body {
   justify-content: flex-end;
 }
 
-.start-btn, .replay-btn {
+.start-btn,
+.replay-btn {
   background: var(--secondary-blue);
   color: white;
   border: none;
@@ -723,7 +740,8 @@ body {
   transition: all 0.3s ease;
 }
 
-.start-btn:hover, .replay-btn:hover {
+.start-btn:hover,
+.replay-btn:hover {
   background: var(--primary-orange);
   transform: translateY(-1px);
 }
@@ -800,7 +818,7 @@ body {
 .replay-all-btn:hover {
   background: #8b5cf6;
   transform: translateY(-1px);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
 }
 
 .homepage-btn {
@@ -820,7 +838,7 @@ body {
 .homepage-btn:hover {
   background: #10b981;
   transform: translateY(-1px);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
 }
 
 /* 响应式设计 */
@@ -828,22 +846,22 @@ body {
   .hero-title {
     font-size: 36px;
   }
-  
+
   .core-skills {
     grid-template-columns: 1fr;
   }
-  
+
   .grade-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .scenario-header {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .scenario-meta {
     align-self: flex-start;
   }
-} 
+}

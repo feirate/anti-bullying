@@ -48,28 +48,34 @@ class GameEngine {
     );
 
     const mainMenu = `
-      <div class="doodle-container">
-        <div class="doodle-title">英雄之旅</div>
-        <div class="doodle-subtitle">欢迎回来，${user.grade}年级的小英雄！</div>
-        
-        <!-- 技能点显示 -->
-        <div class="skill-points">
-          <div class="skill-item">
-            <div class="skill-icon">E</div>
-            <div class="skill-value">${user.empathy}</div>
-            <div>同理心</div>
+      <div class="game-interface-container">
+        <div class="game-interface">
+          <div class="user-info">
+            <h2>英雄之旅</h2>
+            <div class="user-id-display" title="点击复制用户ID" onclick="copyUserID()">
+              <span class="user-id-text">ID: ${user.uuid}</span>
+              <span class="copy-hint">点击复制</span>
+            </div>
           </div>
-          <div class="skill-item">
-            <div class="skill-icon">C</div>
-            <div class="skill-value">${user.courage}</div>
-            <div>勇气</div>
+          
+          <!-- 技能点显示 -->
+          <div class="skill-points">
+            <div class="skill-item">
+              <div class="skill-icon">${UIComponents.renderIcon('empathy', 'large')}</div>
+              <div class="skill-value">${user.empathy}</div>
+              <div>同理心</div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-icon">${UIComponents.renderIcon('courage', 'large')}</div>
+              <div class="skill-value">${user.courage}</div>
+              <div>勇气</div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-icon">${UIComponents.renderIcon('wisdom', 'large')}</div>
+              <div class="skill-value">${user.wisdom}</div>
+              <div>智慧</div>
+            </div>
           </div>
-          <div class="skill-item">
-            <div class="skill-icon">W</div>
-            <div class="skill-value">${user.wisdom}</div>
-            <div>智慧</div>
-          </div>
-        </div>
 
         <!-- 进度信息 -->
         <div class="progress-section">
@@ -82,8 +88,8 @@ class GameEngine {
           
           ${user.completed_scenarios.length > 0 ?
         `<div class="replay-section">
-              <button class="replay-all-btn" onclick="resetProgress()">重新挑战所有场景</button>
-              <button class="homepage-btn" onclick="goToHomepage()">回到首页</button>
+              <button class="game-btn danger" onclick="resetProgress()">重新挑战所有场景</button>
+              <button class="game-btn success" onclick="goToHomepage()">回到首页</button>
             </div>` : ''
       }
           
@@ -95,7 +101,7 @@ class GameEngine {
         </div>
 
         <!-- 场景列表 -->
-        <div class="scenarios-container">
+        <div class="scenarios-section">
           <h3>${user.completed_scenarios.length >= user.max_scenarios ? '已完成的冒险' : '选择你的挑战'}</h3>
           ${this.renderScenariosByCategory(availableScenarios)}
         </div>
@@ -106,6 +112,7 @@ class GameEngine {
           <p>有问题？关注微信公众号《摸鱼读书》</p>
         </div>
       </div>
+    </div>
     `;
 
     document.getElementById('app').innerHTML = mainMenu;

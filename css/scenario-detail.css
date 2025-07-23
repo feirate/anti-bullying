@@ -1,7 +1,7 @@
 /* 场景详情页样式 - 全局使用黑体字体 */
 .scenario-detail {
   background-color: var(--bg-white);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius); /* 保持使用变量 */
   overflow: hidden;
   box-shadow: var(--shadow-medium);
   margin-bottom: var(--spacing-lg);
@@ -41,12 +41,14 @@
   width: 100%;
   height: 250px;
   overflow: hidden;
+  border-radius: 0; /* 明确指定无圆角 */
 }
 
 .scenario-detail-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 0; /* 明确指定图片无圆角 */
 }
 
 .scenario-detail-content {
@@ -155,7 +157,7 @@
 
 .modal {
   background-color: var(--bg-white);
-  border-radius: var(--border-radius);
+  border-radius: 20px; /* 修改为更大的圆角 */
   width: 90%;
   max-width: 600px;
   max-height: 90vh;

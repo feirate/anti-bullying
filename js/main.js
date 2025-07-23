@@ -123,12 +123,8 @@ document.addEventListener('visibilitychange', function() {
 
 // 键盘快捷键
 document.addEventListener('keydown', function(e) {
-  // ESC键返回主菜单
-  if (e.key === 'Escape') {
-    if (window.gameEngine) {
-      window.gameEngine.showMainMenu();
-    }
-  }
+  // ESC键功能已移除，防止意外触发界面切换
+  // 如果需要返回主菜单，请使用界面上的按钮
   
   // Ctrl+R 刷新页面
   if (e.ctrlKey && e.key === 'r') {

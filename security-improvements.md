@@ -12,8 +12,8 @@ npm install @lottiefiles/lottie-player
 
 # 下载Google Fonts到本地
 mkdir -p assets/fonts
-wget -O assets/fonts/indie-flower.woff2 "https://fonts.gstatic.com/s/indieflower/v17/m8JVjfNVeKWVnh3QMuKkFcZVaUuH.woff2"
-wget -O assets/fonts/comic-neue.woff2 "https://fonts.gstatic.com/s/comicneue/v8/4UaHrEJGsxNmFTPDnkaJx63j5pN1MwI.woff2"
+curl -o assets/fonts/indie-flower.woff2 "https://fonts.gstatic.com/s/indieflower/v17/m8JVjfNVeKWVnh3QMuKkFcZVaUuH.woff2"
+curl -o assets/fonts/comic-neue.woff2 "https://fonts.gstatic.com/s/comicneue/v8/4UaHrEJGsxNmFTPDnkaJx63j5pN1MwI.woff2"
 ```
 
 ### 2. 更新导入方式

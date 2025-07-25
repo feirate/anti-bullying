@@ -203,6 +203,129 @@
   font-family: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif !important;
 }
 
+/* 平板端优化 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .scenario-detail {
+    max-width: 700px;
+    margin: 0 auto var(--spacing-lg) auto;
+  }
+  
+  .scenario-detail-header {
+    padding: var(--spacing-lg);
+  }
+  
+  .scenario-detail-title {
+    font-size: 26px;
+  }
+  
+  .scenario-detail-image {
+    height: 280px;
+  }
+  
+  .scenario-detail-content {
+    padding: var(--spacing-lg);
+  }
+  
+  .scenario-detail-description {
+    font-size: 17px;
+  }
+  
+  .scenario-choice button {
+    font-size: 17px;
+    padding: 14px 20px;
+  }
+}
+
+/* PC端优化 */
+@media (min-width: 1024px) {
+  .scenario-detail {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-lg) auto;
+    box-shadow: var(--shadow-large);
+  }
+  
+  .scenario-detail-header {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+  
+  .scenario-detail-title {
+    font-size: 28px;
+  }
+  
+  .scenario-detail-image {
+    height: 300px;
+  }
+  
+  .scenario-detail-content {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+  
+  .scenario-detail-description {
+    font-size: 18px;
+    line-height: 1.7;
+  }
+  
+  .scenario-detail-situation h3 {
+    font-size: 20px;
+  }
+  
+  .scenario-choice button {
+    font-size: 18px;
+    padding: 16px 24px;
+  }
+  
+  .scenario-detail-actions {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+  
+  .scenario-detail-actions button {
+    font-size: 18px;
+    padding: 14px 32px;
+  }
+  
+  .points-earned h4 {
+    font-size: 18px;
+  }
+  
+  .skill-point {
+    font-size: 16px;
+    padding: 10px 20px;
+    min-width: 100px;
+  }
+}
+
+/* 大屏幕进一步优化 */
+@media (min-width: 1440px) {
+  .scenario-detail {
+    max-width: 900px;
+  }
+  
+  .scenario-detail-header {
+    padding: var(--spacing-2xl) var(--spacing-xl);
+  }
+  
+  .scenario-detail-title {
+    font-size: 32px;
+  }
+  
+  .scenario-detail-image {
+    height: 350px;
+  }
+  
+  .scenario-detail-content {
+    padding: var(--spacing-2xl) var(--spacing-xl);
+  }
+  
+  .scenario-detail-description {
+    font-size: 20px;
+  }
+  
+  .scenario-choice button {
+    font-size: 20px;
+    padding: 18px 28px;
+  }
+}
+
 /* 标题使用粗体 */
 .scenario-detail h1,
 .scenario-detail h2,

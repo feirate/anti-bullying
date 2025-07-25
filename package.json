@@ -10,9 +10,11 @@
     "build": "echo '静态网站，无需构建'",
     "deploy": "vercel --prod",
     "security:audit": "node scripts/security-audit.js",
-    "security:check": "node scripts/security-audit.js",
-    "precommit": "npm run security:audit",
-    "test:security": "npm run security:audit && echo '安全检查通过'"
+    "security:check": "node scripts/security-check.js",
+    "security:enhanced": "node scripts/security-check-enhanced.js",
+    "security:precommit": "node scripts/pre-commit-security.js",
+    "precommit": "npm run security:precommit",
+    "test:security": "npm run security:check && echo '安全检查通过'"
   },
   "keywords": ["anti-bullying", "game", "education"],
   "author": "feirate",

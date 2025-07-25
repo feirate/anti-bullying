@@ -93,7 +93,7 @@ function showScenarioDetail(scenarioId) {
         </button>
       </div>
       <div class="scenario-detail-image">
-        <img src="${scenario.image}" alt="${scenario.title}" onerror="this.src='https://via.placeholder.com/800x400?text=场景图片'">
+        <img src="${scenario.image}" alt="${scenario.title}" onerror="this.src='data/pic/default.png'">
       </div>
       <div class="scenario-detail-content">
         <div class="scenario-detail-description">${scenario.description}</div>
@@ -216,7 +216,7 @@ function selectChoice(choiceId) {
           </button>
         </div>
         <div class="scenario-detail-image">
-          <img src="${scenario.image}" alt="${scenario.title}" onerror="this.src='https://via.placeholder.com/800x400?text=场景图片'">
+          <img src="${scenario.image}" alt="${scenario.title}" onerror="this.src='data/pic/default.png'">
         </div>
         <div class="scenario-detail-content">
           <div class="scenario-detail-description">

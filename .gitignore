@@ -50,6 +50,14 @@ api-keys.json
 *.p12
 *.pfx
 
+# 防止意外提交敏感配置
+*secret*
+*password*
+*credential*
+*token*
+.env.backup
+.env.*.backup
+
 # 配置文档（不提交到Git）
 supabase-setup.md
 vercel-deployment.md

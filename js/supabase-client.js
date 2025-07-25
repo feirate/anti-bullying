@@ -21,9 +21,13 @@ class SupabaseClient {
         return;
       }
 
-      // 安全警告: 使用外部CDN存在安全风险，建议本地化处理
-      // TODO: 执行 npm install @supabase/supabase-js 并改为本地导入
-      const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.39.0');
+      // 使用本地安装的Supabase客户端
+      // 执行: npm install @supabase/supabase-js
+      if (typeof window.supabase === 'undefined') {
+        console.error('Supabase客户端库未加载，请确保已正确引入');
+        throw new Error('Supabase客户端库未找到');
+      }
+      const { createClient } = window.supabase;
       this.client = createClient(supabaseUrl, supabaseKey);
       
       this.isInitialized = true;
@@ -40,38 +44,32 @@ class SupabaseClient {
 
   // 获取环境变量
   getEnvironmentVariable(key) {
-    // 在浏览器环境中，环境变量通常通过全局变量或meta标签提供
-    // 这里使用一个简单的实现，实际部署时需要根据具体环境调整
+    // 使用CoreUtils，如果不可用则使用内联实现
+    if (window.CoreUtils) {
+      return CoreUtils.getEnvVar(key);
+    }
     
-    // 方法1：从meta标签获取
+    // 降级实现
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env[key] || '';
+    }
+    
     const metaTag = document.querySelector(`meta[name="${key}"]`);
     if (metaTag) {
       const value = metaTag.getAttribute('content');
-      // 验证不是占位符值
       if (value && !value.includes('your_') && !value.includes('_here')) {
         return value;
       }
     }
     
-    // 方法2：从全局变量获取
     if (window.ENV && window.ENV[key]) {
       const value = window.ENV[key];
-      // 验证不是占位符值
       if (value && !value.includes('your_') && !value.includes('_here')) {
         return value;
       }
     }
     
-    // 方法3：从URL参数获取（仅用于开发测试，生产环境应禁用）
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      const urlParams = new URLSearchParams(window.location.search);
-      const value = urlParams.get(key);
-      if (value && !value.includes('your_') && !value.includes('_here')) {
-        return value;
-      }
-    }
-    
-    return null;
+    return '';
   }
 
   // 测试连接
@@ -154,31 +152,48 @@ class SupabaseClient {
 
   // 本地存储备用方案
   saveToLocalStorage(userData) {
-    try {
-      localStorage.setItem('bgh_user', JSON.stringify(userData));
-      console.log('用户数据已保存到本地存储');
-      return true;
-    } catch (error) {
-      console.error('本地存储失败:', error);
-      return false;
+    let success = false;
+    
+    // 使用CoreUtils存储，如果不可用则使用内联实现
+    if (window.CoreUtils) {
+      success = CoreUtils.storage.set('bgh_user', userData);
+    } else {
+      try {
+        localStorage.setItem('bgh_user', JSON.stringify(userData));
+        success = true;
+      } catch (e) {
+        console.warn('保存到本地存储失败:', e);
+        success = false;
+      }
     }
+    
+    if (success) {
+      console.log('用户数据已保存到本地存储');
+    }
+    return success;
   }
 
   getFromLocalStorage(uuid) {
-    try {
-      const savedUser = localStorage.getItem('bgh_user');
-      if (savedUser) {
-        const userData = JSON.parse(savedUser);
-        if (userData.uuid === uuid) {
-          console.log('从本地存储获取用户数据');
-          return userData;
-        }
+    let userData = null;
+    
+    // 使用CoreUtils存储，如果不可用则使用内联实现
+    if (window.CoreUtils) {
+      userData = CoreUtils.storage.get('bgh_user');
+    } else {
+      try {
+        const item = localStorage.getItem('bgh_user');
+        userData = item ? JSON.parse(item) : null;
+      } catch (e) {
+        console.warn('读取本地存储失败:', e);
+        userData = null;
       }
-      return null;
-    } catch (error) {
-      console.error('本地存储读取失败:', error);
-      return null;
     }
+    
+    if (userData && userData.uuid === uuid) {
+      console.log('从本地存储获取用户数据');
+      return userData;
+    }
+    return null;
   }
 
   // 获取用户统计信息

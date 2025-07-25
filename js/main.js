@@ -24,24 +24,72 @@ function startGame() {
 }
 
 // 全局函数：复制用户ID
-function copyUserID() {
+async function copyUserID() {
   const user = window.userSystem?.user;
   if (user && user.uuid) {
-    navigator.clipboard.writeText(user.uuid).then(() => {
-      // 显示复制成功提示
+    let success = false;
+    
+    // 优先使用ClipboardUtils
+    if (window.ClipboardUtils) {
+      success = await ClipboardUtils.copyToClipboard(user.uuid);
+    } else if (window.CoreUtils) {
+      success = await CoreUtils.copyToClipboard(user.uuid);
+    } else {
+      // 降级实现
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(user.uuid);
+          success = true;
+        } catch (e) {
+          console.warn('现代剪贴板API失败');
+        }
+      }
+      
+      if (!success) {
+        const textArea = document.createElement('textarea');
+        textArea.value = user.uuid;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        textArea.setAttribute('readonly', '');
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          // 使用现代剪贴板API替代废弃的execCommand
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(user.uuid);
+            success = true;
+          } else {
+            success = false;
+          }
+        } catch (err) {
+          console.warn('现代剪贴板API失败:', err);
+          success = false;
+        }
+        document.body.removeChild(textArea);
+      }
+    }
+    
+    if (success) {
       const copyHint = document.querySelector('.copy-hint');
       if (copyHint) {
         const originalText = copyHint.textContent;
-        copyHint.textContent = '已复制！';
+        copyHint.textContent = '已复制';
         copyHint.style.color = '#4CAF50';
         setTimeout(() => {
           copyHint.textContent = originalText;
           copyHint.style.color = '';
         }, 2000);
+      } else {
+        alert('用户ID已复制到剪贴板');
       }
-    }).catch(() => {
+    } else {
       alert('复制失败，请手动复制：' + user.uuid);
-    });
+    }
+  } else {
+    alert('用户信息不可用');
   }
 }
 

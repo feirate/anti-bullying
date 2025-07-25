@@ -1,51 +1,4 @@
-/* UI组件库样式 */
-
-/* 基础变量 */
-:root {
-  /* 主色调 - 基于截图中的风格 */
-  --primary-color: #FF7B8B; /* 粉红色 */
-  --secondary-color: #4CD4FF; /* 天蓝色 */
-  --accent-color: #FFD93D; /* 黄色 */
-  --success-color: #5DE290; /* 绿色 */
-  --warning-color: #FF9F1C; /* 橙色 */
-  --danger-color: #FF6B6B; /* 红色 */
-  --info-color: #7B8CFF; /* 蓝紫色 */
-  
-  /* 背景色 */
-  --bg-light: #F7F7F7;
-  --bg-white: #FFFFFF;
-  --bg-dark: #1E1E1E; /* 深色模式背景 */
-  
-  /* 文字色 */
-  --text-dark: #333333;
-  --text-medium: #666666;
-  --text-light: #999999;
-  --text-white: #FFFFFF;
-  
-  /* 边框和阴影 */
-  --border-radius: 16px; /* 更圆润的边角 */
-  --border-radius-pill: 999px; /* 胶囊形状 */
-  --border-width: 1px;
-  --shadow-small: 0 2px 8px rgba(0,0,0,0.08);
-  --shadow-medium: 0 4px 12px rgba(0,0,0,0.1);
-  --shadow-large: 0 8px 24px rgba(0,0,0,0.12);
-  
-  /* 字体 */
-  --font-primary: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-  --font-heading: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-  
-  /* 动画 */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
-  --transition-slow: 0.4s ease;
-  
-  /* 间距 */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-}
+/* UI组件库样式 - 专用组件 */
 
 /* 图标组件 */
 .game-icon {
@@ -75,6 +28,7 @@
   width: 32px;
   height: 32px;
 }
+
 
 /* 按钮组件 - 基于截图中的风格 */
 .game-btn {
@@ -504,12 +458,6 @@
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .homepage-features {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* 年级选择卡片 */
 .grade-selection-card {
   background-color: var(--bg-white);
@@ -821,7 +769,7 @@
 .skill-value {
   font-family: var(--font-primary);
   font-weight: 700;
-  font-size: 1.2em;
+  font-size: 2.4em;
   color: var(--text-dark);
 }
 
@@ -1120,6 +1068,13 @@
 }
 
 /* 场景容器样式 */
+.game-interface {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 场景容器样式 */
 .scenarios-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -1366,10 +1321,6 @@
   .grade-button-group .game-btn {
     width: 100%;
   }
-  
-  .homepage-features {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* 已完成按钮样式 - 基于测试文件样式 */
@@ -1522,4 +1473,10 @@ body, button, input, select, textarea {
 .game-btn.difficulty-hard:hover {
   background-color: var(--danger-color);
   color: var(--text-white);
+}
+
+/* 全宽按钮样式 */
+.game-btn.full-width {
+  width: 100%;
+  min-width: auto;
 }

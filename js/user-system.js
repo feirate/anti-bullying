@@ -18,23 +18,21 @@ class UserSystem {
   showHomePage() {
     const homePage = `
       <div class="homepage-container">
-        <div class="hero-section">
-          <h1 class="hero-title">反霸凌小英雄</h1>
-          <p class="hero-subtitle">学习站出来并说出来</p>
+        <div class="homepage-content">
+          <div id="homepage-card"></div>
+          
+          <div>
+            <div id="grade-selection"></div>
+            <div id="tip-card"></div>
+          </div>
         </div>
-        
-        <div id="homepage-card"></div>
-        
-        <div id="grade-selection"></div>
-        
-        <div id="tip-card"></div>
       </div>
     `;
-    
+
     const appElement = document.getElementById('app');
     if (appElement) {
       appElement.innerHTML = homePage;
-      
+
       // 渲染首页综合卡片（包含欢迎信息和三个特性）
       document.getElementById('homepage-card').innerHTML = UIComponents.renderHomepageCard(
         '欢迎来到反霸凌小英雄！',
@@ -58,7 +56,7 @@ class UserSystem {
         ],
         'primary'
       );
-      
+
       // 渲染年级选择卡片
       document.getElementById('grade-selection').innerHTML = UIComponents.renderGradeSelectionCard(
         '选择你的年级',
@@ -68,14 +66,14 @@ class UserSystem {
         'selectGrade',
         'secondary'
       );
-      
+
       // 渲染提示卡片
       document.getElementById('tip-card').innerHTML = UIComponents.renderTipCard(
         '记住：每个英雄都始于一个勇敢的行动。你拥有改变力量！',
         'star',
         'warning'
       );
-      
+
       this.bindGradeSelectionEvents();
     } else {
       console.error('找不到app元素');
@@ -89,10 +87,6 @@ class UserSystem {
         <div class="game-interface">
           <div class="user-info">
             <h2>欢迎回来，${this.user.grade}年级的小英雄！</h2>
-            <div class="user-id-display" title="点击复制用户ID" onclick="copyUserID()">
-              <span class="user-id-text">ID: ${this.user.uuid}</span>
-              <span class="copy-hint">点击复制</span>
-            </div>
           </div>
           
           <div class="skill-points">
@@ -121,28 +115,27 @@ class UserSystem {
               </div>
             </div>
             
-            ${this.user.completed_scenarios.length > 0 ? 
-              `<div class="replay-section">
-                ${UIComponents.renderButton('重新挑战所有场景', 'resetProgress()', 'primary', 'medium')}
+            ${this.user.completed_scenarios.length > 0 ?
+        `<div class="replay-section">
+                ${UIComponents.renderButton('重新挑战', 'resetProgress()', 'primary', 'medium')}
                 ${UIComponents.renderButton('回到首页', 'goToHomepage()', 'secondary', 'medium')}
               </div>` : ''
-            }
-          </div>
-          
-          <div class="scenarios-container">
+      }
+          </div> 
+        </div>
+         <div class="scenarios-container">
             <h3>选择你的挑战</h3>
             <div id="scenarios-list">
               <!-- 场景列表将通过游戏引擎动态加载 -->
             </div>
           </div>
-        </div>
       </div>
     `;
-    
+
     const appElement = document.getElementById('app');
     if (appElement) {
       appElement.innerHTML = gameInterface;
-      
+
       // 加载场景列表
       if (window.gameEngine && window.gameEngine.gameData) {
         this.loadScenariosList();
@@ -155,18 +148,18 @@ class UserSystem {
   // 加载场景列表
   loadScenariosList() {
     if (!this.user || !window.gameEngine || !window.gameEngine.gameData) return;
-    
+
     const availableScenarios = this.getAvailableScenarios(
-      window.gameEngine.gameData.scenarios, 
+      window.gameEngine.gameData.scenarios,
       this.user.grade
     );
-    
+
     const scenariosList = document.getElementById('scenarios-list');
     if (scenariosList) {
       // 调试信息
       console.log('加载场景列表，用户完成的场景:', this.user.completed_scenarios);
       console.log('可用场景数量:', availableScenarios.length);
-      
+
       // 使用分组方式渲染场景卡片
       scenariosList.innerHTML = window.gameEngine.renderScenariosByCategory(availableScenarios);
       window.gameEngine.bindScenarioEvents();
@@ -181,7 +174,7 @@ class UserSystem {
         console.error('无效的年级值:', grade);
         return;
       }
-      
+
       // 处理中文年级名称
       const gradeMap = {
         '一年级': 1,
@@ -191,7 +184,7 @@ class UserSystem {
         '五年级': 5,
         '六年级': 6
       };
-      
+
       if (gradeMap[grade]) {
         this.createUser(gradeMap[grade]);
       } else {
@@ -201,7 +194,7 @@ class UserSystem {
           console.error('无法从年级中提取数字:', grade);
           return;
         }
-        
+
         const gradeNumber = parseInt(match[0]);
         this.createUser(gradeNumber);
       }
@@ -215,7 +208,7 @@ class UserSystem {
       console.error('无效的年级值:', grade);
       return;
     }
-    
+
     const uuid = this.generateUUID();
     this.user = {
       uuid: uuid,
@@ -230,9 +223,9 @@ class UserSystem {
       scenario_progress: 0, // 当前场景进度
       max_scenarios: this.maxScenariosPerGrade
     };
-    
+
     this.saveUser();
-    
+
     // 等待游戏数据加载完成后再显示游戏界面
     if (window.gameEngine && window.gameEngine.gameData) {
       this.showGameInterface();
@@ -250,10 +243,6 @@ class UserSystem {
       <div class="welcome-container">
         <div class="welcome-header">
           <h1>欢迎回来，${this.user.grade}年级的小英雄！</h1>
-          <div class="user-id-display" title="点击复制用户ID" onclick="copyUserID()">
-            <span class="user-id-text">ID: ${this.user.uuid}</span>
-            <span class="copy-hint">点击复制</span>
-          </div>
         </div>
         
         <div class="skill-points">
@@ -291,7 +280,7 @@ class UserSystem {
         </div>
       </div>
     `;
-    
+
     const appElement = document.getElementById('app');
     if (appElement) {
       appElement.innerHTML = welcomePage;
@@ -300,7 +289,22 @@ class UserSystem {
 
   // 生成UUID
   generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    // 使用CoreUtils，如果不可用则使用内联实现
+    if (window.CoreUtils) {
+      return CoreUtils.generateUUID();
+    }
+
+    // 使用更安全的随机数生成
+    if (window.crypto && window.crypto.getRandomValues) {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = window.crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    // 降级实现
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = Math.random() * 16 | 0;
       const v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
@@ -330,20 +334,29 @@ class UserSystem {
   // 获取可用场景列表
   getAvailableScenarios(scenarios, grade) {
     const filteredScenarios = this.filterScenariosByGrade(scenarios, grade);
-    
+
     // 如果已完成场景数量达到上限，只显示已完成的场景
     if (this.user.completed_scenarios.length >= this.maxScenariosPerGrade) {
-      return filteredScenarios.filter(scenario => 
+      return filteredScenarios.filter(scenario =>
         this.user.completed_scenarios.includes(scenario.id)
       );
     }
-    
+
     return filteredScenarios;
   }
 
   // 清除用户数据，返回首页
   clearUserData() {
-    localStorage.removeItem('bgh_user');
+    // 使用CoreUtils存储，如果不可用则使用内联实现
+    if (window.CoreUtils) {
+      CoreUtils.storage.remove('bgh_user');
+    } else {
+      try {
+        localStorage.removeItem('bgh_user');
+      } catch (e) {
+        console.warn('删除用户数据失败:', e);
+      }
+    }
     this.user = null;
     this.showHomePage();
   }
@@ -367,7 +380,7 @@ class UserSystem {
         </button>
       </div>
     `;
-    
+
     const appElement = document.getElementById('app');
     if (appElement) {
       appElement.innerHTML = userIDDisplay;
@@ -376,17 +389,44 @@ class UserSystem {
 
   // 保存用户数据
   saveUser() {
-    localStorage.setItem('bgh_user', JSON.stringify(this.user));
-    // TODO: 同步到 Supabase
-    // 注意：实现时需要使用环境变量中的API配置
-    // 示例：await supabaseClient.from('users').upsert(this.user)
+    // 使用CoreUtils存储，如果不可用则使用内联实现
+    if (window.CoreUtils) {
+      CoreUtils.storage.set('bgh_user', this.user);
+    } else {
+      try {
+        localStorage.setItem('bgh_user', JSON.stringify(this.user));
+      } catch (e) {
+        console.warn('保存用户数据失败:', e);
+      }
+    }
+
+    // 同步到 Supabase（如果可用）
+    if (window.supabaseClient && window.supabaseClient.isInitialized) {
+      window.supabaseClient.saveUser(this.user).catch(error => {
+        console.warn('Supabase同步失败:', error);
+      });
+    }
   }
 
   // 加载用户数据
   loadUser() {
-    const savedUser = localStorage.getItem('bgh_user');
+    let savedUser;
+
+    // 使用CoreUtils存储，如果不可用则使用内联实现
+    if (window.CoreUtils) {
+      savedUser = CoreUtils.storage.get('bgh_user');
+    } else {
+      try {
+        const item = localStorage.getItem('bgh_user');
+        savedUser = item ? JSON.parse(item) : null;
+      } catch (e) {
+        console.warn('读取用户数据失败:', e);
+        savedUser = null;
+      }
+    }
+
     if (savedUser) {
-      this.user = JSON.parse(savedUser);
+      this.user = savedUser;
       // 兼容性修复：确保用户数据包含必要的属性
       if (this.user) {
         if (!this.user.max_scenarios) {
@@ -419,15 +459,15 @@ class UserSystem {
   // 更新用户进度
   updateProgress(scenarioId, points) {
     if (!this.user) return;
-    
+
     this.user.empathy += points.empathy || 0;
     this.user.courage += points.courage || 0;
     this.user.wisdom += points.wisdom || 0;
-    
+
     if (!this.user.completed_scenarios.includes(scenarioId)) {
       this.user.completed_scenarios.push(scenarioId);
     }
-    
+
     this.user.updated_at = new Date().toISOString();
     this.saveUser();
   }
@@ -438,10 +478,10 @@ class UserSystem {
       console.warn('游戏数据未加载，跳过成就检查');
       return;
     }
-    
+
     const achievements = window.gameData.achievements;
     const newAchievements = [];
-    
+
     achievements.forEach(achievement => {
       if (!this.user.achievements.includes(achievement.id)) {
         if (this.evaluateCondition(achievement.condition)) {
@@ -450,7 +490,7 @@ class UserSystem {
         }
       }
     });
-    
+
     if (newAchievements.length > 0) {
       this.saveUser();
       this.showAchievementNotification(newAchievements);
@@ -466,11 +506,11 @@ class UserSystem {
       'empathy >= 10': user.empathy >= 10,
       'courage >= 8': user.courage >= 8,
       'wisdom >= 8': user.wisdom >= 8,
-      'empathy >= 15 && courage >= 15 && wisdom >= 15': 
+      'empathy >= 15 && courage >= 15 && wisdom >= 15':
         user.empathy >= 15 && user.courage >= 15 && user.wisdom >= 15,
       'completed_scenarios >= 4': user.completed_scenarios.length >= 4
     };
-    
+
     return conditions[condition] || false;
   }
 
@@ -483,4 +523,85 @@ class UserSystem {
 }
 
 // 全局用户系统实例
-window.userSystem = new UserSystem(); 
+window.userSystem = new UserSystem();
+
+// 全局函数：复制用户ID
+window.copyUserID = async function () {
+  if (window.userSystem && window.userSystem.user) {
+    const userID = window.userSystem.user.uuid;
+
+    let success = false;
+
+    // 优先使用ClipboardUtils
+    if (window.ClipboardUtils) {
+      success = await ClipboardUtils.copyToClipboard(userID);
+    } else if (window.CoreUtils) {
+      success = await CoreUtils.copyToClipboard(userID);
+    } else {
+      // 最后降级实现
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(userID);
+          success = true;
+        } catch (e) {
+          console.warn('现代剪贴板API失败');
+        }
+      }
+
+      if (!success) {
+        const textArea = document.createElement('textarea');
+        textArea.value = userID;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        textArea.setAttribute('readonly', '');
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          // 使用现代剪贴板API替代废弃的execCommand
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(userID);
+            success = true;
+          } else {
+            success = false;
+          }
+        } catch (err) {
+          success = false;
+        }
+        document.body.removeChild(textArea);
+      }
+    }
+
+    if (success) {
+      if (window.UIComponents) {
+        UIComponents.renderNotification('用户ID已复制到剪贴板', 'success', 2000);
+      } else {
+        alert('用户ID已复制到剪贴板');
+      }
+    } else {
+      if (window.UIComponents) {
+        UIComponents.renderNotification('复制失败，请手动复制用户ID', 'warning', 3000);
+      } else {
+        alert('复制失败，请手动复制：' + userID);
+      }
+    }
+  }
+};
+
+// 全局函数：重置进度
+window.resetProgress = function () {
+  if (window.userSystem && confirm('确定要重新开始吗？这将清除你的所有进度。')) {
+    window.userSystem.resetUserProgress();
+    window.userSystem.showGameInterface();
+    UIComponents.renderNotification('进度已重置，开始新的英雄之旅！', 'info', 3000);
+  }
+};
+
+// 全局函数：回到首页
+window.goToHomepage = function () {
+  if (window.userSystem) {
+    window.userSystem.clearUserData();
+  }
+}; 

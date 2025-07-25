@@ -29,21 +29,79 @@ class UIComponents {
   }
   
   /**
-   * 压缩图片URL
+   * 获取优化的图片URL
    * @param {string} imageUrl - 原始图片URL
    * @param {number} width - 目标宽度
    * @param {number} quality - 图片质量 (0-100)
    * @returns {string} 处理后的图片URL
    */
-  static compressImageUrl(imageUrl, width = 400, quality = 80) {
+  static getOptimizedImageUrl(imageUrl, width = 400, quality = null) {
     if (!imageUrl) return null;
     
-    // 如果是本地图片，添加宽度和质量参数
+    // 使用响应式媒体管理器
+    if (window.responsiveMedia) {
+      return window.responsiveMedia.getOptimizedImageUrl(imageUrl, {
+        width,
+        quality
+      });
+    }
+    
+    // 降级处理
     if (imageUrl.startsWith('data/pic/')) {
-      return `${imageUrl}?w=${width}&q=${quality}`;
+      const params = new URLSearchParams();
+      params.set('w', width);
+      if (quality) params.set('q', quality);
+      
+      const separator = imageUrl.includes('?') ? '&' : '?';
+      return `${imageUrl}${separator}${params.toString()}`;
     }
     
     return imageUrl;
+  }
+  
+  /**
+   * 创建响应式图片元素
+   * @param {string} src - 图片源
+   * @param {string} alt - 替代文本
+   * @param {Object} options - 选项
+   * @returns {string} 图片HTML
+   */
+  static createResponsiveImage(src, alt = '', options = {}) {
+    const {
+      className = '',
+      lazy = true,
+      width = null,
+      height = null,
+      quality = null
+    } = options;
+    
+    if (window.ResponsiveMedia) {
+      return ResponsiveMedia.createResponsiveImage({
+        src,
+        alt,
+        className,
+        lazy,
+        width,
+        height,
+        quality
+      });
+    }
+    
+    // 降级处理
+    const optimizedSrc = this.getOptimizedImageUrl(src, width, quality);
+    const lazyAttr = lazy ? 'data-src' : 'src';
+    const lazyClass = lazy ? 'lazy-load' : '';
+    
+    return `
+      <img 
+        ${lazyAttr}="${optimizedSrc}"
+        alt="${alt}"
+        class="${className} ${lazyClass}"
+        ${width ? `width="${width}"` : ''}
+        ${height ? `height="${height}"` : ''}
+        loading="${lazy ? 'lazy' : 'eager'}"
+      />
+    `;
   }
   
   /**
@@ -154,13 +212,15 @@ class UIComponents {
    * @returns {string} 卡片HTML
    */
   static renderCard(title, content, imageUrl = null, footer = null) {
-    // 压缩图片URL
-    const compressedImageUrl = this.compressImageUrl(imageUrl, 400, 80);
-    
     // 图片HTML
-    const imageHtml = compressedImageUrl ? `
+    const imageHtml = imageUrl ? `
       <div class="card-image">
-        <img src="${compressedImageUrl}" alt="${title}" loading="lazy">
+        ${this.createResponsiveImage(imageUrl, title, {
+          className: 'card-img',
+          lazy: true,
+          width: 400,
+          quality: 80
+        })}
       </div>
     ` : '';
     
@@ -480,9 +540,6 @@ class UIComponents {
       </div>
     `).join('') : '';
     
-    // 压缩图片URL，场景详情页使用更高质量的图片
-    const compressedImageUrl = this.compressImageUrl(scenario.image, 800, 90);
-    
     return `
       <div class="scenario-detail">
         <div class="scenario-detail-header" style="background-color: ${headerColor};">
@@ -498,8 +555,13 @@ class UIComponents {
             </svg>
           </button>
         </div>
-        <div class="">
-          <img src="${compressedImageUrl}" alt="${scenario.title}">
+        <div class="scenario-detail-image">
+          ${this.createResponsiveImage(scenario.image, scenario.title, {
+            className: 'scenario-img',
+            lazy: false,
+            width: 800,
+            quality: 90
+          })}
         </div>
         <div class="scenario-detail-content">
           <div class="scenario-detail-description">${scenario.description}</div>

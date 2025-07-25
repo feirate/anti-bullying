@@ -2,61 +2,26 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#FF7B8B">
+    <meta name="format-detection" content="telephone=no">
     <title>反霸凌小英雄 - 小学生反霸凌对话式成长游戏</title>
-    <link rel="stylesheet" href="css/doodle-style.css">
-    <link rel="stylesheet" href="css/ui-components.css?v=20250722">
-    <link rel="stylesheet" href="css/scenario-detail.css?v=20250722">
+    <link rel="stylesheet" href="css/base-variables.css?v=20250724">
+    <link rel="stylesheet" href="css/doodle-style.css?v=20250724">
+    <link rel="stylesheet" href="css/ui-components.css?v=20250724">
+    <link rel="stylesheet" href="css/components.css?v=20250724">
+    <link rel="stylesheet" href="css/scenario-detail.css?v=20250724">
+    <link rel="stylesheet" href="css/responsive.css?v=20250724">
+    <link rel="stylesheet" href="css/forms.css?v=20250724">
+    <link rel="stylesheet" href="css/navigation.css?v=20250724">
+    <link rel="stylesheet" href="css/homepage-layout.css?v=20250724">
+    <link rel="stylesheet" href="css/user-progress-layout.css?v=20250724">
+    <link rel="stylesheet" href="css/responsive-media.css?v=20250724">
+    <link rel="stylesheet" href="css/accessibility.css?v=20250724">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
-    <style>
-        /* 首页特定样式 */
-        .homepage-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .hero-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .hero-title {
-            font-family: var(--font-primary);
-            color: var(--primary-color);
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        
-        .hero-subtitle {
-            color: var(--text-medium);
-            font-size: 18px;
-            margin: 0;
-        }
-        
-        /* 加载样式 */
-        #loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: var(--bg-light);
-        }
-        
-        #loading .loading-title {
-            font-size: 32px;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 16px;
-        }
-        
-        #loading .loading-text {
-            font-size: 16px;
-            color: var(--text-medium);
-        }
-    </style>
+
 </head>
 <body>
     <!-- 主容器 -->
@@ -69,8 +34,25 @@
     </div>
 
     <!-- 脚本文件 -->
+    <!-- 核心工具库和配置管理器（必须最先加载） -->
+    <script src="js/core.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/device-manager.js"></script>
+    
+    <!-- UI组件和功能模块 -->
     <script src="js/icon-system.js"></script>
     <script src="js/ui-components.js"></script>
+    <script src="js/form-components.js"></script>
+    <script src="js/navigation-components.js"></script>
+    <script src="js/responsive-media.js"></script>
+    <script src="js/accessibility.js"></script>
+    <script src="js/keyboard-navigation.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/clipboard-utils.js"></script>
+    <script src="js/performance-monitor.js"></script>
+    <script src="js/security-check.js"></script>
+    
+    <!-- 业务逻辑模块 -->
     <script src="js/user-system.js"></script>
     <script src="js/game-engine.js"></script>
     <script src="js/scenario-detail.js"></script>

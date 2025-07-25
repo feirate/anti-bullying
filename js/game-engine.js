@@ -52,10 +52,6 @@ class GameEngine {
         <div class="game-interface">
           <div class="user-info">
             <h2>英雄之旅</h2>
-            <div class="user-id-display" title="点击复制用户ID" onclick="copyUserID()">
-              <span class="user-id-text">ID: ${user.uuid}</span>
-              <span class="copy-hint">点击复制</span>
-            </div>
           </div>
           
           <!-- 技能点显示 -->
@@ -80,7 +76,7 @@ class GameEngine {
         <!-- 进度信息 -->
         <div class="progress-section">
           <div class="progress-info">
-            <span>场景进度: ${user.completed_scenarios.length}/${user.max_scenarios}</span>
+            <span>挑战进度: ${user.completed_scenarios.length}/${user.max_scenarios}</span>
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${(user.completed_scenarios.length / user.max_scenarios) * 100}%"></div>
             </div>
@@ -88,10 +84,11 @@ class GameEngine {
           
           ${user.completed_scenarios.length > 0 ?
         `<div class="replay-section">
-              <button class="game-btn danger" onclick="resetProgress()">重新挑战所有场景</button>
+              <button class="game-btn danger" onclick="resetProgress()">重新挑战</button>
               <button class="game-btn success" onclick="goToHomepage()">回到首页</button>
             </div>` : ''
       }
+          
           
           ${user.completed_scenarios.length >= user.max_scenarios ?
         `<div class="completion-notice">
@@ -203,7 +200,7 @@ class GameEngine {
         <path d="M12 6v6l4 2" stroke="#FFFFFF" stroke-width="2" fill="none"/>
       </svg>`
     };
-    
+
     return icons[category] || `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
       <circle cx="12" cy="12" r="10" stroke="#FFFFFF" stroke-width="2" fill="none"/>
     </svg>`;
@@ -213,20 +210,20 @@ class GameEngine {
   renderScenarioCard(scenario) {
     // 使用新的UI组件库渲染场景卡片
     if (window.UIComponents && typeof window.UIComponents.renderScenarioCard === 'function') {
-      const isCompleted = window.userSystem && window.userSystem.user && 
-                         window.userSystem.user.completed_scenarios && 
-                         Array.isArray(window.userSystem.user.completed_scenarios) &&
-                         window.userSystem.user.completed_scenarios.includes(scenario.id);
-      
+      const isCompleted = window.userSystem && window.userSystem.user &&
+        window.userSystem.user.completed_scenarios &&
+        Array.isArray(window.userSystem.user.completed_scenarios) &&
+        window.userSystem.user.completed_scenarios.includes(scenario.id);
 
-      
+
+
       return window.UIComponents.renderScenarioCard(scenario, isCompleted);
     }
 
     // 如果新的UI组件库不可用，使用旧的渲染方式
-    const isCompleted = window.userSystem && window.userSystem.user && 
-                       window.userSystem.user.completed_scenarios && 
-                       window.userSystem.user.completed_scenarios.includes(scenario.id);
+    const isCompleted = window.userSystem && window.userSystem.user &&
+      window.userSystem.user.completed_scenarios &&
+      window.userSystem.user.completed_scenarios.includes(scenario.id);
 
     // 状态类和难度类
     const statusClass = isCompleted ? 'completed' : 'new';
@@ -234,9 +231,9 @@ class GameEngine {
     if (scenario.difficulty === '简单') difficultyClass = 'easy';
     else if (scenario.difficulty === '中等') difficultyClass = 'medium';
     else if (scenario.difficulty === '困难') difficultyClass = 'hard';
-    
+
     // 操作按钮
-    const actionButton = isCompleted 
+    const actionButton = isCompleted
       ? `<div class="completed-status">
           <span class="game-icon icon-small">
             <svg viewBox="0 0 24 24" width="100%" height="100%">
@@ -246,7 +243,7 @@ class GameEngine {
           已完成
         </div>`
       : `<button class="start-btn difficulty-${difficultyClass}" data-scenario-id="${scenario.id}">开始挑战</button>`;
-    
+
     // 难度徽章
     let difficultyType = 'info';
     if (scenario.difficulty === '简单') difficultyType = 'info';
@@ -280,7 +277,7 @@ class GameEngine {
     document.querySelectorAll('.start-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const scenarioId = e.target.dataset.scenarioId;
-        
+
         // 如果场景详情页功能可用，使用模态框显示
         if (window.showScenarioDetail && typeof window.showScenarioDetail === 'function') {
           window.showScenarioDetail(scenarioId);
@@ -290,7 +287,7 @@ class GameEngine {
         }
       });
     });
-    
+
     // 场景卡片点击事件 - 也使用场景详情页模态框
     document.querySelectorAll('.scenario-card').forEach(card => {
       card.addEventListener('click', (e) => {
@@ -298,7 +295,7 @@ class GameEngine {
         if (e.target.closest('.start-btn, .completed-status')) {
           return;
         }
-        
+
         const scenarioId = card.dataset.scenarioId;
         if (scenarioId && window.showScenarioDetail && typeof window.showScenarioDetail === 'function') {
           window.showScenarioDetail(scenarioId);
@@ -624,22 +621,22 @@ class GameEngine {
 }
 
 // 全局游戏引擎实例
-window.gameEngine = new GameEngine(); 
+window.gameEngine = new GameEngine();
 
 // 全局函数
-window.startGame = function() {
+window.startGame = function () {
   if (window.gameEngine) {
     window.gameEngine.startGame();
   }
 };
 
-window.restartGame = function() {
+window.restartGame = function () {
   if (window.userSystem) {
     window.userSystem.clearUserData();
   }
 };
 
-window.resetProgress = function() {
+window.resetProgress = function () {
   if (window.userSystem) {
     const confirmReset = confirm('重新挑战将重置所有进度和成就，确定要继续吗？');
     if (confirmReset) {
@@ -649,25 +646,24 @@ window.resetProgress = function() {
   }
 };
 
-window.goToHomepage = function() {
+window.goToHomepage = function () {
   if (window.userSystem) {
     window.userSystem.clearUserData();
   }
 };
 
-window.copyUserID = function() {
+window.copyUserID = function () {
   if (window.userSystem && window.userSystem.user) {
-    navigator.clipboard.writeText(window.userSystem.user.uuid).then(() => {
-      alert('用户ID已复制到剪贴板');
-    }).catch(() => {
-      // 备用方案
-      const textArea = document.createElement('textarea');
-      textArea.value = window.userSystem.user.uuid;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      alert('用户ID已复制到剪贴板');
-    });
+    if (window.CoreUtils) {
+      window.CoreUtils.copyToClipboard(window.userSystem.user.uuid).then(success => {
+        if (success) {
+          alert('用户ID已复制到剪贴板');
+        } else {
+          alert('复制失败，请手动复制：' + window.userSystem.user.uuid);
+        }
+      });
+    } else {
+      alert('复制功能不可用，请手动复制：' + window.userSystem.user.uuid);
+    }
   }
 };

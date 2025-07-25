@@ -1,12 +1,8 @@
 {
   "contact": {
-    "wechat_public": "摸鱼读书",
-    "description": "如有问题或建议，欢迎关注我们的微信公众号《摸鱼读书》",
-    "features": [
-      "获取最新游戏更新",
-      "分享学习心得",
-      "反馈游戏建议",
-      "参与社区讨论"
-    ]
+    "wechat": "摸鱼读书",
+    "description": "有问题？关注微信公众号《摸鱼读书》",
+    "support_email": "support@example.com",
+    "help_text": "如果你遇到任何问题或需要帮助，请联系我们"
   }
-} 
+}

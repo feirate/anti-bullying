@@ -1,0 +1,141 @@
+/* 基础变量定义 - 全局使用 */
+
+:root {
+  /* 主色调 */
+  --primary-color: #FF7B8B;
+  --secondary-color: #4CD4FF;
+  --accent-color: #FFD93D;
+  --success-color: #5DE290;
+  --warning-color: #FF9F1C;
+  --danger-color: #FF6B6B;
+  --info-color: #7B8CFF;
+  
+  /* 背景色 */
+  --bg-light: #F7F7F7;
+  --bg-white: #FFFFFF;
+  --bg-dark: #1E1E1E;
+  
+  /* 文字色 */
+  --text-dark: #333333;
+  --text-medium: #666666;
+  --text-light: #999999;
+  --text-white: #FFFFFF;
+  
+  /* 边框和阴影 */
+  --border-color: #E0E0E0;
+  --border-radius: 1rem;
+  --border-radius-sm: 0.25rem;
+  --border-radius-lg: 1.5rem;
+  --border-radius-pill: 999px;
+  --shadow-small: 0 0.125rem 0.5rem rgba(0,0,0,0.08);
+  --shadow-medium: 0 0.25rem 0.75rem rgba(0,0,0,0.1);
+  --shadow-large: 0 0.5rem 1.5rem rgba(0,0,0,0.12);
+  
+  /* 字体 */
+  --font-primary: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  --font-heading: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  
+  /* 字体大小 */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 1.875rem;
+  --font-size-3xl: 2.25rem;
+  
+  /* 行高 */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* 间距 */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* 动画 */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+  
+  /* 容器宽度 */
+  --container-small: 100%;
+  --container-medium: 45rem;
+  --container-large: 60rem;
+  --container-xlarge: 71.25rem;
+  
+  /* 最小触摸目标 */
+  --min-touch-target: 2.75rem;
+  
+  /* 响应式断点 */
+  --breakpoint-small: 30rem;
+  --breakpoint-medium: 48rem;
+  --breakpoint-large: 64rem;
+}
+
+/* 全局字体设置 */
+html {
+  font-size: 16px;
+}
+
+body, button, input, select, textarea {
+  font-family: var(--font-primary) !important;
+}
+
+/* 基础重置 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-dark);
+  background-color: var(--bg-light);
+  margin: 0;
+  padding: 0;
+}
+
+/* 标题样式 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: var(--line-height-tight);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+h1 { font-size: var(--font-size-3xl); }
+h2 { font-size: var(--font-size-2xl); }
+h3 { font-size: var(--font-size-xl); }
+h4 { font-size: var(--font-size-lg); }
+h5 { font-size: var(--font-size-md); }
+h6 { font-size: var(--font-size-base); }
+
+/* 段落样式 */
+p {
+  margin: 0 0 var(--spacing-md) 0;
+  line-height: var(--line-height-normal);
+}
+
+/* 链接样式 */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-normal);
+}
+
+a:hover {
+  color: var(--text-dark);
+}
+
+/* 图片样式 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

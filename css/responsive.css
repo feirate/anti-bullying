@@ -1,0 +1,219 @@
+/* 统一响应式样式 */
+
+/* 响应式容器 */
+@media (min-width: 30rem) {
+  .container {
+    padding-left: calc(var(--spacing-md) * 1.25);
+    padding-right: calc(var(--spacing-md) * 1.25);
+  }
+}
+
+@media (min-width: 48rem) {
+  .container {
+    max-width: var(--container-medium);
+    padding-left: calc(var(--spacing-md) * 1.5);
+    padding-right: calc(var(--spacing-md) * 1.5);
+  }
+}
+
+@media (min-width: 64rem) {
+  .container {
+    max-width: var(--container-large);
+    padding-left: calc(var(--spacing-md) * 2);
+    padding-right: calc(var(--spacing-md) * 2);
+  }
+}
+
+@media (min-width: 80rem) {
+  .container {
+    max-width: var(--container-xlarge);
+  }
+}
+
+/* 响应式网格 */
+@media (max-width: 29.9375rem) {
+  .grid-responsive { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 30rem) and (max-width: 47.9375rem) {
+  .grid-responsive { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 48rem) and (max-width: 63.9375rem) {
+  .grid-responsive { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 64rem) {
+  .grid-responsive { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* 移动端优化 */
+@media (max-width: 29.9375rem) {
+  :root {
+    --min-touch-target: 3rem;
+  }
+  
+  .game-btn {
+    min-height: var(--min-touch-target);
+    padding: 0.75rem 1rem;
+    font-size: var(--font-size-base);
+  }
+  
+  .game-btn.small {
+    min-height: var(--min-touch-target);
+    padding: 0.5rem 0.75rem;
+    font-size: var(--font-size-sm);
+  }
+  
+  .scenario-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .scenario-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+  
+  .scenario-meta {
+    align-self: flex-start;
+  }
+  
+  .card-header,
+  .card-content,
+  .card-footer {
+    padding: var(--spacing-sm);
+  }
+  
+  .dialog-header,
+  .dialog-content,
+  .dialog-footer {
+    padding: var(--spacing-sm);
+  }
+  
+  .dialog-footer {
+    flex-direction: column;
+  }
+  
+  .dialog-footer .game-btn {
+    width: 100%;
+  }
+  
+  .game-notification {
+    width: 90%;
+    left: 5%;
+    right: 5%;
+  }
+}
+
+/* 大屏手机优化 */
+@media (min-width: 30rem) and (max-width: 47.9375rem) {
+  .scenario-card {
+    padding: var(--spacing-md);
+  }
+}
+
+/* 平板端优化 */
+@media (min-width: 48rem) and (max-width: 63.9375rem) {
+  .scenario-card.horizontal {
+    display: flex;
+    gap: var(--spacing-md);
+  }
+  
+  .scenario-card.horizontal .scenario-content {
+    flex: 1;
+  }
+}
+
+/* 桌面端优化 */
+@media (min-width: 64rem) {
+  .game-btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  .scenario-card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) {
+  .game-btn:hover,
+  .game-card:hover,
+  .scenario-card:hover {
+    transform: none;
+  }
+  
+  .game-btn:active {
+    transform: translateY(1px);
+    opacity: 0.8;
+  }
+  
+  .game-card:active,
+  .scenario-card:active {
+    transform: translateY(1px);
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .game-card,
+  .scenario-card,
+  .game-dialog {
+    border: 2px solid var(--border-color);
+  }
+  
+  .game-btn {
+    border: 2px solid;
+  }
+  
+  .game-btn.primary {
+    border-color: var(--primary-color);
+  }
+  
+  .game-btn.secondary {
+    border-color: var(--secondary-color);
+  }
+}
+
+/* 减少动画模式 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .game-btn:hover,
+  .game-card:hover,
+  .scenario-card:hover {
+    transform: none !important;
+  }
+  
+  .progress-fill::after {
+    animation: none;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .game-btn,
+  .game-notification,
+  .game-dialog-overlay {
+    display: none;
+  }
+  
+  .game-card,
+  .scenario-card {
+    border: 1px solid #000;
+    break-inside: avoid;
+    box-shadow: none;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+}

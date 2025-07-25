@@ -1,0 +1,552 @@
+/* 卡片轮播样式 - 专注于卡片堆叠浏览方案 */
+
+.card-carousel-container {
+  min-height: auto;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px 20px 20px;
+  margin-top: 5px;
+  border-radius: var(--border-radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-header {
+  text-align: center;
+  margin-bottom: 5px;
+  color: #FF7B8B;
+}
+
+.carousel-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.carousel-subtitle {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.card-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  height: 400px;
+  perspective: 1000px;
+  margin-top: 10px;
+}
+
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 场景卡片样式 - 基于现有的scenario-card */
+.scenario-card.carousel-card {
+  position: absolute;
+  width: 280px;
+  height: 300px;
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 当前显示的卡片 */
+.scenario-card.carousel-card.active {
+  z-index: 3;
+  transform: translateX(0) scale(1);
+  opacity: 1;
+}
+
+/* 左侧卡片 */
+.scenario-card.carousel-card.prev {
+  z-index: 2;
+  transform: translateX(-60px) scale(0.9);
+  opacity: 0.7;
+}
+
+/* 右侧卡片 */
+.scenario-card.carousel-card.next {
+  z-index: 2;
+  transform: translateX(60px) scale(0.9);
+  opacity: 0.7;
+}
+
+/* 隐藏的卡片 */
+.scenario-card.carousel-card.hidden {
+  z-index: 1;
+  transform: translateX(0) scale(0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 卡片内容样式 */
+.scenario-card.carousel-card .scenario-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+}
+
+.scenario-card.carousel-card .scenario-meta {
+  display: flex !important;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+  justify-content: center !important;
+  align-self: center !important;
+}
+
+.scenario-card.carousel-card .scenario-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+  text-align: center !important;
+}
+
+.carousel-card .scenario-description {
+  flex: 1;
+  color: var(--text-medium);
+  line-height: var(--line-height-relaxed);
+  font-size: 15px;
+  text-align: left;
+  margin-bottom: var(--spacing-sm);
+  overflow-y: auto;
+  padding: 0 var(--spacing-md);
+  max-height: 120px;
+  /* 添加这行 - 左右内边距 */
+}
+
+.carousel-card .scenario-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-sm);
+}
+
+.carousel-card .start-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-pill);
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.carousel-card .start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 123, 139, 0.3);
+}
+
+/* 难度相关的按钮颜色 */
+.carousel-card .start-btn.difficulty-easy {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 12px rgba(76, 212, 255, 0.3);
+}
+
+.carousel-card .start-btn.difficulty-easy:hover {
+  background-color: #5ddbff;
+  box-shadow: 0 6px 16px rgba(76, 212, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.carousel-card .start-btn.difficulty-medium {
+  background-color: var(--warning-color);
+  box-shadow: 0 4px 12px rgba(255, 159, 28, 0.3);
+}
+
+.carousel-card .start-btn.difficulty-medium:hover {
+  background-color: #ffaa33;
+  box-shadow: 0 6px 16px rgba(255, 159, 28, 0.4);
+  transform: translateY(-2px);
+}
+
+.carousel-card .start-btn.difficulty-hard {
+  background-color: var(--danger-color);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.carousel-card .start-btn.difficulty-hard:hover {
+  background-color: #ff7c7c;
+  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+  transform: translateY(-2px);
+}
+
+.carousel-card .completed-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--success-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--border-radius-pill);
+  padding: 12px 24px;
+  min-width: 120px;
+  box-shadow: 0 4px 12px rgba(93, 226, 144, 0.3);
+}
+
+/* 导航控件 */
+.carousel-navigation {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--text-dark);
+}
+
+.nav-button {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  color: var(--text-dark);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-button:active {
+  transform: scale(0.95);
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.carousel-counter {
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* 进度指示器 */
+.carousel-indicators {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.indicator-dot.active {
+  background: var(--primary-color);
+  transform: scale(1.2);
+}
+
+/* 滑动提示 */
+.swipe-hint {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #FF7B8B;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.swipe-hint.left {
+  left: 20px;
+}
+
+.swipe-hint.right {
+  right: 20px;
+}
+
+.swipe-hint.show {
+  opacity: 1;
+}
+
+/* 键盘提示 - 隐藏 */
+.keyboard-hint {
+  display: none;
+}
+
+/* 动画效果 */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100px) scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100px) scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.scenario-card.carousel-card.slide-in-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+.scenario-card.carousel-card.slide-in-left {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+/* 触摸反馈 */
+.scenario-card.carousel-card.dragging {
+  transition: none;
+  z-index: 10;
+}
+
+/* 场景完成动画 */
+.scenario-card.carousel-card.completing {
+  animation: completionPulse 0.6s ease-in-out;
+}
+
+.scenario-card.carousel-card.completing .scenario-actions {
+  transition: all 0.3s ease;
+}
+
+@keyframes completionPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); box-shadow: 0 8px 35px rgba(93, 226, 144, 0.3); }
+  100% { transform: scale(1); }
+}
+
+/* 平滑排序过渡 */
+.card-carousel-container.resorting {
+  transition: opacity 0.4s ease;
+}
+
+/* 完成状态动画 */
+.completed-status {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式适配 */
+@media (max-width: 29.9375rem) {
+  .card-carousel {
+    max-width: 320px;
+    height: 400px;
+  }
+
+  .scenario-card.carousel-card {
+    width: 260px;
+    height: 300px;
+    padding: var(--spacing-sm);
+  }
+
+  .carousel-card .scenario-title {
+    font-size: 18px;
+  }
+
+  .carousel-card .scenario-description {
+    font-size: 14px;
+  }
+
+  .nav-button {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 23.4375rem) {
+  .scenario-card.carousel-card {
+    width: 240px;
+    height: 300px;
+  }
+
+  .scenario-card.carousel-card.prev,
+  .scenario-card.carousel-card.next {
+    transform: translateX(-50px) scale(0.85);
+  }
+}
+
+/* 确保
+徽章颜色与难度一致 - 简单难度使用天蓝色 */
+.carousel-card .game-badge.secondary {
+  background-color: var(--secondary-color) !important;
+  color: var(--text-white);
+}
+
+.carousel-card .game-badge.warning {
+  background-color: var(--warning-color) !important;
+  color: var(--text-white);
+}
+
+.carousel-card .game-badge.danger {
+  background-color: var(--danger-color) !important;
+  color: var(--text-white);
+}
+
+/* 已完
+成场景的徽章颜色统一为绿色 */
+/* 只有难度徽章变绿色，分类徽章保持原色 */
+.carousel-card.completed .game-badge.secondary,
+.carousel-card.completed .game-badge.warning,
+.carousel-card.completed .game-badge.danger {
+  background-color: var(--success-color) !important;
+  color: white !important;
+}/* 主页
+面集成的响应式优化 */
+@media (max-width: 768px) {
+  .card-carousel-container {
+    padding: 10px;
+    margin-top: 10px;
+    min-height: calc(100vh - 150px);
+    border-radius: 0;
+  }
+  
+  .carousel-header {
+    margin-bottom: 20px;
+  }
+  
+  .carousel-title {
+    font-size: 20px;
+  }
+  
+  .carousel-subtitle {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-carousel-container {
+    padding: 5px;
+    margin-top: 5px;
+    min-height: calc(100vh - 120px);
+  }
+}/* 卡片完
+成状态动画 */
+@keyframes completionPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.carousel-card.completing {
+  transition: all 0.3s ease;
+}
+
+.carousel-card.completed {
+  border-color: var(--success-color);
+  background: linear-gradient(135deg, #f8fff8 0%, #f0f8f0 100%);
+}
+
+.carousel-card.completed .scenario-header {
+  /* background: linear-gradient(135deg, var(--success-color) 0%, #ffffff 100%); */
+  color: white;
+}
+
+.completed-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--success-color);
+  color: white;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  font-size: 14px;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 卡片状态更新过渡效果 */
+.scenario-actions {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-card.completing .scenario-actions {
+  opacity: 0.7;
+}

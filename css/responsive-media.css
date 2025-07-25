@@ -1,0 +1,426 @@
+/* 响应式媒体样式 */
+
+/* 基础图片样式 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 懒加载图片样式 */
+.lazy-load {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lazy-load.loaded {
+  opacity: 1;
+}
+
+/* 图片加载占位符 */
+.lazy-load:not(.loaded) {
+  background-color: var(--bg-light);
+  background-image: linear-gradient(
+    90deg,
+    var(--bg-light) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    var(--bg-light) 100%
+  );
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+/* 错误占位符样式 */
+.error-placeholder {
+  background-color: var(--bg-light);
+  border: 2px dashed var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  font-size: 14px;
+  min-height: 200px;
+}
+
+/* 卡片图片样式 */
+.card-image {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.game-card:hover .card-img {
+  transform: scale(1.05);
+}
+
+/* 场景详情图片样式 */
+.scenario-detail-image {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.scenario-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* 响应式图片容器 */
+.responsive-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.responsive-image-container::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%; /* 16:9 宽高比 */
+}
+
+.responsive-image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 图片网格 */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.image-grid-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  aspect-ratio: 4/3;
+}
+
+.image-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-grid-item:hover img {
+  transform: scale(1.1);
+}
+
+/* 英雄图片样式 */
+.hero-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+
+/* 头像图片样式 */
+.avatar-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bg-white);
+  box-shadow: var(--shadow-small);
+}
+
+/* 缩略图样式 */
+.thumbnail-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.thumbnail-image:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-medium);
+}
+
+/* 全屏图片查看器 */
+.image-viewer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.image-viewer-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-viewer-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  position: relative;
+}
+
+.image-viewer-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.image-viewer-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.image-viewer-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 响应式调整 */
+
+/* 移动端 - 小屏手机 */
+@media (max-width: 479px) {
+  .card-img {
+    height: 150px;
+  }
+  
+  .scenario-img {
+    height: 200px;
+  }
+  
+  .hero-image {
+    height: 200px;
+  }
+  
+  .avatar-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .thumbnail-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  
+  .image-grid-item {
+    aspect-ratio: 16/9;
+  }
+  
+  .image-viewer-content {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+}
+
+/* 移动端 - 大屏手机 */
+@media (min-width: 480px) and (max-width: 767px) {
+  .card-img {
+    height: 180px;
+  }
+  
+  .scenario-img {
+    height: 220px;
+  }
+  
+  .hero-image {
+    height: 250px;
+  }
+  
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 平板端 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .card-img {
+    height: 220px;
+  }
+  
+  .scenario-img {
+    height: 280px;
+  }
+  
+  .hero-image {
+    height: 350px;
+  }
+  
+  .avatar-image {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .thumbnail-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .image-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 桌面端 */
+@media (min-width: 1024px) {
+  .card-img {
+    height: 250px;
+  }
+  
+  .scenario-img {
+    height: 320px;
+  }
+  
+  .hero-image {
+    height: 400px;
+  }
+  
+  .avatar-image {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .thumbnail-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .image-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+  }
+}
+
+/* 高分辨率屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* 高分辨率屏幕的特殊处理已在JavaScript中实现 */
+}
+
+/* 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+  .lazy-load,
+  .card-img,
+  .thumbnail-image,
+  .image-viewer-overlay {
+    transition: none;
+  }
+  
+  .lazy-load:not(.loaded) {
+    animation: none;
+  }
+  
+  .game-card:hover .card-img,
+  .image-grid-item:hover img,
+  .thumbnail-image:hover {
+    transform: none;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .error-placeholder {
+    border-width: 3px;
+    border-color: var(--text-dark);
+  }
+  
+  .card-image,
+  .scenario-detail-image,
+  .responsive-image-container,
+  .image-grid-item {
+    border: 2px solid var(--border-color);
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .lazy-load:not(.loaded) {
+    background: none;
+    animation: none;
+  }
+  
+  .image-viewer-overlay {
+    display: none;
+  }
+  
+  img {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+}
+
+/* 网络状况指示器 */
+.network-status {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  box-shadow: var(--shadow-medium);
+  font-size: 12px;
+  color: var(--text-medium);
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.network-status.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.network-status.slow {
+  border-left: 4px solid var(--danger-color);
+}
+
+.network-status.medium {
+  border-left: 4px solid var(--warning-color);
+}
+
+.network-status.fast {
+  border-left: 4px solid var(--success-color);
+}

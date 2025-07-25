@@ -1,0 +1,334 @@
+/* 导航组件样式 */
+
+.main-navigation {
+  width: 100%;
+  background-color: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: var(--container-xlarge);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.75rem;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.nav-brand-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-dark);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-normal);
+  font-weight: 500;
+  min-height: var(--min-touch-target);
+}
+
+.nav-link:hover {
+  background-color: var(--bg-light);
+  color: var(--primary-color);
+}
+
+.nav-link.active {
+  background-color: var(--primary-color);
+  color: var(--text-white);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-normal);
+  min-width: var(--min-touch-target);
+  min-height: var(--min-touch-target);
+}
+
+.nav-toggle:hover {
+  background-color: var(--bg-light);
+}
+
+.hamburger {
+  width: 1.5rem;
+  height: 1.125rem;
+  position: relative;
+  transform: rotate(0deg);
+  transition: var(--transition-normal);
+}
+
+.hamburger span {
+  display: block;
+  position: absolute;
+  height: 0.1875rem;
+  width: 100%;
+  background: var(--text-dark);
+  border-radius: 0.1875rem;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: var(--transition-normal);
+}
+
+.hamburger span:nth-child(1) { top: 0px; }
+.hamburger span:nth-child(2) { top: 0.4375rem; }
+.hamburger span:nth-child(3) { top: 0.875rem; }
+
+.hamburger.open span:nth-child(1) {
+  top: 0.4375rem;
+  transform: rotate(135deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+  left: -3.75rem;
+}
+
+.hamburger.open span:nth-child(3) {
+  top: 0.4375rem;
+  transform: rotate(-135deg);
+}
+
+.nav-menu-mobile {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-medium);
+  padding: var(--spacing-md);
+}
+
+.nav-menu-mobile.show {
+  display: block;
+}
+
+.nav-menu-mobile .nav-menu {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing-xs);
+}
+
+.nav-menu-mobile .nav-link {
+  justify-content: flex-start;
+  padding: var(--spacing-md);
+}
+
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-white);
+  border-top: 1px solid var(--border-color);
+  padding: var(--spacing-sm) 0;
+  z-index: 100;
+  display: none;
+}
+
+.bottom-nav-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: var(--spacing-xs);
+  color: var(--text-medium);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-normal);
+  min-width: 3.75rem;
+  min-height: var(--min-touch-target);
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.bottom-nav-item:hover {
+  color: var(--primary-color);
+  background-color: var(--bg-light);
+}
+
+.bottom-nav-item.active {
+  color: var(--primary-color);
+}
+
+.bottom-nav-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-medium);
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.breadcrumb-link {
+  color: var(--text-medium);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-normal);
+}
+
+.breadcrumb-link:hover {
+  color: var(--primary-color);
+  background-color: var(--bg-light);
+}
+
+.breadcrumb-separator {
+  color: var(--text-light);
+  font-size: var(--font-size-xs);
+}
+
+.breadcrumb-current {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* 响应式调整 */
+@media (max-width: 29.9375rem) {
+  .nav-container {
+    padding: 0 var(--spacing-sm);
+    min-height: 3.5rem;
+  }
+  
+  .nav-brand {
+    font-size: var(--font-size-base);
+  }
+  
+  .nav-brand-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  
+  .nav-menu {
+    display: none;
+  }
+  
+  .nav-toggle {
+    display: flex;
+  }
+  
+  .bottom-navigation {
+    display: block;
+  }
+  
+  body {
+    padding-bottom: 4.375rem;
+  }
+  
+  .bottom-nav-item {
+    font-size: 0.6875rem;
+    min-width: 3.125rem;
+  }
+  
+  .bottom-nav-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+@media (min-width: 30rem) and (max-width: 47.9375rem) {
+  .nav-menu {
+    display: none;
+  }
+  
+  .nav-toggle {
+    display: flex;
+  }
+  
+  .bottom-navigation {
+    display: block;
+  }
+  
+  body {
+    padding-bottom: 4.375rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .nav-menu {
+    display: flex;
+  }
+  
+  .nav-toggle {
+    display: none;
+  }
+  
+  .bottom-navigation {
+    display: none;
+  }
+  
+  body {
+    padding-bottom: 0;
+  }
+  
+  .nav-container {
+    padding: 0 var(--spacing-lg);
+  }
+  
+  .nav-link {
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (min-width: 64rem) {
+  .nav-container {
+    padding: 0 var(--spacing-xl);
+  }
+  
+  .nav-link {
+    font-size: var(--font-size-base);
+  }
+}

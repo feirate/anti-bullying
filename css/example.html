@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS样式库使用示例</title>
+    
+    <!-- CSS引入顺序示例 -->
+    <link rel="stylesheet" href="base-variables.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="accessibility.css">
+    <link rel="stylesheet" href="ui-components.css">
+</head>
+<body>
+    <!-- 导航示例 -->
+    <nav class="main-navigation">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <span class="nav-brand-icon">🎮</span>
+                游戏平台
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active">首页</a></li>
+                <li><a href="#" class="nav-link">场景</a></li>
+                <li><a href="#" class="nav-link">进度</a></li>
+            </ul>
+            <button class="nav-toggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <div class="container">
+        <h1>CSS样式库示例</h1>
+        
+        <!-- 按钮示例 -->
+        <section class="mb-lg">
+            <h2>按钮组件</h2>
+            <div class="grid grid-responsive">
+                <button class="game-btn primary">主要按钮</button>
+                <button class="game-btn secondary">次要按钮</button>
+                <button class="game-btn success">成功按钮</button>
+                <button class="game-btn warning">警告按钮</button>
+                <button class="game-btn danger">危险按钮</button>
+                <button class="game-btn outline primary">轮廓按钮</button>
+            </div>
+        </section>
+
+        <!-- 卡片示例 -->
+        <section class="mb-lg">
+            <h2>卡片组件</h2>
+            <div class="grid grid-responsive">
+                <div class="game-card">
+                    <div class="card-header">
+                        <h3 class="card-title">基础卡片</h3>
+                    </div>
+                    <div class="card-content">
+                        这是一个基础卡片的内容区域，可以放置任何内容。
+                    </div>
+                    <div class="card-footer">
+                        <button class="game-btn primary small">操作</button>
+                    </div>
+                </div>
+
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <h3 class="scenario-title">场景卡片</h3>
+                        <div class="scenario-meta">
+                            <span class="game-badge success">简单</span>
+                        </div>
+                    </div>
+                    <div class="scenario-description">
+                        这是一个场景卡片的描述内容，展示场景的基本信息。
+                    </div>
+                    <div class="scenario-actions">
+                        <button class="game-btn primary">开始场景</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 表单示例 -->
+        <section class="mb-lg">
+            <h2>表单组件</h2>
+            <div class="form-container">
+                <div class="form-group">
+                    <label class="form-label">用户名</label>
+                    <input type="text" class="form-input" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">密码</label>
+                    <input type="password" class="form-input" placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">描述</label>
+                    <textarea class="form-textarea" placeholder="请输入描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="form-checkbox-group">
+                        <div class="form-checkbox-item">
+                            <input type="checkbox" class="form-checkbox" id="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="game-btn primary">提交</button>
+                    <button class="game-btn">取消</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 进度条示例 -->
+        <section class="mb-lg">
+            <h2>进度条组件</h2>
+            <div class="progress-container">
+                <div class="progress-label">学习进度</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 徽章示例 -->
+        <section class="mb-lg">
+            <h2>徽章组件</h2>
+            <div class="text-center">
+                <span class="game-badge primary">主要</span>
+                <span class="game-badge secondary">次要</span>
+                <span class="game-badge success">成功</span>
+                <span class="game-badge warning">警告</span>
+                <span class="game-badge danger">危险</span>
+                <span class="game-badge info">信息</span>
+            </div>
+        </section>
+
+        <!-- 技能点示例 -->
+        <section class="mb-lg">
+            <h2>技能点组件</h2>
+            <div class="grid grid-3">
+                <div class="skill-item">
+                    <div class="skill-icon">🎯</div>
+                    <div class="skill-value">85</div>
+                    <div class="skill-name">专注力</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">🧠</div>
+                    <div class="skill-value">72</div>
+                    <div class="skill-name">思维力</div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon">💪</div>
+                    <div class="skill-value">90</div>
+                    <div class="skill-name">执行力</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 通知示例（JavaScript控制显示） -->
+    <div class="game-notification success" style="display: none;">
+        <div class="notification-icon">✅</div>
+        <div class="notification-message">操作成功完成！</div>
+        <button class="notification-close">×</button>
+    </div>
+
+    <!-- 简单的JavaScript演示 -->
+    <script>
+        // 显示通知示例
+        setTimeout(() => {
+            const notification = document.querySelector('.game-notification');
+            notification.style.display = 'flex';
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }, 1000);
+
+        // 汉堡菜单切换
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            this.querySelector('.hamburger').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

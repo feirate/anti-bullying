@@ -69,13 +69,23 @@ function showScenarioDetail(scenarioId) {
   }
   
   // 选项按钮 - 根据难度使用不同颜色
-  const choicesHtml = scenario.choices ? scenario.choices.map((choice, index) => `
-    <div class="scenario-choice">
-      <button class="game-btn ${index === 0 ? 'primary' : 'outline primary'} full-width difficulty-${scenario.difficulty === '简单' ? 'easy' : scenario.difficulty === '中等' ? 'medium' : 'hard'}" style="margin-bottom: 10px; text-align: left;" onclick="selectChoice('${choice.id}')">
-        ${choice.text}
-      </button>
-    </div>
-  `).join('') : '';
+  const choicesHtml = scenario.choices ? scenario.choices.map((choice, index) => {
+    // 根据难度和选项位置设置按钮样式
+    const difficultyClass = scenario.difficulty === '简单' ? 'easy' : scenario.difficulty === '中等' ? 'medium' : 'hard';
+    const buttonClass = index === 0 ? `game-btn primary full-width difficulty-${difficultyClass}` : `game-btn outline primary full-width difficulty-${difficultyClass}`;
+    
+    return `
+      <div class="scenario-choice">
+        <button class="${buttonClass}" 
+                style="margin-bottom: 10px; text-align: left; border-radius: 25px; padding: 12px 24px; font-weight: bold; transition: all 0.3s ease;" 
+                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';" 
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';"
+                onclick="selectChoice('${choice.id}')">
+          ${choice.text}
+        </button>
+      </div>
+    `;
+  }).join('') : '';
   
   detailContent.innerHTML = `
     <div class="scenario-detail">
@@ -105,30 +115,7 @@ function showScenarioDetail(scenarioId) {
         </div>
       </div>
       <div class="scenario-detail-actions">
-        <button onclick="window.location.href='index.html'" style="
-          background-color: white;
-          color: #666666;
-          border: 2px solid #cccccc;
-          border-radius: 25px;
-          padding: 12px 24px;
-          font-family: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-          font-size: 16px;
-          font-weight: bold;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          transition: all 0.3s ease;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        " onmouseover="this.style.backgroundColor='#f8f8f8'; this.style.borderColor='#999999'; this.style.color='#333333'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.backgroundColor='white'; this.style.borderColor='#cccccc'; this.style.color='#666666'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.08)';">
-          <span style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px;">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-              <path d="M9 22V12h6v10"/>
-            </svg>
-          </span>
-          返回主页
-        </button>
+        <!-- 返回主页按钮已移除 -->
       </div>
     </div>
   `;
@@ -223,14 +210,14 @@ function selectChoice(choiceId) {
             <h3>你选择了: ${choice.text}</h3>
             <p>${choice.feedback}</p>
             
-            <div class="points-earned" style="margin-top: 20px;">
-              <h4>获得的技能点：</h4>
-              <div class="points-list" style="display: flex; gap: 15px; margin: 10px 0;">
-                ${choice.points.empathy !== 0 ? `<span class="game-badge ${choice.points.empathy > 0 ? 'primary' : 'danger'}">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</span>` : ''}
-                ${choice.points.courage !== 0 ? `<span class="game-badge ${choice.points.courage > 0 ? 'warning' : 'danger'}">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</span>` : ''}
-                ${choice.points.wisdom !== 0 ? `<span class="game-badge ${choice.points.wisdom > 0 ? 'info' : 'danger'}">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</span>` : ''}
+                          <div class="points-earned" style="margin-top: 20px;">
+                <h4>获得的技能点：</h4>
+                <div class="points-list">
+                  ${choice.points.empathy !== 0 ? `<div class="skill-point empathy">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
+                  ${choice.points.courage !== 0 ? `<div class="skill-point courage">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
+                  ${choice.points.wisdom !== 0 ? `<div class="skill-point wisdom">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
+                </div>
               </div>
-            </div>
             
             <div style="margin-top: 20px;">
               <h4>学习要点:</h4>
@@ -239,30 +226,7 @@ function selectChoice(choiceId) {
           </div>
         </div>
         <div class="scenario-detail-actions">
-          <button onclick="window.location.href='index.html'" style="
-            background-color: white;
-            color: #666666;
-            border: 2px solid #cccccc;
-            border-radius: 25px;
-            padding: 12px 24px;
-            font-family: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-          " onmouseover="this.style.backgroundColor='#f8f8f8'; this.style.borderColor='#999999'; this.style.color='#333333'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.12)';" onmouseout="this.style.backgroundColor='white'; this.style.borderColor='#cccccc'; this.style.color='#666666'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.08)';">
-            <span style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px;">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                <path d="M9 22V12h6v10"/>
-              </svg>
-            </span>
-            返回主页
-          </button>
+          <!-- 返回主页按钮已移除 -->
         </div>
       </div>
     `;

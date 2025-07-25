@@ -531,14 +531,19 @@ class UIComponents {
         headerColor = 'var(--secondary-color)';
     }
     
-    // 选项按钮
-    const choicesHtml = scenario.choices ? scenario.choices.map((choice, index) => `
-      <div class="scenario-choice">
-        <button class="game-btn ${index === 0 ? 'primary' : 'outline primary'} full-width" style="margin-bottom: 10px;" onclick="selectChoice('${choice.id}')">
-          ${choice.text}
-        </button>
-      </div>
-    `).join('') : '';
+    // 选项按钮 - 根据难度使用不同颜色
+    const difficultyClass = scenario.difficulty === '简单' ? 'easy' : scenario.difficulty === '中等' ? 'medium' : 'hard';
+    const choicesHtml = scenario.choices ? scenario.choices.map((choice, index) => {
+      const buttonClass = index === 0 ? `game-btn primary full-width difficulty-${difficultyClass}` : `game-btn outline primary full-width difficulty-${difficultyClass}`;
+      
+      return `
+        <div class="scenario-choice">
+          <button class="${buttonClass}" style="margin-bottom: 10px; text-align: left; border-radius: 25px; padding: 12px 24px; font-weight: bold; transition: all 0.3s ease;" onclick="selectChoice('${choice.id}')">
+            ${choice.text}
+          </button>
+        </div>
+      `;
+    }).join('') : '';
     
     return `
       <div class="scenario-detail">
@@ -573,7 +578,7 @@ class UIComponents {
           </div>
         </div>
         <div class="scenario-detail-actions">
-          ${this.renderButton('返回主页', "window.location.href='index.html'", 'success', 'medium', 'home')}
+          <!-- 返回主页按钮已移除 -->
         </div>
       </div>
     `;

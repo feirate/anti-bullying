@@ -134,10 +134,41 @@
   margin-bottom: 10px;
 }
 
+.points-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
 .points-list div {
   font-family: 'SimHei', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
   font-weight: bold;
   font-size: 14px;
+}
+
+.skill-point {
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.skill-point.empathy {
+  background-color: #FF6B6B; /* 粉色 - 同理心 */
+}
+
+.skill-point.courage {
+  background-color: #FF9F1C; /* 橙色 - 勇气 */
+}
+
+.skill-point.wisdom {
+  background-color: #4CD4FF; /* 浅蓝色 - 智慧 */
 }
 
 /* 模态框样式 */

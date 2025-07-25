@@ -14,17 +14,14 @@ class UserSystem {
     }
   }
 
-  // 显示真正的首页（仅游戏介绍和年级选择）
+  // 显示真正的首页（紧凑化版本）
   showHomePage() {
     const homePage = `
       <div class="homepage-container">
         <div class="homepage-content">
           <div id="homepage-card"></div>
-          
-          <div>
-            <div id="grade-selection"></div>
-            <div id="tip-card"></div>
-          </div>
+          <div id="grade-selection"></div>
+          <div id="tip-card"></div>
         </div>
       </div>
     `;
@@ -80,55 +77,60 @@ class UserSystem {
     }
   }
 
-  // 显示游戏主界面（截图2内容）
+  // 显示游戏主界面（紧凑化优化版本）
   showGameInterface() {
     const gameInterface = `
-      <div class="game-interface-container">
-        <div class="game-interface">
-          <div class="user-info">
-            <h2>欢迎回来，${this.user.grade}年级的小英雄！</h2>
+      <div class="game-interface-container compact">
+        <div class="game-interface compact">
+          <div class="user-info compact">
+            <h2>${this.user.grade}年级小英雄</h2>
           </div>
           
-          <div class="skill-points">
+          <div class="skill-points compact">
             <div class="skill-item">
-              <div class="skill-icon">${UIComponents.renderIcon('empathy', 'large')}</div>
-              <div class="skill-value">${this.user.empathy}</div>
-              <div>同理心</div>
+              <div class="skill-icon">${UIComponents.renderIcon('empathy', 'medium')}</div>
+              <div class="skill-content">
+                <div class="skill-value">${this.user.empathy}</div>
+                <div class="skill-name">同理心</div>
+              </div>
             </div>
             <div class="skill-item">
-              <div class="skill-icon">${UIComponents.renderIcon('courage', 'large')}</div>
-              <div class="skill-value">${this.user.courage}</div>
-              <div>勇气</div>
+              <div class="skill-icon">${UIComponents.renderIcon('courage', 'medium')}</div>
+              <div class="skill-content">
+                <div class="skill-value">${this.user.courage}</div>
+                <div class="skill-name">勇气</div>
+              </div>
             </div>
             <div class="skill-item">
-              <div class="skill-icon">${UIComponents.renderIcon('wisdom', 'large')}</div>
-              <div class="skill-value">${this.user.wisdom}</div>
-              <div>智慧</div>
+              <div class="skill-icon">${UIComponents.renderIcon('wisdom', 'medium')}</div>
+              <div class="skill-content">
+                <div class="skill-value">${this.user.wisdom}</div>
+                <div class="skill-name">智慧</div>
+              </div>
             </div>
           </div>
           
-          <div class="progress-section">
+          <div class="progress-section compact">
             <div class="progress-info">
-              <span>场景进度: ${this.user.completed_scenarios.length}/${this.maxScenariosPerGrade}</span>
+              <span>进度: ${this.user.completed_scenarios.length}/${this.maxScenariosPerGrade}</span>
               <div class="progress-bar">
                 <div class="progress-fill" style="width: ${(this.user.completed_scenarios.length / this.maxScenariosPerGrade) * 100}%"></div>
               </div>
             </div>
             
             ${this.user.completed_scenarios.length > 0 ?
-        `<div class="replay-section">
-                ${UIComponents.renderButton('重新挑战', 'resetProgress()', 'primary', 'medium')}
-                ${UIComponents.renderButton('回到首页', 'goToHomepage()', 'secondary', 'medium')}
+        `<div class="replay-section compact">
+                ${UIComponents.renderButton('重新挑战', 'resetProgress()', 'danger', 'small')}
+                ${UIComponents.renderButton('回到首页', 'goToHomepage()', 'secondary', 'small')}
               </div>` : ''
       }
-          </div> 
-        </div>
-         <div class="scenarios-container">
-            <h3>选择你的挑战</h3>
-            <div id="scenarios-list">
-              <!-- 场景列表将通过游戏引擎动态加载 -->
-            </div>
           </div>
+        </div>
+        
+        <!-- 场景轮播容器 - 直接集成到主界面 -->
+        <div id="scenario-carousel-container">
+          <!-- 场景轮播将通过卡片轮播组件动态加载 -->
+        </div>
       </div>
     `;
 
@@ -149,20 +151,38 @@ class UserSystem {
   loadScenariosList() {
     if (!this.user || !window.gameEngine || !window.gameEngine.gameData) return;
 
-    const availableScenarios = this.getAvailableScenarios(
+    let availableScenarios = this.getAvailableScenarios(
       window.gameEngine.gameData.scenarios,
       this.user.grade
     );
 
-    const scenariosList = document.getElementById('scenarios-list');
-    if (scenariosList) {
+    // 尝试恢复之前的轮播状态（避免重新排序）
+    availableScenarios = this.restoreCarouselState(availableScenarios);
+
+    // 查找场景轮播容器
+    const carouselContainer = document.getElementById('scenario-carousel-container');
+    if (carouselContainer) {
       // 调试信息
       console.log('加载场景列表，用户完成的场景:', this.user.completed_scenarios);
       console.log('可用场景数量:', availableScenarios.length);
 
-      // 使用分组方式渲染场景卡片
-      scenariosList.innerHTML = window.gameEngine.renderScenariosByCategory(availableScenarios);
-      window.gameEngine.bindScenarioEvents();
+      // 初始化卡片轮播
+      setTimeout(() => {
+        // 检查是否有保存的轮播状态
+        const hasRestoredState = this.tempCarouselState !== null && this.tempCarouselState !== undefined;
+        
+        if (hasRestoredState) {
+          const savedIndex = (this.tempCarouselState && this.tempCarouselState.currentIndex) || 0;
+          window.cardCarousel = new CardCarousel(availableScenarios, true); // 跳过初始排序
+          window.cardCarousel.currentIndex = Math.min(savedIndex, availableScenarios.length - 1);
+          this.tempCarouselState = null; // 清除临时状态
+        } else {
+          window.cardCarousel = new CardCarousel(availableScenarios);
+        }
+        
+        carouselContainer.innerHTML = window.cardCarousel.render();
+        window.cardCarousel.updateCards();
+      }, 100);
     }
   }
 
@@ -347,6 +367,9 @@ class UserSystem {
 
   // 清除用户数据，返回首页
   clearUserData() {
+    // 保存当前轮播状态（如果存在）
+    const carouselState = this.saveCarouselState();
+    
     // 使用CoreUtils存储，如果不可用则使用内联实现
     if (window.CoreUtils) {
       CoreUtils.storage.remove('bgh_user');
@@ -358,7 +381,59 @@ class UserSystem {
       }
     }
     this.user = null;
+    
+    // 保存轮播状态到临时存储
+    if (carouselState) {
+      this.tempCarouselState = carouselState;
+    }
+    
     this.showHomePage();
+  }
+
+  // 保存轮播状态
+  saveCarouselState() {
+    if (window.cardCarousel && window.cardCarousel.scenarios) {
+      return {
+        scenarios: window.cardCarousel.scenarios.map(s => ({
+          id: s.id,
+          completed: s.completed
+        })),
+        currentIndex: window.cardCarousel.currentIndex,
+        scenarioOrder: window.cardCarousel.scenarios.map(s => s.id)
+      };
+    }
+    return null;
+  }
+
+  // 恢复轮播状态
+  restoreCarouselState(availableScenarios) {
+    if (!this.tempCarouselState || !this.tempCarouselState.scenarioOrder) {
+      return availableScenarios;
+    }
+    
+    const savedState = this.tempCarouselState;
+    
+    // 按照保存的顺序重新排列场景
+    const orderedScenarios = [];
+    const scenarioMap = new Map(availableScenarios.map(s => [s.id, s]));
+    
+    // 首先按保存的顺序添加场景
+    if (savedState.scenarioOrder && Array.isArray(savedState.scenarioOrder)) {
+      savedState.scenarioOrder.forEach(scenarioId => {
+        const scenario = scenarioMap.get(scenarioId);
+        if (scenario) {
+          orderedScenarios.push(scenario);
+          scenarioMap.delete(scenarioId);
+        }
+      });
+    }
+    
+    // 添加任何新的场景到末尾
+    scenarioMap.forEach(scenario => {
+      orderedScenarios.push(scenario);
+    });
+    
+    return orderedScenarios;
   }
 
   // 显示用户ID

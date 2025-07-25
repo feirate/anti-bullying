@@ -47,48 +47,179 @@ class GameEngine {
       user.grade
     );
 
+    // 检查是否需要完全重新渲染
+    const needsFullRender = this.shouldFullyRenderMainMenu();
+
+    if (needsFullRender) {
+      this.renderMainMenu(user, availableScenarios);
+    } else {
+      // 只更新轮播状态，不重新渲染整个界面
+      this.updateCarouselOnly(availableScenarios);
+    }
+  }
+
+  // 判断是否需要完全重新渲染主菜单
+  shouldFullyRenderMainMenu() {
+    const currentApp = document.getElementById('app');
+    if (!currentApp) return true;
+
+    // 检查是否已经是游戏界面
+    const gameInterface = currentApp.querySelector('.game-interface-container');
+    if (!gameInterface) return true;
+
+    // 检查轮播容器是否存在
+    const carouselContainer = document.getElementById('scenario-carousel-container');
+    if (!carouselContainer) return true;
+
+    return false;
+  }
+
+  // 只更新轮播，不重新渲染整个界面
+  updateCarouselOnly(availableScenarios) {
+    if (window.cardCarousel) {
+      // 更新场景数据
+      window.cardCarousel.updateScenariosWithUserData();
+
+      // 平滑更新当前卡片状态
+      window.cardCarousel.updateCurrentCardStatus();
+
+      // 更新技能点显示
+      this.updateSkillPointsDisplay();
+
+      // 更新进度显示
+      this.updateProgressDisplay();
+    }
+  }
+
+  // 智能更新轮播
+  smartUpdateCarousel(availableScenarios, container) {
+    // 更新场景数据，不重新排序
+    window.cardCarousel.updateScenariosWithUserData();
+
+    // 检查是否需要重新渲染
+    const needsRerender = this.checkIfCarouselNeedsRerender();
+
+    if (needsRerender) {
+      // 需要重新渲染
+      container.innerHTML = window.cardCarousel.render();
+      window.cardCarousel.updateCards();
+    } else {
+      // 只更新当前卡片状态
+      window.cardCarousel.updateCurrentCardStatus();
+    }
+  }
+
+  // 创建新轮播
+  createNewCarousel(availableScenarios, container) {
+    window.cardCarousel = new CardCarousel(availableScenarios);
+    container.innerHTML = window.cardCarousel.render();
+    window.cardCarousel.updateCards();
+  }
+
+  // 检查轮播是否需要重新渲染
+  checkIfCarouselNeedsRerender() {
+    // 检查场景数量是否变化
+    const currentScenarios = window.cardCarousel.scenarios;
+    const user = window.userSystem.user;
+    const availableScenarios = window.userSystem.getAvailableScenarios(
+      this.gameData.scenarios,
+      user.grade
+    );
+
+    return currentScenarios.length !== availableScenarios.length;
+  }
+
+  // 更新技能点显示
+  updateSkillPointsDisplay() {
+    const user = window.userSystem.user;
+    if (!user) return;
+
+    const skillItems = document.querySelectorAll('.skill-item');
+    skillItems.forEach((item, index) => {
+      const valueElement = item.querySelector('.skill-value');
+      if (valueElement) {
+        switch (index) {
+          case 0:
+            valueElement.textContent = user.empathy;
+            break;
+          case 1:
+            valueElement.textContent = user.courage;
+            break;
+          case 2:
+            valueElement.textContent = user.wisdom;
+            break;
+        }
+      }
+    });
+  }
+
+  // 更新进度显示
+  updateProgressDisplay() {
+    const user = window.userSystem.user;
+    if (!user) return;
+
+    const progressInfo = document.querySelector('.progress-info span');
+    const progressFill = document.querySelector('.progress-fill');
+
+    if (progressInfo) {
+      progressInfo.textContent = `进度: ${user.completed_scenarios.length}/${user.max_scenarios}`;
+    }
+
+    if (progressFill) {
+      const percentage = (user.completed_scenarios.length / user.max_scenarios) * 100;
+      progressFill.style.width = `${percentage}%`;
+    }
+  }
+
+  // 渲染主菜单的独立方法
+  renderMainMenu(user, availableScenarios) {
     const mainMenu = `
-      <div class="game-interface-container">
-        <div class="game-interface">
-          <div class="user-info">
-            <h2>英雄之旅</h2>
+      <div class="game-interface-container compact">
+        <div class="game-interface compact">
+          <div class="user-info compact">
+            <h2>${user.grade}年级小英雄</h2>
           </div>
           
           <!-- 技能点显示 -->
-          <div class="skill-points">
+          <div class="skill-points compact">
             <div class="skill-item">
-              <div class="skill-icon">${UIComponents.renderIcon('empathy', 'large')}</div>
-              <div class="skill-value">${user.empathy}</div>
-              <div>同理心</div>
+              <div class="skill-icon">${UIComponents.renderIcon('empathy', 'medium')}</div>
+              <div class="skill-content">
+                <div class="skill-value">${user.empathy}</div>
+                <div class="skill-name">同理心</div>
+              </div>
             </div>
             <div class="skill-item">
-              <div class="skill-icon">${UIComponents.renderIcon('courage', 'large')}</div>
-              <div class="skill-value">${user.courage}</div>
-              <div>勇气</div>
+              <div class="skill-icon">${UIComponents.renderIcon('courage', 'medium')}</div>
+              <div class="skill-content">
+                <div class="skill-value">${user.courage}</div>
+                <div class="skill-name">勇气</div>
+              </div>
             </div>
             <div class="skill-item">
-              <div class="skill-icon">${UIComponents.renderIcon('wisdom', 'large')}</div>
-              <div class="skill-value">${user.wisdom}</div>
-              <div>智慧</div>
+              <div class="skill-icon">${UIComponents.renderIcon('wisdom', 'medium')}</div>
+              <div class="skill-content">
+                <div class="skill-value">${user.wisdom}</div>
+                <div class="skill-name">智慧</div>
+              </div>
             </div>
           </div>
 
         <!-- 进度信息 -->
-        <div class="progress-section">
+        <div class="progress-section compact">
           <div class="progress-info">
-            <span>挑战进度: ${user.completed_scenarios.length}/${user.max_scenarios}</span>
+            <span>进度: ${user.completed_scenarios.length}/${user.max_scenarios}</span>
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${(user.completed_scenarios.length / user.max_scenarios) * 100}%"></div>
             </div>
           </div>
           
           ${user.completed_scenarios.length > 0 ?
-        `<div class="replay-section">
-              <button class="game-btn danger" onclick="resetProgress()">重新挑战</button>
-              <button class="game-btn success" onclick="goToHomepage()">回到首页</button>
+        `<div class="replay-section compact">
+              <button class="game-btn danger small" onclick="resetProgress()">重新挑战</button>
+              <button class="game-btn secondary small" onclick="goToHomepage()">回到首页</button>
             </div>` : ''
       }
-          
           
           ${user.completed_scenarios.length >= user.max_scenarios ?
         `<div class="completion-notice">
@@ -97,181 +228,51 @@ class GameEngine {
       }
         </div>
 
-        <!-- 场景列表 -->
-        <div class="scenarios-section">
-          <h3>${user.completed_scenarios.length >= user.max_scenarios ? '已完成的冒险' : '选择你的挑战'}</h3>
-          ${this.renderScenariosByCategory(availableScenarios)}
-        </div>
-
-        <!-- 底部信息 -->
-        <div class="footer-info">
-          <p>提示：每个场景都会帮助你提升不同的技能！</p>
-          <p>有问题？关注微信公众号《摸鱼读书》</p>
-        </div>
+        <!-- 场景轮播 -->
+        <div id="scenario-carousel-container"></div>
       </div>
-    </div>
     `;
 
     document.getElementById('app').innerHTML = mainMenu;
-    this.bindScenarioEvents();
-  }
 
-  // 按类别渲染场景
-  renderScenariosByCategory(scenarios) {
-    // 按类别分组场景
-    const categories = {
-      '社交排斥': {
-        icon: 'users',
-        color: 'var(--primary-color)',
-        scenarios: []
-      },
-      '言语欺凌': {
-        icon: 'message',
-        color: 'var(--secondary-color)',
-        scenarios: []
-      },
-      '网络欺凌': {
-        icon: 'wifi',
-        color: 'var(--info-color)',
-        scenarios: []
-      },
-      '身体欺凌': {
-        icon: 'shield',
-        color: 'var(--danger-color)',
-        scenarios: []
-      },
-      '财物欺凌': {
-        icon: 'clock',
-        color: 'var(--warning-color)',
-        scenarios: []
+    // 初始化卡片轮播（智能刷新策略）
+    setTimeout(() => {
+      const container = document.getElementById('scenario-carousel-container');
+
+      if (window.cardCarousel && container.innerHTML.trim()) {
+        // 轮播已存在，智能更新
+        this.smartUpdateCarousel(availableScenarios, container);
+      } else {
+        // 首次创建轮播
+        this.createNewCarousel(availableScenarios, container);
       }
-    };
-
-    // 将场景分配到对应类别
-    scenarios.forEach(scenario => {
-      if (categories[scenario.category]) {
-        categories[scenario.category].scenarios.push(scenario);
-      }
-    });
-
-    // 渲染每个类别
-    return Object.entries(categories)
-      .filter(([_, categoryData]) => categoryData.scenarios.length > 0)
-      .map(([categoryName, categoryData]) => {
-        const scenarioCards = categoryData.scenarios
-          .map(scenario => this.renderScenarioCard(scenario))
-          .join('');
-
-        return `
-          <div class="section">
-            <h2>
-              <div class="section-icon" style="background-color: ${categoryData.color};">
-                ${this.getCategoryIcon(categoryName)}
-              </div>
-              ${categoryName}
-            </h2>
-            <div class="scenario-list">
-              ${scenarioCards}
-            </div>
-          </div>
-        `;
-      }).join('');
+    }, 100);
   }
 
-  // 获取类别图标
-  getCategoryIcon(category) {
-    const icons = {
-      '社交排斥': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
-        <circle cx="8" cy="12" r="4" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-        <path d="M16 12a4 4 0 110-8 4 4 0 010 8z" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-        <path d="M16 12a4 4 0 110 8 4 4 0 010-8z" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-      </svg>`,
-      '言语欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
-        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-      </svg>`,
-      '网络欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-      </svg>`,
-      '身体欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
-        <path d="M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-      </svg>`,
-      '财物欺凌': `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
-        <circle cx="12" cy="12" r="10" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-        <path d="M12 6v6l4 2" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-      </svg>`
-    };
-
-    return icons[category] || `<svg viewBox="0 0 24 24" width="20" height="20" fill="white">
-      <circle cx="12" cy="12" r="10" stroke="#FFFFFF" stroke-width="2" fill="none"/>
-    </svg>`;
-  }
-
-  // 渲染场景卡片
-  renderScenarioCard(scenario) {
-    // 使用新的UI组件库渲染场景卡片
-    if (window.UIComponents && typeof window.UIComponents.renderScenarioCard === 'function') {
-      const isCompleted = window.userSystem && window.userSystem.user &&
-        window.userSystem.user.completed_scenarios &&
-        Array.isArray(window.userSystem.user.completed_scenarios) &&
-        window.userSystem.user.completed_scenarios.includes(scenario.id);
-
-
-
-      return window.UIComponents.renderScenarioCard(scenario, isCompleted);
+  // 检查场景数据是否发生变化
+  checkIfScenariosChanged(newScenarios) {
+    if (!window.cardCarousel || !window.cardCarousel.scenarios) {
+      return true; // 如果轮播不存在，需要更新
     }
 
-    // 如果新的UI组件库不可用，使用旧的渲染方式
-    const isCompleted = window.userSystem && window.userSystem.user &&
-      window.userSystem.user.completed_scenarios &&
-      window.userSystem.user.completed_scenarios.includes(scenario.id);
+    const currentScenarios = window.cardCarousel.scenarios;
 
-    // 状态类和难度类
-    const statusClass = isCompleted ? 'completed' : 'new';
-    let difficultyClass = '';
-    if (scenario.difficulty === '简单') difficultyClass = 'easy';
-    else if (scenario.difficulty === '中等') difficultyClass = 'medium';
-    else if (scenario.difficulty === '困难') difficultyClass = 'hard';
+    // 检查场景数量是否变化
+    if (currentScenarios.length !== newScenarios.length) {
+      return true;
+    }
 
-    // 操作按钮
-    const actionButton = isCompleted
-      ? `<div class="completed-status">
-          <span class="game-icon icon-small">
-            <svg viewBox="0 0 24 24" width="100%" height="100%">
-              <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" fill="none"/>
-            </svg>
-          </span>
-          已完成
-        </div>`
-      : `<button class="start-btn difficulty-${difficultyClass}" data-scenario-id="${scenario.id}">开始挑战</button>`;
+    // 检查场景ID是否变化
+    for (let i = 0; i < currentScenarios.length; i++) {
+      if (currentScenarios[i].id !== newScenarios[i].id) {
+        return true;
+      }
+    }
 
-    // 难度徽章
-    let difficultyType = 'info';
-    if (scenario.difficulty === '简单') difficultyType = 'info';
-    else if (scenario.difficulty === '中等') difficultyType = 'warning';
-    else if (scenario.difficulty === '困难') difficultyType = 'danger';
-
-    return `
-      <div class="scenario-card no-image ${difficultyClass} ${statusClass}" data-scenario-id="${scenario.id}">
-        <div class="scenario-header">
-          <div class="scenario-title">${scenario.title}</div>
-          <div class="scenario-meta">
-            <span class="game-badge ${difficultyType}">${scenario.difficulty}</span>
-            <span class="game-badge">${scenario.category}</span>
-          </div>
-        </div>
-        
-        <div class="scenario-description">
-          ${scenario.description}
-        </div>
-        
-        <div class="scenario-actions">
-          ${actionButton}
-        </div>
-      </div>
-    `;
+    return false; // 场景数据没有变化
   }
 
-  // 绑定场景事件
+  // 绑定场景事件（保留用于其他功能）
   bindScenarioEvents() {
     // 开始挑战按钮 - 使用场景详情页模态框
     document.querySelectorAll('.start-btn').forEach(btn => {
@@ -445,6 +446,11 @@ class GameEngine {
     // 检查成就
     window.userSystem.checkAchievements();
 
+    // 立即更新轮播中的场景状态（无刷新）
+    if (window.cardCarousel) {
+      window.cardCarousel.markScenarioCompleted(scenario.id);
+    }
+
     // 显示结果
     this.showChoiceResult(choice);
   }
@@ -491,9 +497,9 @@ class GameEngine {
               <div class="points-earned" style="margin-top: 20px;">
                 <h4>获得的技能点：</h4>
                 <div class="points-list">
-                  ${choice.points.empathy !== 0 ? `<div>同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
-                  ${choice.points.courage !== 0 ? `<div>勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
-                  ${choice.points.wisdom !== 0 ? `<div>智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
+                  ${choice.points.empathy !== 0 ? `<div class="skill-point empathy">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
+                  ${choice.points.courage !== 0 ? `<div class="skill-point courage">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
+                  ${choice.points.wisdom !== 0 ? `<div class="skill-point wisdom">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
                 </div>
               </div>
               
@@ -505,7 +511,7 @@ class GameEngine {
           </div>
           <div class="scenario-detail-actions">
             ${window.UIComponents.renderButton('继续下一个场景', "gameEngine.showMainMenu()", 'primary', 'medium')}
-            ${window.UIComponents.renderButton('返回主页', "window.location.href='index.html'", 'success', 'medium', 'home')}
+            <!-- 返回主页按钮已移除 -->
           </div>
         </div>
       `;
@@ -526,9 +532,9 @@ class GameEngine {
           <div class="points-earned">
             <h3>获得的技能点：</h3>
             <div class="points-list">
-              ${choice.points.empathy !== 0 ? `<div>同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
-              ${choice.points.courage !== 0 ? `<div>勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
-              ${choice.points.wisdom !== 0 ? `<div>智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
+              ${choice.points.empathy !== 0 ? `<div class="skill-point empathy">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
+              ${choice.points.courage !== 0 ? `<div class="skill-point courage">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
+              ${choice.points.wisdom !== 0 ? `<div class="skill-point wisdom">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
             </div>
           </div>
           
@@ -589,7 +595,7 @@ class GameEngine {
           </div>
           <div class="scenario-detail-actions">
             ${window.UIComponents.renderButton('重试', "gameEngine.showMainMenu()", 'primary', 'medium')}
-            ${window.UIComponents.renderButton('返回主页', "window.location.href='index.html'", 'success', 'medium', 'home')}
+            <!-- 返回主页按钮已移除 -->
           </div>
         </div>
       `;

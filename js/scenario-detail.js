@@ -20,6 +20,14 @@ function showScenarioDetail(scenarioId) {
   
   currentScenarioId = scenarioId;
   
+  // 检查数字人组件是否可用
+  if (window.digitalHuman && typeof window.digitalHuman.speak === 'function') {
+    // 数字人组件可用，准备朗读场景
+    const scenarioContent = `${scenario.description}。${scenario.situation}`;
+    // 开始朗读场景内容
+    window.digitalHuman.speak(scenarioContent);
+  }
+  
   // 创建模态框
   const modalOverlay = document.createElement('div');
   modalOverlay.id = 'scenario-detail-modal';
@@ -136,6 +144,11 @@ function showScenarioDetail(scenarioId) {
  * 隐藏场景详情
  */
 function hideScenarioDetail() {
+  // 清理语音合成状态
+  if (window.digitalHuman) {
+    window.digitalHuman.cleanup();
+  }
+  
   const modal = document.getElementById('scenario-detail-modal');
   if (modal) {
     modal.remove();
@@ -166,6 +179,18 @@ function selectChoice(choiceId) {
     if (typeof window.userSystem.checkAchievements === 'function') {
       window.userSystem.checkAchievements();
     }
+  }
+  
+  // 立即更新轮播中的场景状态（无刷新）
+  if (window.cardCarousel && typeof window.cardCarousel.markScenarioCompleted === 'function') {
+    window.cardCarousel.markScenarioCompleted(currentScenarioId);
+  }
+  
+  // 自动朗读选择结果
+  if (window.digitalHuman) {
+    setTimeout(() => {
+      window.digitalHuman.speakResult(choice);
+    }, 300); // 延迟300ms，等待结果页面显示完成
   }
   
   // 显示选择结果
@@ -210,14 +235,14 @@ function selectChoice(choiceId) {
             <h3>你选择了: ${choice.text}</h3>
             <p>${choice.feedback}</p>
             
-                          <div class="points-earned" style="margin-top: 20px;">
-                <h4>获得的技能点：</h4>
-                <div class="points-list">
-                  ${choice.points.empathy !== 0 ? `<div class="skill-point empathy">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
-                  ${choice.points.courage !== 0 ? `<div class="skill-point courage">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
-                  ${choice.points.wisdom !== 0 ? `<div class="skill-point wisdom">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
-                </div>
+            <div class="points-earned" style="margin-top: 20px;">
+              <h4>获得的技能点：</h4>
+              <div class="points-list">
+                ${choice.points.empathy !== 0 ? `<div class="skill-point empathy">同理心: ${choice.points.empathy > 0 ? '+' : ''}${choice.points.empathy}</div>` : ''}
+                ${choice.points.courage !== 0 ? `<div class="skill-point courage">勇气: ${choice.points.courage > 0 ? '+' : ''}${choice.points.courage}</div>` : ''}
+                ${choice.points.wisdom !== 0 ? `<div class="skill-point wisdom">智慧: ${choice.points.wisdom > 0 ? '+' : ''}${choice.points.wisdom}</div>` : ''}
               </div>
+            </div>
             
             <div style="margin-top: 20px;">
               <h4>学习要点:</h4>
@@ -226,7 +251,7 @@ function selectChoice(choiceId) {
           </div>
         </div>
         <div class="scenario-detail-actions">
-          <!-- 返回主页按钮已移除 -->
+          <button class="game-btn primary medium" onclick="hideScenarioDetail()">继续下一个场景</button>
         </div>
       </div>
     `;

@@ -292,14 +292,22 @@ class GameEngine {
     // 场景卡片点击事件 - 也使用场景详情页模态框
     document.querySelectorAll('.scenario-card').forEach(card => {
       card.addEventListener('click', (e) => {
+        console.log('场景卡片被点击');
         // 如果点击的是按钮，不处理卡片点击事件
         if (e.target.closest('.start-btn, .completed-status')) {
+          console.log('点击的是按钮，忽略卡片点击');
           return;
         }
 
         const scenarioId = card.dataset.scenarioId;
+        console.log('场景ID:', scenarioId);
+        console.log('showScenarioDetail函数状态:', !!window.showScenarioDetail);
+        
         if (scenarioId && window.showScenarioDetail && typeof window.showScenarioDetail === 'function') {
+          console.log('调用showScenarioDetail函数');
           window.showScenarioDetail(scenarioId);
+        } else {
+          console.log('showScenarioDetail函数不可用');
         }
       });
     });

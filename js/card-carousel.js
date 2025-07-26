@@ -505,13 +505,22 @@ class CardCarousel {
   }
 
   startScenario(scenarioId) {
-    // 调用游戏引擎的场景启动逻辑
-    if (window.gameEngine) {
-      window.gameEngine.startScenario(scenarioId);
+    console.log('轮播卡片开始场景，场景ID:', scenarioId);
+    
+    // 如果场景详情页功能可用，使用模态框显示
+    if (window.showScenarioDetail && typeof window.showScenarioDetail === 'function') {
+      console.log('使用场景详情页模态框');
+      window.showScenarioDetail(scenarioId);
     } else {
-      const scenario = this.scenarios.find(s => s.id === scenarioId);
-      if (scenario) {
-        alert(`开始挑战: ${scenario.title}`);
+      // 调用游戏引擎的场景启动逻辑
+      console.log('使用游戏引擎启动场景');
+      if (window.gameEngine) {
+        window.gameEngine.startScenario(scenarioId);
+      } else {
+        const scenario = this.scenarios.find(s => s.id === scenarioId);
+        if (scenario) {
+          alert(`开始挑战: ${scenario.title}`);
+        }
       }
     }
   }
@@ -539,14 +548,117 @@ class CardCarousel {
     return this.scenarios[this.currentIndex];
   }
 
-  // 标记场景为已完成（只更新数据状态）
+  // 标记场景为已完成（更新数据状态并重新排序）
   markScenarioCompleted(scenarioId) {
     const scenario = this.scenarios.find(s => s.id === scenarioId);
     if (scenario) {
       scenario.completed = true;
       
-      // 只更新当前显示的卡片状态，不重新渲染整个轮播
+      // 重新排序：将已完成的场景移到后面
+      this.resortScenarios();
+      
+      // 更新当前显示的卡片状态
       this.updateCurrentCardCompletionStatus(scenarioId);
+    }
+  }
+
+  // 重新排序场景（已完成场景移到后面）
+  resortScenarios() {
+    // 分离未完成和已完成的场景
+    const incompleteScenarios = this.scenarios.filter(scenario => !scenario.completed);
+    const completedScenarios = this.scenarios.filter(scenario => scenario.completed);
+    
+    // 对未完成场景进行混合随机排序
+    const sortedIncomplete = this.mixedRandomSort(incompleteScenarios);
+    
+    // 已完成场景：按难度排序
+    const difficultyOrder = { '简单': 1, '中等': 2, '困难': 3 };
+    completedScenarios.sort((a, b) => {
+      return (difficultyOrder[a.difficulty] || 2) - (difficultyOrder[b.difficulty] || 2);
+    });
+    
+    // 合并：未完成在前，已完成在后
+    this.scenarios = [...sortedIncomplete, ...completedScenarios];
+    
+    // 重新渲染轮播
+    this.refreshCarouselAfterResort();
+  }
+
+  // 重新排序后刷新轮播
+  refreshCarouselAfterResort() {
+    const container = document.getElementById('scenario-carousel-container');
+    if (container) {
+      // 保存当前场景ID，用于重新定位
+      const currentScenarioId = this.scenarios[this.currentIndex]?.id;
+      
+      // 重新渲染轮播
+      container.innerHTML = this.render();
+      
+      // 更新卡片显示状态
+      this.updateCards();
+      
+      // 重新绑定事件
+      this.bindEvents();
+      
+      // 如果之前有选中的场景，重新定位到该场景
+      if (currentScenarioId) {
+        const newIndex = this.scenarios.findIndex(s => s.id === currentScenarioId);
+        if (newIndex !== -1) {
+          this.currentIndex = newIndex;
+          this.updateCards();
+        }
+      }
+      
+      // 更新进度显示
+      this.updateProgressDisplay();
+    }
+  }
+
+  // 更新进度显示
+  updateProgressDisplay() {
+    if (window.userSystem && window.userSystem.user) {
+      const user = window.userSystem.user;
+      
+      // 更新进度文本
+      const progressInfo = document.querySelector('.progress-info span');
+      if (progressInfo) {
+        progressInfo.textContent = `进度: ${user.completed_scenarios.length}/${user.max_scenarios}`;
+      }
+      
+      // 更新进度条
+      const progressFill = document.querySelector('.progress-fill');
+      if (progressFill) {
+        const percentage = (user.completed_scenarios.length / user.max_scenarios) * 100;
+        progressFill.style.width = `${percentage}%`;
+      }
+      
+      // 更新技能点显示
+      this.updateSkillPointsDisplay();
+    }
+  }
+
+  // 更新技能点显示
+  updateSkillPointsDisplay() {
+    if (window.userSystem && window.userSystem.user) {
+      const user = window.userSystem.user;
+      
+      // 更新同理心
+      const empathyValue = document.querySelector('.skill-item:nth-child(1) .skill-value');
+      if (empathyValue) {
+        empathyValue.textContent = user.empathy;
+      }
+      
+      // 更新勇气
+      const courageValue = document.querySelector('.skill-item:nth-child(2) .skill-value');
+      if (courageValue) {
+        courageValue.textContent = user.courage;
+      }
+      
+      // 更新智慧
+      const wisdomValue = document.querySelector('.skill-item:nth-child(3) .skill-value');
+      if (wisdomValue) {
+        wisdomValue.textContent = user.wisdom;
+      }
     }
   }
 

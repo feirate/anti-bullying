@@ -322,7 +322,6 @@ class ResponsiveMedia {
   preloadCriticalImages() {
     // 预加载首屏关键图片
     const criticalImages = [
-      'data/pic/hero-bg.jpg',
       'data/pic/logo.png'
     ];
     

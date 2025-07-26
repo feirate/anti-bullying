@@ -19,7 +19,10 @@
   "keywords": ["anti-bullying", "game", "education"],
   "author": "feirate",
   "license": "MIT",
+  "dependencies": {
+    "@lottiefiles/lottie-player": "^3.4.0"
+  },
   "devDependencies": {
     "serve": "^14.2.1"
   }
-} 
+}

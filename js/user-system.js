@@ -118,12 +118,10 @@ class UserSystem {
               </div>
             </div>
             
-            ${this.user.completed_scenarios.length > 0 ?
-        `<div class="replay-section compact">
-                ${UIComponents.renderButton('重新挑战', 'resetProgress()', 'danger', 'small')}
-                ${UIComponents.renderButton('回到首页', 'goToHomepage()', 'secondary', 'small')}
-              </div>` : ''
-      }
+            <div class="replay-section compact">
+              ${UIComponents.renderButton('重新挑战', 'resetProgress()', 'danger', 'small')}
+              ${UIComponents.renderButton('回到首页', 'goToHomepage()', 'secondary', 'small')}
+            </div>
           </div>
         </div>
         
